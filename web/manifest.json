@@ -1,6 +1,6 @@
 {
-    "name": "lighthouse_planner",
-    "short_name": "lighthouse_planner",
+    "name": "Lightplan",
+    "short_name": "Lightplan",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
