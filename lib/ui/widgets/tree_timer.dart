@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TreeTimer extends StatefulWidget {
   @override
@@ -11,20 +10,17 @@ class TreeTimer extends StatefulWidget {
 }
 
 class _TreeTimerStateful extends State<TreeTimer> {
-  Stream<int> remainingTime;
-  DateFormat countdownFormat = DateFormat("dd:HH:mm:ss");
+  Stream<Duration> remainingTime;
 
   void startCountdown() {
-    DateTime endOfYear = DateTime(DateTime.now().year, 12, 31, 23, 59, 59);
+    DateTime endOfYear = DateTime(DateTime.now().year, 12, 31, 24, 59, 59);
     print(endOfYear);
     int countDownTime = endOfYear.millisecondsSinceEpoch;
 
-    // ignore: close_sinks
-    var controller = StreamController<int>();
+    var controller = StreamController<Duration>();
     Timer.periodic(Duration(seconds: 1), (timer) {
       int now = DateTime.now().millisecondsSinceEpoch;
-      controller
-          .add(Duration(milliseconds: countDownTime - now).inMilliseconds);
+      controller.add(Duration(milliseconds: countDownTime - now));
     });
     this.remainingTime = controller.stream;
   }
@@ -40,18 +36,24 @@ class _TreeTimerStateful extends State<TreeTimer> {
     return Center(
       child: StreamBuilder(
         stream: this.remainingTime,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          //snapshot.data is time in milliseconds
-          if (!snapshot.hasData)
-            return CircularProgressIndicator();
-          String dateString = countdownFormat
-              .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data));
+        builder: (BuildContext context, AsyncSnapshot<Duration> snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          var timeDiff = snapshot.data;
+          String dateString = formatToDate(timeDiff);
           return Container(
-            child: Text(dateString),
+            child: Text(
+              dateString,
+              style: TextStyle(color: Colors.blue),
+            ),
             padding: EdgeInsets.all(10),
           );
         },
       ),
     );
+  }
+
+  String formatToDate(Duration duration) {
+    //TODO prettier
+    return '${duration.inDays}:${duration.inHours % 24}:${duration.inMinutes % 60}:${duration.inSeconds % 60}';
   }
 }

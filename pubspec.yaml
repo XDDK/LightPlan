@@ -1,5 +1,5 @@
 name: lighthouse_planner
-description: A new Flutter project.
+description: The easiest to use planner. And it's FOSS <3
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -28,10 +28,15 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   intl: ^0.16.1
+  hive_flutter: ^0.3.1
+  hive: ^1.4.4+1
+  provider: ^4.3.2+3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^0.8.2
+  build_runner: ^1.10.11
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

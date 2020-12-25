@@ -1,30 +1,40 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/models/tree_task.dart';
+import 'package:lighthouse_planner/dao/task_dao_impl.dart';
+import 'package:lighthouse_planner/database/db_handler.dart';
+import 'package:lighthouse_planner/models/task.dart';
 
 class TreePreview extends StatelessWidget {
-  final TreeTask treeTask;
-
-  TreePreview({this.treeTask});
+  TaskDaoImpl taskDao;
 
   @override
   Widget build(BuildContext context) {
-    if(this.treeTask == null) return Text("Tree is null");
-    return Column(children: [
-      buildSelf(this.treeTask),
-      buildChildren(this.treeTask),
-    ]);
+    this.taskDao = DbHandler.of(context).taskDao;
+    Task firstTask = taskDao.findTask(0);
+    // if (this.currentTask == null) return Text("Tree is null");
+    return Column(
+      children: [
+        buildSelf(firstTask),
+        buildChildren(firstTask),
+      ],
+    );
   }
 
-  Widget buildSelf(TreeTask tree) {
-    return Placeholder();
+  Widget buildSelf(Task tree) {
+    if (tree == null) return Text(" - current tree is null - ");
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: [Text(tree.title), Text(tree.shortDesc)],
+      ),
+    );
   }
 
-  Widget buildChildren(TreeTask tree) {
-    if(tree.children.isEmpty)
-      return Placeholder();
-    return Column(children: tree.children.map((child)  {
+  Widget buildChildren(Task tree) {
+    // return Text("todo // children");
+    var children = taskDao.findTaskChildren(tree.id);
+    if (children.isEmpty) return Text("•", style: TextStyle(color: Colors.pink));
+    return Column(
+        children: children.map((child) {
       return buildSelf(child);
     }).toList());
   }

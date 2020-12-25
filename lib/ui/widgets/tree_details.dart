@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/models/tree_task.dart';
+import 'package:lighthouse_planner/models/task.dart';
 
 class TreeDetails extends StatefulWidget {
-  final TreeTask currentTree;
+  final Task currentTree;
 
   TreeDetails({@required this.currentTree});
 
@@ -14,7 +14,7 @@ class _TreeDetailsState extends State<TreeDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text(this.widget.currentTree.description)),
+      child: Center(child: Text(this.widget.currentTree.desc)),
     );
   }
 }
