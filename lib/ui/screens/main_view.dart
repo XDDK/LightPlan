@@ -16,16 +16,16 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: FutureBuilder(
-          future: Hive.openBox<Task>('tasks'),
-          builder: (context, AsyncSnapshot<Box<Task>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return FutureProvider(
-                create: (_) async => await TaskDaoImpl().init(),
-                child: Provider(
-                  create: (_) => TreeHandler(),
-                  child: Column(
+      child: FutureProvider(
+        create: (_) => TaskDaoImpl().init(),
+        child: ChangeNotifierProvider(
+          create: (_) => TreeHandler(),
+          child: Scaffold(
+            body: FutureBuilder<Box<Task>>(
+              future: Hive.openBox<Task>('tasks'),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
                     children: [
                       TreeTimer(),
                       Expanded(
@@ -34,13 +34,13 @@ class _MainViewState extends State<MainView> {
                         ),
                       ),
                     ],
-                  ),
-                ),
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
         ),
       ),
     );
