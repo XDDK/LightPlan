@@ -18,11 +18,8 @@ class _TreePreviewState extends State<TreePreview> {
   Widget build(BuildContext context) {
     this.taskDao = context.watch<TaskDaoImpl>();
     this.treeHandler = context.watch<TreeHandler>();
-    // this.taskDao = Provider.of<TaskDaoImpl>(context);
-    // this.treeHandler = Provider.of<TreeHandler>(context, listen: false);
 
     if (this.taskDao == null) return Container();
-    // else return Text("dao is working");
 
     if (treeHandler.currentTask == null) {
       treeHandler.setCurrentTask(taskDao.findTask(0), false);
@@ -51,11 +48,7 @@ class _TreePreviewState extends State<TreePreview> {
         return TaskContainer(
             task: child,
             isChild: true,
-            updateTreeHandler: () {
-              // setState(() {
-                treeHandler.setCurrentTask(child);
-              // });
-            });
+            updateTreeHandler: () => treeHandler.setCurrentTask(child));
       }).toList(),
     );
   }
