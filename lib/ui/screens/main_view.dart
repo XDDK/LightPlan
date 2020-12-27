@@ -17,13 +17,13 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: FutureBuilder<Box<Task>>(
+        body: FutureBuilder(
           future: Hive.openBox<Task>('tasks'),
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<Box<Task>> snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return FutureProvider(
-                create: (_) => TaskDaoImpl().init(),
-                child: ChangeNotifierProvider(
+                create: (_) async => await TaskDaoImpl().init(),
+                child: Provider(
                   create: (_) => TreeHandler(),
                   child: Column(
                     children: [

@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:lighthouse_planner/models/task.dart';
 
-class TreeHandler extends ChangeNotifier {
+class TreeHandler {
   Task _currentTask;
 
   TreeHandler([this._currentTask]);
@@ -10,8 +9,7 @@ class TreeHandler extends ChangeNotifier {
     return _currentTask;
   }
 
-  void setCurrentTask(Task currentTask, [bool notify = true]) {
+  void setCurrentTask(Task currentTask) {
     this._currentTask = currentTask;
-    if(notify) notifyListeners();
   }
 }
