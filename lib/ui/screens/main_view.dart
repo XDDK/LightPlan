@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:lighthouse_planner/dao/task_dao_impl.dart';
-import 'package:lighthouse_planner/database/db_handler.dart';
 import 'package:lighthouse_planner/models/task.dart';
 import 'package:lighthouse_planner/ui/widgets/tree_preview.dart';
 import 'package:lighthouse_planner/ui/widgets/tree_timer.dart';
+import 'package:provider/provider.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -14,7 +14,6 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
-    // this.currentTask = new Task();
 
     return SafeArea(
       child: Scaffold(
@@ -27,8 +26,8 @@ class _MainViewState extends State<MainView> {
                   TreeTimer(),
                   Expanded(
                     child: SingleChildScrollView(
-                      child: DbHandler(
-                        taskDao: TaskDaoImpl(),
+                      child: FutureProvider(
+                        create: (_) async => await TaskDaoImpl().init(),
                         child: TreePreview(),
                       ),
                     ),

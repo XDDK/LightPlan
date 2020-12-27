@@ -20,4 +20,14 @@ class Task {
   String desc;
 
   Task({this.id, this.parentId, this.title, this.shortDesc, this.desc});
+
+  Task setId(int id) {
+    this.id = id;
+    return this;
+  }
+
+  @override
+  String toString() {
+    return "Task[id=$id,parentId=$parentId,title=$title,shortDesc=$shortDesc,desc=$desc";
+  }
 }

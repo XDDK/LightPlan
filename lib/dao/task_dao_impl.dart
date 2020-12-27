@@ -5,21 +5,43 @@ import 'package:lighthouse_planner/models/task.dart';
 class TaskDaoImpl extends TaskDao {
   final Box<Task> tasksBox = Hive.box("tasks");
 
-  TaskDaoImpl() {
-    if(tasksBox.isEmpty) {
-      init(tasksBox);
-    }
-  }
-
-  void init(Box<Task> box) {
+  Future<TaskDaoImpl> init() async {
+    if (tasksBox.isNotEmpty) return this;
+    // Box<Task> box = tasksBox;
     print("db init");
     Task year = Task(
         title: "2k2k",
-        parentId: 0,
         shortDesc: "This year was fun",
         desc: "this year was not fun...");
-    box.add(year);
+    int yearId = await insertTask(year);
+    Task spring = Task(
+        title: "Spring",
+        parentId: yearId,
+        shortDesc: "Stuff we do in spring",
+        desc: "blah blah");
+    Task summer = Task(
+        title: "Summer",
+        parentId: yearId,
+        shortDesc: "Stuff we do in summer",
+        desc: "blah blah");
+    Task autumn = Task(
+        title: "Autumn",
+        parentId: yearId,
+        shortDesc: "Stuff we do in autumn",
+        desc: "blah blah");
+    Task winter = Task(
+        title: "Winter",
+        parentId: yearId,
+        shortDesc: "Stuff we do in winter",
+        desc: "blah blah");
+    
+    insertTask(spring);
+    insertTask(summer);
+    insertTask(autumn);
+    insertTask(winter);
+
     print("end db init");
+    return this;
   }
 
   @override
@@ -55,7 +77,14 @@ class TaskDaoImpl extends TaskDao {
   }
 
   @override
-  Future<int> insertTask(Task treeTask) {
-    return tasksBox.add(treeTask);
+  Future<int> insertTask(Task treeTask) async {
+    int idTask = await tasksBox.add(treeTask);
+    updateTask(idTask, treeTask.setId(idTask));
+    return idTask;
+  }
+
+  @override
+  Future<void> updateTask(int id, Task treeTask) async {
+    return await tasksBox.put(id, treeTask);
   }
 }

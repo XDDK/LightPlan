@@ -17,6 +17,7 @@ class _TreeTimerStateful extends State<TreeTimer> {
     print(endOfYear);
     int countDownTime = endOfYear.millisecondsSinceEpoch;
 
+    // ignore: close_sinks
     var controller = StreamController<Duration>();
     Timer.periodic(Duration(seconds: 1), (timer) {
       int now = DateTime.now().millisecondsSinceEpoch;

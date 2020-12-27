@@ -7,7 +7,7 @@ import 'package:lighthouse_planner/ui/screens/main_view.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // init hive boxes
-  Hive.initFlutter();
+  await Hive.initFlutter();
   Hive.registerAdapter<Task>(TaskAdapter());
   runApp(MyApp());
 }

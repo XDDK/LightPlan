@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lighthouse_planner/dao/task_dao_impl.dart';
-import 'package:lighthouse_planner/database/db_handler.dart';
 import 'package:lighthouse_planner/models/task.dart';
+import 'package:provider/provider.dart';
 
-class TreePreview extends StatelessWidget {
+class TreePreview extends StatefulWidget {
+  @override
+  _TreePreviewState createState() => _TreePreviewState();
+}
+
+class _TreePreviewState extends State<TreePreview> {
   TaskDaoImpl taskDao;
 
   @override
   Widget build(BuildContext context) {
-    this.taskDao = DbHandler.of(context).taskDao;
+    this.taskDao = Provider.of<TaskDaoImpl>(context);
+    if(this.taskDao == null) return Container();
+    // this.taskDao = context.watch<TaskDaoImpl>();
     Task firstTask = taskDao.findTask(0);
-    // if (this.currentTask == null) return Text("Tree is null");
+    if (firstTask == null) return Text("Tree is null");
     return Column(
       children: [
         buildSelf(firstTask),
@@ -30,9 +37,12 @@ class TreePreview extends StatelessWidget {
   }
 
   Widget buildChildren(Task tree) {
-    // return Text("todo // children");
     var children = taskDao.findTaskChildren(tree.id);
-    if (children.isEmpty) return Text("•", style: TextStyle(color: Colors.pink));
+    if (children.isEmpty)
+      return Text(
+        "•",
+        style: TextStyle(color: Colors.pink),
+      );
     return Column(
         children: children.map((child) {
       return buildSelf(child);
