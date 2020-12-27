@@ -26,14 +26,18 @@ class _TreePreviewState extends State<TreePreview> {
     }
     return Column(
       children: [
-        TaskContainer(task: treeHandler.currentTask, isChild: false),
+        TaskContainer(
+          task: treeHandler.currentTask,
+          isChild: false,
+          updateTreeParent: (Task task) => treeHandler.setCurrentTask(task),
+        ),
         buildChildren(treeHandler.currentTask),
       ],
     );
   }
 
   Widget buildChildren(Task tree) {
-    if(tree == null) return Container();
+    if (tree == null) return Container();
     var children = taskDao.findTaskChildren(tree.id);
     if (children.isEmpty) {
       return Divider(
@@ -48,7 +52,7 @@ class _TreePreviewState extends State<TreePreview> {
         return TaskContainer(
             task: child,
             isChild: true,
-            updateTreeHandler: () => treeHandler.setCurrentTask(child));
+            updateTreeParent: (Task task) => treeHandler.setCurrentTask(task));
       }).toList(),
     );
   }

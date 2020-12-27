@@ -14,18 +14,24 @@ class TreeTimer extends StatefulWidget {
 class _TreeTimerStateful extends State<TreeTimer> {
   TreeHandler treeHandler;
   Stream<Duration> remainingTime;
+  Timer timer;
 
   void startCountdown() {
     int countDownTime;
     if (treeHandler.currentTask == null) {
-      countDownTime = DateTime(DateTime.now().year, 12, 31, 24, 59, 59).millisecondsSinceEpoch;
+      countDownTime = DateTime(DateTime.now().year, 12, 31, 23, 59, 59).millisecondsSinceEpoch;
     } else {
       countDownTime = treeHandler.currentTask.endDate;
     }
 
     // ignore: close_sinks
     var controller = StreamController<Duration>();
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    if(timer != null) timer.cancel();
+
+    int now = DateTime.now().millisecondsSinceEpoch;
+    controller.add(Duration(milliseconds: countDownTime - now));
+
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
       int now = DateTime.now().millisecondsSinceEpoch;
       controller.add(Duration(milliseconds: countDownTime - now));
     });
