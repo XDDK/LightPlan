@@ -22,7 +22,7 @@ class _TreeTimerStateful extends State<TreeTimer> {
     } else {
       countDownTime = treeHandler.currentTask.endDate;
     }
-    
+
     // ignore: close_sinks
     var controller = StreamController<Duration>();
     Timer.periodic(Duration(seconds: 1), (timer) {
@@ -49,14 +49,19 @@ class _TreeTimerStateful extends State<TreeTimer> {
   }
 
   Widget dateWidgetBuilder(Duration durationLeft) {
-    if(durationLeft.isNegative) {
+    if (durationLeft.isNegative) {
       return Text("Overdue with ${durationLeft.inDays.abs()} days... Try until you make it!");
     }
     String dateString = formatToDate(durationLeft);
     return Container(
       child: Text(
         dateString,
-        style: TextStyle(color: Colors.blue),
+        style: TextStyle(
+            letterSpacing: 3.0,
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'digital-7'),
       ),
       padding: EdgeInsets.all(10),
     );
