@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lighthouse_planner/dao/task_dao_impl.dart';
 import 'package:lighthouse_planner/models/task.dart';
+import 'package:lighthouse_planner/tree_handler.dart';
+import 'package:lighthouse_planner/ui/widgets/task_container.dart';
 import 'package:provider/provider.dart';
 
 class TreePreview extends StatefulWidget {
@@ -10,42 +12,48 @@ class TreePreview extends StatefulWidget {
 
 class _TreePreviewState extends State<TreePreview> {
   TaskDaoImpl taskDao;
+  TreeHandler treeHandler;
 
   @override
   Widget build(BuildContext context) {
-    this.taskDao = Provider.of<TaskDaoImpl>(context);
-    if(this.taskDao == null) return Container();
     // this.taskDao = context.watch<TaskDaoImpl>();
-    Task firstTask = taskDao.findTask(0);
-    if (firstTask == null) return Text("Tree is null");
+    this.taskDao = Provider.of<TaskDaoImpl>(context);
+    this.treeHandler = context.watch<TreeHandler>();
+
+    if (this.taskDao == null) return Container();
+
+    if (treeHandler.currentTask == null) {
+      treeHandler.setCurrentTask(taskDao.findTask(0));
+    }
     return Column(
       children: [
-        buildSelf(firstTask),
-        buildChildren(firstTask),
+        TaskContainer(task: treeHandler.currentTask, isChild: false),
+        buildChildren(treeHandler.currentTask),
       ],
-    );
-  }
-
-  Widget buildSelf(Task tree) {
-    if (tree == null) return Text(" - current tree is null - ");
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: [Text(tree.title), Text(tree.shortDesc)],
-      ),
     );
   }
 
   Widget buildChildren(Task tree) {
     var children = taskDao.findTaskChildren(tree.id);
-    if (children.isEmpty)
-      return Text(
-        "•",
-        style: TextStyle(color: Colors.pink),
+    if (children.isEmpty) {
+      return Divider(
+        indent: 50,
+        endIndent: 50,
+        color: Colors.pink,
+        thickness: 1,
       );
+    }
     return Column(
-        children: children.map((child) {
-      return buildSelf(child);
-    }).toList());
+      children: children.map((child) {
+        return TaskContainer(
+            task: child,
+            isChild: true,
+            updateTreeHandler: () {
+              setState(() {
+                treeHandler.setCurrentTask(child);
+              });
+            });
+      }).toList(),
+    );
   }
 }

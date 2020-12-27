@@ -7,7 +7,6 @@ class TaskDaoImpl extends TaskDao {
 
   Future<TaskDaoImpl> init() async {
     if (tasksBox.isNotEmpty) return this;
-    // Box<Task> box = tasksBox;
     print("db init");
     Task year = Task(
         title: "2k2k",
@@ -34,11 +33,21 @@ class TaskDaoImpl extends TaskDao {
         parentId: yearId,
         shortDesc: "Stuff we do in winter",
         desc: "blah blah");
-    
-    insertTask(spring);
-    insertTask(summer);
-    insertTask(autumn);
-    insertTask(winter);
+
+    var q1id = await insertTask(spring);
+    var q2id = await insertTask(summer);
+    var q3id = await insertTask(autumn);
+    var q4id = await insertTask(winter);
+
+    Task monthQ1 = Task(title: "Month Spring", parentId: q1id, shortDesc: "Month during spring");
+    Task monthQ2 = Task(title: "Month Summer", parentId: q2id, shortDesc: "Month during summer");
+    Task monthQ3 = Task(title: "Month Autumn", parentId: q3id, shortDesc: "Month during autumn");
+    Task monthQ4 = Task(title: "Month Winter", parentId: q4id, shortDesc: "Month during winter");
+
+    insertTask(monthQ1);
+    insertTask(monthQ2);
+    insertTask(monthQ3);
+    insertTask(monthQ4);
 
     print("end db init");
     return this;
