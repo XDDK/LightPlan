@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 part 'task.g.dart';
@@ -15,22 +14,12 @@ class Task {
   String title;
 
   @HiveField(3)
-  int endDate;
-
-  @HiveField(4)
   String shortDesc;
 
-  @HiveField(5)
+  @HiveField(4)
   String desc;
 
-  Task({
-    this.id,
-    this.parentId,
-    @required this.title,
-    @required this.endDate,
-    @required this.shortDesc,
-    this.desc,
-  });
+  Task({this.id, this.parentId, this.title, this.shortDesc, this.desc});
 
   Task setId(int id) {
     this.id = id;
@@ -39,6 +28,6 @@ class Task {
 
   @override
   String toString() {
-    return "Task[id=$id,parentId=$parentId,title=$title,endDate=$endDate,shortDesc=$shortDesc,desc=$desc";
+    return "Task[id=$id,parentId=$parentId,title=$title,shortDesc=$shortDesc,desc=$desc";
   }
 }
