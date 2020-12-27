@@ -6,18 +6,20 @@ class TaskContainer extends StatefulWidget {
   final bool isChild;
   final Function updateTreeHandler;
 
-  TaskContainer(
-      {@required this.task, @required this.isChild, this.updateTreeHandler});
+  TaskContainer({
+    @required this.task,
+    @required this.isChild,
+    this.updateTreeHandler,
+  });
 
   @override
   _TaskContainerState createState() => _TaskContainerState();
 }
 
 class _TaskContainerState extends State<TaskContainer> {
-
   @override
   Widget build(BuildContext context) {
-    if(widget.task == null) return Text(" - current tree is null - ");
+    if (widget.task == null) return Text(" - current tree is null - ");
     return buildTaskTree();
   }
 
@@ -33,7 +35,9 @@ class _TaskContainerState extends State<TaskContainer> {
   Widget buildTaskTree() {
     if (widget.isChild)
       return GestureDetector(
-        onTap: () => widget.updateTreeHandler != null ? widget.updateTreeHandler() : null,
+        onTap: () => widget.updateTreeHandler != null
+            ? widget.updateTreeHandler()
+            : null,
         child: buildSelf(),
       );
     else
