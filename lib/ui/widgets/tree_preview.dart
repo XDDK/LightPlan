@@ -16,14 +16,16 @@ class _TreePreviewState extends State<TreePreview> {
 
   @override
   Widget build(BuildContext context) {
-    // this.taskDao = context.watch<TaskDaoImpl>();
-    this.taskDao = Provider.of<TaskDaoImpl>(context);
+    this.taskDao = context.watch<TaskDaoImpl>();
     this.treeHandler = context.watch<TreeHandler>();
+    // this.taskDao = Provider.of<TaskDaoImpl>(context);
+    // this.treeHandler = Provider.of<TreeHandler>(context, listen: false);
 
     if (this.taskDao == null) return Container();
+    // else return Text("dao is working");
 
     if (treeHandler.currentTask == null) {
-      treeHandler.setCurrentTask(taskDao.findTask(0));
+      treeHandler.setCurrentTask(taskDao.findTask(0), false);
     }
     return Column(
       children: [
@@ -34,6 +36,7 @@ class _TreePreviewState extends State<TreePreview> {
   }
 
   Widget buildChildren(Task tree) {
+    if(tree == null) return Container();
     var children = taskDao.findTaskChildren(tree.id);
     if (children.isEmpty) {
       return Divider(
@@ -49,9 +52,9 @@ class _TreePreviewState extends State<TreePreview> {
             task: child,
             isChild: true,
             updateTreeHandler: () {
-              setState(() {
+              // setState(() {
                 treeHandler.setCurrentTask(child);
-              });
+              // });
             });
       }).toList(),
     );

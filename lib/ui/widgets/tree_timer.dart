@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lighthouse_planner/tree_handler.dart';
+import 'package:provider/provider.dart';
 
 class TreeTimer extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class TreeTimer extends StatefulWidget {
 }
 
 class _TreeTimerStateful extends State<TreeTimer> {
+  TreeHandler treeHandler;
   Stream<Duration> remainingTime;
 
   void startCountdown() {
@@ -34,7 +37,9 @@ class _TreeTimerStateful extends State<TreeTimer> {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<TreeHandler>(context);
+    this.treeHandler = context.watch<TreeHandler>();
+    print(treeHandler.currentTask);
+
     return Center(
       child: StreamBuilder(
         stream: this.remainingTime,
