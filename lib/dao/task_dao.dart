@@ -1,4 +1,4 @@
-import 'package:lighthouse_planner/models/task.dart';
+import '../models/task.dart';
 
 abstract class TaskDao {
   List<Task> findAllTasks();

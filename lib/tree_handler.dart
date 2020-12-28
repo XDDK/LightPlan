@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/models/task.dart';
+import 'models/task.dart';
 
 class TreeHandler extends ChangeNotifier {
   Task _currentTask;

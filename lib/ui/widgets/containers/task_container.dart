@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/dao/task_dao_impl.dart';
-import 'package:lighthouse_planner/models/task.dart';
-import 'package:lighthouse_planner/ui/widgets/containers/my_container.dart';
-import 'package:lighthouse_planner/ui/widgets/containers/task_details_container.dart';
 import 'package:provider/provider.dart';
+
+import '../../../dao/task_dao_impl.dart';
+import '../../../models/task.dart';
+import 'my_container.dart';
+import 'task_details_container.dart';
 
 class TaskContainer extends StatefulWidget {
   final Task task;

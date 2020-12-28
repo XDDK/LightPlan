@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:lighthouse_planner/dao/task_dao.dart';
-import 'package:lighthouse_planner/models/task.dart';
+import 'task_dao.dart';
+import '../models/task.dart';
 
 class TaskDaoImpl extends TaskDao {
   final Box<Task> tasksBox = Hive.box("tasks");

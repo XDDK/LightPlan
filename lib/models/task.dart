@@ -25,12 +25,36 @@ class Task {
 
   @HiveField(6)
   bool isPredefined;
-  
+
   @HiveField(7)
   bool canHaveChildren;
 
-  Task.empty() {
+  Task.empty({int parentId}) {
     this.endDate = DateTime.now().millisecondsSinceEpoch;
+    this.parentId = parentId;
+    this.isPredefined = false;
+  }
+
+  Task copyWith({
+    int id,
+    int parentId,
+    String title,
+    int endDate,
+    String shortDesc,
+    String desc,
+    bool isPredefined,
+    bool canHaveChildren,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
+      title: title ?? this.title,
+      endDate: endDate ?? this.endDate,
+      shortDesc: shortDesc ?? this.shortDesc,
+      desc: desc ?? this.desc,
+      isPredefined: isPredefined ?? this.isPredefined,
+      canHaveChildren: canHaveChildren ?? this.canHaveChildren,
+    );
   }
 
   Task({
