@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lighthouse_planner/models/task.dart';
 import 'package:lighthouse_planner/ui/widgets/containers/my_container.dart';
@@ -24,6 +25,8 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
   double width;
   double height;
   bool editMode;
+  bool isPressedGreen = false;
+  bool isPressedRed = false;
   List<Widget> listedTasks = [];
 
   @override
@@ -61,12 +64,24 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
                     //Delete button
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => print("delete"),
+                        onTapCancel: () {
+                          if(!kIsWeb)
+                            setState(() {isPressedRed = false;});
+                        },
+                        onTapDown: (e) {
+                          if(!kIsWeb)
+                            setState(() {isPressedRed = true;});
+                        },
+                        onTapUp: (e) {
+                          if(!kIsWeb)
+                            setState(() {isPressedRed = false;});
+                        },
                         child: MyContainer(
                           isHoverable: true,
                           height: 30,
                           child: Icon(Icons.delete),
-                          color: Colors.red,
+                          color: isPressedRed ? Colors.redAccent : Colors.red,
+                          //color: Colors.red,
                           radius: 5,
                         ),
                       ),
@@ -77,13 +92,24 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
 
                     //Save button
                     Expanded(
-                        child : GestureDetector(
-                        onTap: () => print("save"),
+                      child : GestureDetector(
+                        onTapCancel: () {
+                          if(!kIsWeb)
+                            setState(() {isPressedGreen = false;});
+                        },
+                        onTapDown: (e) {
+                          if(!kIsWeb)
+                            setState(() {isPressedGreen = true;});
+                        },
+                        onTapUp: (e) {
+                          if(!kIsWeb)
+                            setState(() {isPressedGreen = false;});
+                        },
                         child: MyContainer(
                           isHoverable: true,
                           height: 30,
                           child: Icon(Icons.save),
-                          color: Colors.green,
+                          color: isPressedGreen ? Colors.green[200] : Colors.green,
                           radius: 5,
                         ),
                       ),

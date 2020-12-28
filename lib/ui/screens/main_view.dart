@@ -5,6 +5,7 @@ import 'package:lighthouse_planner/models/task.dart';
 import 'package:lighthouse_planner/tree_handler.dart';
 import 'package:lighthouse_planner/ui/widgets/tree_preview.dart';
 import 'package:lighthouse_planner/ui/widgets/tree_timer.dart';
+import 'package:lighthouse_planner/ui/widgets/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
 class MainView extends StatefulWidget {
@@ -33,6 +34,7 @@ class _MainViewState extends State<MainView> {
                           child: TreePreview(),
                         ),
                       ),
+                      MyBottomBar(),
                     ],
                   );
                 } else {

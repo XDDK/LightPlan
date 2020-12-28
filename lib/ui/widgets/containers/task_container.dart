@@ -54,12 +54,14 @@ class _TaskContainerState extends State<TaskContainer> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(width: 30),
+
             Expanded(
               child: Column(children: [
                 Text(widget.task.title),
                 Text(widget.task.shortDesc)
               ]),
             ),
+            
             MyContainer(
               onTap: () => _showTaskPreview(widget.task),
               ripple: true,

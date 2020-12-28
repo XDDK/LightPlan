@@ -21,7 +21,6 @@ class _TreePreviewState extends State<TreePreview> {
     this.treeHandler = context.watch<TreeHandler>();
 
     if (this.taskDao == null) return Container();
-
     if (treeHandler.currentTask == null) treeHandler.setCurrentTask(taskDao.findTask(0), false);
     
     return IntrinsicWidth(
