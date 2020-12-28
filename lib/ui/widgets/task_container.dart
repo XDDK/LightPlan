@@ -91,35 +91,7 @@ class _TaskContainerState extends State<TaskContainer> {
     );
   }
 
-  Widget buildSelf(BuildContext context) {
-    return Container(
-      //padding: EdgeInsets.all(10),
-      color: Colors.blue,
-      width: MediaQuery.of(context).size.width * 0.3,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () { print("BACK"); },
-            child: Icon(
-              Icons.keyboard_backspace,
-              size: MediaQuery.of(context).size.width * 0.04,
-            ),
-          ),
-          Column(children: [Text(widget.task.title), Text(widget.task.shortDesc)]),
-          GestureDetector(
-            onTap: () { print("PRESS"); },
-            child: Icon(
-              Icons.menu,
-              size: MediaQuery.of(context).size.width * 0.04,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildTaskTree(BuildContext context) {
+  Widget buildTaskTree() {
     if (widget.isChild)
       return GestureDetector(
           onTap: () => widget.updateTreeParent != null
@@ -127,6 +99,6 @@ class _TaskContainerState extends State<TaskContainer> {
               : null,
           child: buildChild());
     else
-      return buildSelf(context);
+      return buildSelf();
   }
 }
