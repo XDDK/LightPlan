@@ -8,13 +8,11 @@ import 'package:provider/provider.dart';
 class TaskContainer extends StatefulWidget {
   final Task task;
   final bool isChild;
-  final int currentTreeHeight;
   final Function updateCurrentTask;
 
   TaskContainer({
     @required this.task,
     @required this.isChild,
-    @required this.currentTreeHeight,
     this.updateCurrentTask,
   });
 
@@ -103,7 +101,7 @@ class _TaskContainerState extends State<TaskContainer> {
             Text(widget.task.shortDesc)
           ])),
           Visibility(
-            visible: widget.currentTreeHeight > 1,
+            visible: widget.task.canHaveChildren,
             child: MyContainer(
               onTap: () => _showTaskPreview(widget.task, true),
               ripple: true,
@@ -128,7 +126,6 @@ class _TaskContainerState extends State<TaskContainer> {
   }
 
   void _showTaskPreview(Task task, [bool canAddTask = false, bool editor = false]) async {
-    print("TODO // Open Task ${editor ? 'editor' : 'preview'} for ${widget.task.id}");
     await showDialog(
         context: context,
         builder: (_) {
@@ -136,8 +133,8 @@ class _TaskContainerState extends State<TaskContainer> {
             alignment: Alignment.topCenter,
             child: TaskDetailsContainer(
               task: task, 
-              editor: true, 
-              canAddTask: canAddTask, 
+              editor: editor, 
+              isListedAsChild: canAddTask, 
               updateCurrentTask: widget.updateCurrentTask,
             ),
           );

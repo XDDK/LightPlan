@@ -5,6 +5,8 @@ abstract class TaskDao {
 
   Task findTask(int id);
 
+  Task findTaskAt(int pos);
+
   List<Task> findTaskChildren(int id);
 
   Future<int> insertTask(Task treeTask);

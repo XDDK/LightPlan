@@ -23,8 +23,7 @@ class _TreePreviewState extends State<TreePreview> {
     if (this.taskDao == null) return Container();
 
     if (treeHandler.currentTask == null) {
-      //TODO find task at pos 0, not id 0
-      treeHandler.setCurrentTask(taskDao.findTask(0), false);
+      treeHandler.setCurrentTask(taskDao.findTaskAt(0), false);
     }
     return IntrinsicWidth(
       child: Column(
@@ -32,7 +31,6 @@ class _TreePreviewState extends State<TreePreview> {
           TaskContainer(
               task: treeHandler.currentTask,
               isChild: false,
-              currentTreeHeight: this.currentTreeHeight,
               updateCurrentTask: (Task task) {
                 treeHandler.setCurrentTask(task); // CurrentTask = ParentTask
                 currentTreeHeight--;
@@ -59,7 +57,6 @@ class _TreePreviewState extends State<TreePreview> {
         return TaskContainer(
             task: child,
             isChild: true,
-            currentTreeHeight: this.currentTreeHeight,
             updateCurrentTask: (Task task) {
               treeHandler.setCurrentTask(task);
               currentTreeHeight++;

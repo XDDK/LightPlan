@@ -11,6 +11,8 @@ class TaskDaoImpl extends TaskDao {
     Task year = Task(
         title: "2k2k",
         endDate: DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch,
+        isPredefined: true,
+        canHaveChildren: false,
         shortDesc: "This year was fun",
         desc: "this year was not fun...");
     int yearId = await insertTask(year);
@@ -18,24 +20,28 @@ class TaskDaoImpl extends TaskDao {
         title: "Spring",
         parentId: yearId,
         endDate: DateTime(DateTime.now().year, 3, 31, 24).millisecondsSinceEpoch,
+        isPredefined: true,
         shortDesc: "Stuff we do in spring",
         desc: "blah blah");
     Task summer = Task(
         title: "Summer",
         parentId: yearId,
         endDate: DateTime(DateTime.now().year, 6, 30, 24).millisecondsSinceEpoch,
+        isPredefined: true,
         shortDesc: "Stuff we do in summer",
         desc: "blah blah");
     Task autumn = Task(
         title: "Autumn",
         parentId: yearId,
         endDate: DateTime(DateTime.now().year, 9, 30, 24).millisecondsSinceEpoch,
+        isPredefined: true,
         shortDesc: "Stuff we do in autumn",
         desc: "blah blah");
     Task winter = Task(
         title: "Winter",
         parentId: yearId,
         endDate: DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch,
+        isPredefined: true,
         shortDesc: "Stuff we do in winter",
         desc: "blah blah");
 
@@ -48,21 +54,26 @@ class TaskDaoImpl extends TaskDao {
         title: "Month Spring",
         parentId: q1id,
         endDate: DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch,
+        isPredefined: false,
+        canHaveChildren: true,
         shortDesc: "Month during spring");
     Task monthQ2 = Task(
         title: "Month Summer",
         parentId: q2id,
         endDate: DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch,
+        isPredefined: false,
         shortDesc: "Month during summer");
     Task monthQ3 = Task(
         title: "Month Autumn",
         parentId: q3id,
         endDate: DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch,
+        isPredefined: false,
         shortDesc: "Month during autumn");
     Task monthQ4 = Task(
         title: "Month Winter",
         parentId: q4id,
         endDate: DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch,
+        isPredefined: false,
         shortDesc: "Month during winter");
 
     insertTask(monthQ1);
@@ -96,6 +107,11 @@ class TaskDaoImpl extends TaskDao {
   @override
   Task findTask(int id) {
     return tasksBox.get(id);
+  }
+
+  @override
+  Task findTaskAt(int pos) {
+    return tasksBox.getAt(pos);
   }
 
   @override

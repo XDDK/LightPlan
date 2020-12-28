@@ -23,6 +23,16 @@ class Task {
   @HiveField(5)
   String desc;
 
+  @HiveField(6)
+  bool isPredefined;
+  
+  @HiveField(7)
+  bool canHaveChildren;
+
+  Task.empty() {
+    this.endDate = DateTime.now().millisecondsSinceEpoch;
+  }
+
   Task({
     this.id,
     this.parentId,
@@ -30,6 +40,8 @@ class Task {
     @required this.endDate,
     @required this.shortDesc,
     this.desc,
+    @required this.isPredefined,
+    this.canHaveChildren = true,
   });
 
   Task setId(int id) {
