@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lighthouse_planner/dao/task_dao_impl.dart';
 import 'package:lighthouse_planner/models/task.dart';
 import 'package:lighthouse_planner/tree_handler.dart';
-import 'package:lighthouse_planner/ui/widgets/task_container.dart';
+import 'package:lighthouse_planner/ui/widgets/containers/task_container.dart';
 import 'package:provider/provider.dart';
 
 class TreePreview extends StatefulWidget {
@@ -13,6 +13,7 @@ class TreePreview extends StatefulWidget {
 class _TreePreviewState extends State<TreePreview> {
   TaskDaoImpl taskDao;
   TreeHandler treeHandler;
+  int currentTreeHeight = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +23,23 @@ class _TreePreviewState extends State<TreePreview> {
     if (this.taskDao == null) return Container();
 
     if (treeHandler.currentTask == null) {
+      //TODO find task at pos 0, not id 0
       treeHandler.setCurrentTask(taskDao.findTask(0), false);
     }
-    return Column(
-      children: [
-        TaskContainer(
-          task: treeHandler.currentTask,
-          isChild: false,
-          updateTreeParent: (Task task) => treeHandler.setCurrentTask(task),
-        ),
-        buildChildren(treeHandler.currentTask),
-      ],
+    return IntrinsicWidth(
+      child: Column(
+        children: [
+          TaskContainer(
+              task: treeHandler.currentTask,
+              isChild: false,
+              currentTreeHeight: this.currentTreeHeight,
+              updateCurrentTask: (Task task) {
+                treeHandler.setCurrentTask(task); // CurrentTask = ParentTask
+                currentTreeHeight--;
+              }),
+          buildChildren(treeHandler.currentTask),
+        ],
+      ),
     );
   }
 
@@ -52,7 +59,11 @@ class _TreePreviewState extends State<TreePreview> {
         return TaskContainer(
             task: child,
             isChild: true,
-            updateTreeParent: (Task task) => treeHandler.setCurrentTask(task));
+            currentTreeHeight: this.currentTreeHeight,
+            updateCurrentTask: (Task task) {
+              treeHandler.setCurrentTask(task);
+              currentTreeHeight++;
+            }); // CurrentTask = ChildrenTask
       }).toList(),
     );
   }
