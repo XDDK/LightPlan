@@ -19,14 +19,15 @@ class _TreeTimerStateful extends State<TreeTimer> {
   void startCountdown() {
     int countDownTime;
     if (treeHandler.currentTask == null) {
-      countDownTime = DateTime(DateTime.now().year, 12, 31, 23, 59, 59).millisecondsSinceEpoch;
+      countDownTime = DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch;
     } else {
       countDownTime = treeHandler.currentTask.endDate;
     }
+    countDownTime -= 100; // adjust time to be a little early
 
     // ignore: close_sinks
     var controller = StreamController<Duration>();
-    if(timer != null) timer.cancel();
+    if (timer != null) timer.cancel();
 
     int now = DateTime.now().millisecondsSinceEpoch;
     controller.add(Duration(milliseconds: countDownTime - now));
@@ -63,11 +64,12 @@ class _TreeTimerStateful extends State<TreeTimer> {
       child: Text(
         dateString,
         style: TextStyle(
-            letterSpacing: 3.0,
-            color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'digital-7'),
+          letterSpacing: 3.0,
+          color: Colors.black,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'digital-7',
+        ),
       ),
       padding: EdgeInsets.all(10),
     );

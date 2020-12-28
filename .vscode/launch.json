@@ -7,8 +7,9 @@
         {
             "name": "lighthouse_planner",
             "request": "launch",
+            "program": "lib/main.dart",
             "type": "dart"
-        },
+        }/* ,
         {
             "name": "Flutter for web",
             "type": "dart",
@@ -18,6 +19,6 @@
                 "-d",
                 "chrome"
             ]
-        }
+        } */
     ]
 }
