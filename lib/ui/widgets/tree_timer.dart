@@ -68,7 +68,8 @@ class _TreeTimerStateful extends State<TreeTimer> {
     if (durationLeft.isNegative) {
       return Column(
         children: [
-          Container(height: 10),
+          //Empty container used for formatting
+          SizedBox(height: 10),
 
           Text(
             "Overdue by ${durationLeft.inDays.abs()} days...",

@@ -45,23 +45,50 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.all(10),
         width: width < 800 ? (width - 20) * 0.8 : width * .3,
+
         child: Column(
           children: [
+            //Preview UI: show current task details
             Column(children: listedTasks),
+
+            //Preview UI: save and delete buttons
             Visibility(
               visible: editMode,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () => print("save"),
-                  child: Container(
-                    width: double.infinity,
-                    height: 35,
-                    child: Icon(Icons.save),
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
+                child: Row(
+                  children: [
+                    //Delete button
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => print("delete"),
+                        child: MyContainer(
+                          isHoverable: true,
+                          height: 30,
+                          child: Icon(Icons.delete),
+                          color: Colors.red,
+                          radius: 5,
+                        ),
+                      ),
+                    ),
+
+                    //Empty container used for formatting
+                    SizedBox(width: 10),
+
+                    //Save button
+                    Expanded(
+                        child : GestureDetector(
+                        onTap: () => print("save"),
+                        child: MyContainer(
+                          isHoverable: true,
+                          height: 30,
+                          child: Icon(Icons.save),
+                          color: Colors.green,
+                          radius: 5,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -82,17 +109,23 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(task?.title ?? "Add a task title",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        //Preview UI: Title and ShortDescription
+        Text(task?.title ?? "Add a task title", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         Text(task?.shortDesc ?? "Add a task short description"),
         Divider(thickness: 1),
+
+        //Preview UI: Time
         Align(
           alignment: Alignment.topRight,
           child: Text(DateTime.fromMillisecondsSinceEpoch(
                   task?.endDate ?? DateTime.now().millisecondsSinceEpoch)
               .toString()),
         ),
+
+        //Empty container used for formatting
         SizedBox(height: 10),
+
+        //Preview UI: Description
         SizedBox(
           width: double.infinity,
           child: MyContainer(
@@ -102,7 +135,11 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
             child: Text(task?.desc ?? "Add a description"),
           ),
         ),
+
+        //Empty container used for formatting
         SizedBox(height: addSubtask && editMode && widget.canAddTask ? 0 : 10),
+
+        //Preview UI: "Add task" bar
         Visibility(
           visible: addSubtask && editMode && widget.canAddTask,
           child: MyContainer(
@@ -117,12 +154,14 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.add),
+
                 Flexible(
-                    child: GestureDetector(
-                  onTap: () => _addTaskDetails(null, false),
-                  child: Text("ADD A SUBTASK",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                )),
+                  child: GestureDetector(
+                    onTap: () => _addTaskDetails(null, false),
+                    child: Text("ADD A SUBTASK", style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ),
+
                 Icon(Icons.add),
               ],
             ),

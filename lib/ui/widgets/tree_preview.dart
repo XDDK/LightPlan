@@ -22,21 +22,21 @@ class _TreePreviewState extends State<TreePreview> {
 
     if (this.taskDao == null) return Container();
 
-    if (treeHandler.currentTask == null) {
-      //TODO find task at pos 0, not id 0
-      treeHandler.setCurrentTask(taskDao.findTask(0), false);
-    }
+    if (treeHandler.currentTask == null) treeHandler.setCurrentTask(taskDao.findTask(0), false);
+    
     return IntrinsicWidth(
       child: Column(
         children: [
           TaskContainer(
-              task: treeHandler.currentTask,
-              isChild: false,
-              currentTreeHeight: this.currentTreeHeight,
-              updateCurrentTask: (Task task) {
-                treeHandler.setCurrentTask(task); // CurrentTask = ParentTask
-                currentTreeHeight--;
-              }),
+          task: treeHandler.currentTask,
+          isChild: false,
+          currentTreeHeight: this.currentTreeHeight,
+          updateCurrentTask: (Task task) {
+            treeHandler.setCurrentTask(task); // CurrentTask = ParentTask
+            currentTreeHeight--;
+          }
+        ),
+          
           buildChildren(treeHandler.currentTask),
         ],
       ),
@@ -45,25 +45,29 @@ class _TreePreviewState extends State<TreePreview> {
 
   Widget buildChildren(Task tree) {
     if (tree == null) return Container();
+
     var children = taskDao.findTaskChildren(tree.id);
+
     if (children.isEmpty) {
       return Divider(
         indent: 50,
         endIndent: 50,
-        color: Colors.pink,
+        color: Colors.purple,
         thickness: 1,
       );
     }
+
     return Column(
       children: children.map((child) {
         return TaskContainer(
-            task: child,
-            isChild: true,
-            currentTreeHeight: this.currentTreeHeight,
-            updateCurrentTask: (Task task) {
-              treeHandler.setCurrentTask(task);
-              currentTreeHeight++;
-            }); // CurrentTask = ChildrenTask
+          task: child,
+          isChild: true,
+          currentTreeHeight: this.currentTreeHeight,
+          updateCurrentTask: (Task task) {
+            treeHandler.setCurrentTask(task);
+            currentTreeHeight++;
+          }
+        ); // CurrentTask = ChildrenTask
       }).toList(),
     );
   }
