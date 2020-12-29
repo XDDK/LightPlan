@@ -87,12 +87,19 @@ class TaskDaoImpl extends TaskDao {
 
   @override
   Future<void> deleteTask(Task treeTask) {
-    return tasksBox.delete(treeTask);
+    if (treeTask == null) return null;
+    for (int i = 0; i < tasksBox.length; i++) {
+      Task taskAt = tasksBox.getAt(i);
+      if (taskAt.parentId == treeTask.id) tasksBox.delete(taskAt.id);
+    }
+    return tasksBox.delete(treeTask.id);
   }
 
   @override
-  Future<void> deleteTasks(List<Task> treeTask) {
-    return tasksBox.deleteAll(treeTask);
+  Future<void> deleteTasks(List<Task> treeTask) async {
+    treeTask.forEach((element) async {
+      await deleteTask(element);
+    });
   }
 
   @override
@@ -131,5 +138,14 @@ class TaskDaoImpl extends TaskDao {
   @override
   Future<void> updateTask(int id, Task treeTask) async {
     return await tasksBox.put(id, treeTask);
+  }
+
+  @override
+  Future<int> insertOrUpdate(Task treeTask) async {
+    if (treeTask.id != null) {
+      updateTask(treeTask.id, treeTask);
+      return treeTask.id;
+    }
+    return insertTask(treeTask);
   }
 }

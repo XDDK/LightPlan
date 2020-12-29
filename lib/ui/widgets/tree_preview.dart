@@ -14,7 +14,6 @@ class TreePreview extends StatefulWidget {
 class _TreePreviewState extends State<TreePreview> {
   TaskDaoImpl taskDao;
   TreeHandler treeHandler;
-  int currentTreeHeight = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +31,7 @@ class _TreePreviewState extends State<TreePreview> {
           TaskContainer(
               task: treeHandler.currentTask,
               isChild: false,
-              updateCurrentTask: (Task task) {
-                treeHandler.setCurrentTask(task); // CurrentTask = ParentTask
-                currentTreeHeight--;
-              }),
+              updateCurrentTask: _updateCurrentTask),
           buildChildren(treeHandler.currentTask),
         ],
       ),
@@ -47,22 +43,23 @@ class _TreePreviewState extends State<TreePreview> {
     var children = taskDao.findTaskChildren(tree.id);
     if (children.isEmpty) {
       return Divider(
-        indent: 50,
-        endIndent: 50,
-        color: Colors.pink,
-        thickness: 1,
-      );
+          indent: 50, endIndent: 50, color: Colors.pink, thickness: 1);
     }
     return Column(
       children: children.map((child) {
         return TaskContainer(
-            task: child,
-            isChild: true,
-            updateCurrentTask: (Task task) {
-              treeHandler.setCurrentTask(task);
-              currentTreeHeight++;
-            }); // CurrentTask = ChildrenTask
+          task: child,
+          isChild: true,
+          updateCurrentTask: _updateCurrentTask,
+        ); // CurrentTask = ChildrenTask
       }).toList(),
     );
+  }
+
+  void _updateCurrentTask([Task task]) {
+    if (task == null) {
+      task = taskDao.findTask(treeHandler.currentTask.id);
+    }
+    treeHandler.setCurrentTask(task);
   }
 }

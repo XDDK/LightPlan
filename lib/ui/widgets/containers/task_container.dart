@@ -133,9 +133,10 @@ class _TaskContainerState extends State<TaskContainer> {
           return Align(
             alignment: Alignment.topCenter,
             child: TaskDetailsContainer(
-              task: task, 
-              editor: editor, 
-              isListedAsChild: canAddTask, 
+              task: task,
+              editor: editor,
+              isListedAsChild: canAddTask,
+              taskDao: this.taskDao,
               updateCurrentTask: widget.updateCurrentTask,
             ),
           );

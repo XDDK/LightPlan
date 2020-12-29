@@ -16,4 +16,6 @@ abstract class TaskDao {
   Future<void> deleteTasks(List<Task> treeTask);
 
   Future<void> updateTask(int id, Task task);
+
+  Future<void> insertOrUpdate(Task task);
 }

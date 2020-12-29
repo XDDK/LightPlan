@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'task.g.dart';
@@ -33,6 +33,7 @@ class Task {
     this.endDate = DateTime.now().millisecondsSinceEpoch;
     this.parentId = parentId;
     this.isPredefined = false;
+    this.canHaveChildren = true;
   }
 
   Task copyWith({
