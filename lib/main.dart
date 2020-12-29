@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lighthouse_planner/ui/screens/settings_page.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';
-import 'ui/screens/main_view.dart';
+import 'ui/screens/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +26,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (_) => MainView(),
+        '/': (_) => MainPage(),
         // '/tasks': (_) => TasksPage(),
-        // '/settings': (_) => MainView(),
+        '/settings': (_) => SettingsPage(),
         // '/terms': (_) => TermsPage(),
       },
       onUnknownRoute: RouteGenerator.generateRoute,

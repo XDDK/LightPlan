@@ -6,14 +6,15 @@ import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../tree_handler.dart';
 import '../widgets/bottom_bar.dart';
-import 'package:lighthouse_planner/ui/screens/settings_view.dart';
+import '../widgets/tree_preview.dart';
+import '../widgets/tree_timer.dart';
 
-class MainView extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _MainViewState createState() => _MainViewState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MainViewState extends State<MainView> {
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,13 +29,12 @@ class _MainViewState extends State<MainView> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Column(
                     children: [
-                      SettingsView(),
-                      // TreeTimer(),
-                      // Expanded(
-                      //   child: SingleChildScrollView(
-                      //     child: TreePreview(),
-                      //   ),
-                      // ),
+                      TreeTimer(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: TreePreview(),
+                        ),
+                      ),
                       MyBottomBar(),
                     ],
                   );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/ui/screens/main_view.dart';
+import 'package:lighthouse_planner/ui/screens/main_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -7,7 +7,7 @@ class RouteGenerator {
     // final args = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => MainView());
+        return MaterialPageRoute(builder: (_) => MainPage());
       /* case '/tasks':
         return MaterialPageRoute(builder: (_) => TasksPage()); */
       /* case '/settings':
