@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:launch_review/launch_review.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/containers/my_container.dart';
@@ -25,7 +23,7 @@ class SettingsPage extends StatelessWidget {
       This is an open-source project created by two passionate students. 
       Our aim is to provide people with a simple, free and open source planner for 
       any type of activity. Since it's open source, the project can be customized to 
-      everybodies liking. If you are interested, the full source code can be found'''
+      everybody's liking. If you are interested, the full source code can be found'''
                         .replaceAll("\n", "")
                         .replaceAll("      ", ""),
                     style: TextStyle(color: Colors.black),
@@ -52,11 +50,8 @@ class SettingsPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           String androidAppId = "com.lightplanx.xddk";
-                          if (kIsWeb)
-                            launch("https://play.google.com/store/apps/details?id=$androidAppId");
-                          else
-                            LaunchReview.launch(androidAppId: "$androidAppId");
-                        },
+                          launch("https://play.google.com/store/apps/details?id=$androidAppId");
+                          },
                         child: Text(
                           "Click me.",
                           style: TextStyle(fontSize: 18),
