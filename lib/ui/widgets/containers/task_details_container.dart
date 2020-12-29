@@ -64,6 +64,7 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
                 children: [
                   //Preview UI: show current task details
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: treeSubTasks.length,
                     itemBuilder: (BuildContext context, int index) {

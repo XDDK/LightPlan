@@ -55,11 +55,11 @@ class _TreeTimerStateful extends State<TreeTimer> {
     );
   }
 
-  TextStyle customStyle(double _fontSize) {
+  TextStyle customStyle(double fontSize) {
     return TextStyle(
       letterSpacing: 3.0,
       color: Colors.black,
-      fontSize: _fontSize,
+      fontSize: fontSize,
       fontWeight: FontWeight.bold
     );
   }
@@ -96,8 +96,8 @@ class _TreeTimerStateful extends State<TreeTimer> {
           letterSpacing: 3.0,
           color: Colors.black,
           fontSize: 30,
-          fontWeight: FontWeight.bold,
           fontFamily: 'digital-7',
+          fontWeight: FontWeight.bold,
         ),
       ),
       padding: EdgeInsets.all(10),

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:launch_review/launch_review.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/containers/my_container.dart';
@@ -54,8 +53,8 @@ class SettingsPage extends StatelessWidget {
                           String androidAppId = "com.lightplanx.xddk";
                           if (kIsWeb)
                             launch("https://play.google.com/store/apps/details?id=$androidAppId");
-                          else
-                            LaunchReview.launch(androidAppId: "$androidAppId");
+                          //else
+                            //LaunchReview.launch(androidAppId: "$androidAppId");
                         },
                         child: Text(
                           "Click me.",
@@ -89,8 +88,8 @@ class SettingsPage extends StatelessWidget {
               ),
               Divider(thickness: 1),
               _buildItem(
-                Icons.code_outlined,
-                "TOS",
+                Icons.text_snippet_outlined,
+                "Terms of Service",
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
@@ -110,7 +109,7 @@ class SettingsPage extends StatelessWidget {
               ),
               Divider(thickness: 1),
               _buildItem(
-                Icons.code_outlined,
+                Icons.text_snippet_outlined,
                 "Privacy",
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
