@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../models/task.dart';
 import 'my_container.dart';
@@ -151,23 +153,58 @@ class _TaskEditor extends State<TaskEditor> {
     }
     widget.dateMap[0] = time.millisecondsSinceEpoch;
     // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} before selection");
+
+    var df = DateFormat("d MMMM yyyy");
+    String dateText = "This will end on:";
+    List<TextSpan> textSpans = [];
+
+    var functionShowDatePicker = () async {
+      if (widget.task.isPredefined) return;
+      if (!widget.isEditing) return;
+      DateTime selectedTime = await showDatePicker(
+        context: context,
+        initialDate: time,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(time.year + 1),
+      );
+      if (selectedTime != null) setState(() => widget.dateMap[0] = selectedTime.millisecondsSinceEpoch);
+      // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} after selection");
+    };
+
+    var tapRecognizer = TapGestureRecognizer()..onTap = functionShowDatePicker;
+
+    // If Task is editing -> predefined (greyed text) or not (blue text)
+    // If it's not editing -> only bold date
+    if (widget.isEditing) {
+      if (widget.task.isPredefined) {
+        // bold grey
+        textSpans.add(TextSpan(
+          text: " ${df.format(time)}",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.withOpacity(0.7)),
+        ));
+      } else {
+        // bold blue
+        textSpans.add(TextSpan(
+          recognizer: tapRecognizer,
+          text: " ${df.format(time)}",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+        ));
+      }
+    } else {
+      // bold
+      textSpans.add(TextSpan(
+        text: " ${df.format(time)}",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ));
+    }
+
     return Align(
-      alignment: Alignment.topRight,
-      child: IgnorePointer(
-        ignoring: widget.task.isPredefined,
-        child: GestureDetector(
-          onTap: () async {
-            if (!widget.isEditing) return;
-            DateTime selectedTime = await showDatePicker(
-              context: context,
-              initialDate: time,
-              firstDate: DateTime(2000),
-              lastDate: DateTime(time.year + 1),
-            );
-            if (selectedTime != null) setState(() => widget.dateMap[0] = selectedTime.millisecondsSinceEpoch);
-            // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} after selection");
-          },
-          child: Text(time.toString()),
+      alignment: Alignment.centerRight,
+      child: RichText(
+        text: TextSpan(
+          text: dateText,
+          style: DefaultTextStyle.of(context).style,
+          children: textSpans,
         ),
       ),
     );
