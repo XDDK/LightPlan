@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ShadowType { NONE, LARGE, SMALL }
+enum ShadowType { NONE, LARGE, MEDIUM, SMALL }
 
 class MyContainer extends StatefulWidget {
   final ShadowType shadowType;
@@ -127,6 +127,10 @@ class _MyContainer extends State<MyContainer> {
       case ShadowType.LARGE:
         blurRadius = 4;
         offset = Offset(0, 4);
+        break;
+      case ShadowType.MEDIUM:
+        blurRadius = 3;
+        offset = Offset(0, 2);
         break;
       case ShadowType.SMALL:
         blurRadius = 3;

@@ -42,10 +42,10 @@ class _TaskContainerState extends State<TaskContainer> {
   Widget buildChild() {
     return MyContainer(
         radius: 10,
-        shadowType: ShadowType.SMALL,
+        shadowType: ShadowType.MEDIUM,
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-        color: Colors.red,
+        color: Colors.deepOrange[400],
         onTap: () => widget.updateCurrentTask != null
             ? widget.updateCurrentTask(widget.task)
             : null,
@@ -73,7 +73,7 @@ class _TaskContainerState extends State<TaskContainer> {
 
   Widget buildParent() {
     return MyContainer(
-      color: Colors.blue,
+      color: Colors.blue[400],
       shadowType: ShadowType.SMALL,
       radius: 10,
       width: 300,
