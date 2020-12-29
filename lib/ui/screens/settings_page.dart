@@ -7,129 +7,130 @@ import 'package:url_launcher/url_launcher.dart';
 import '../widgets/containers/my_container.dart';
 
 class SettingsPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildItem(
-              Icons.info_outline,
-              "About",
-              RichText(
-                text: TextSpan(
-                  text: '''
+        appBar: AppBar(title: Text("")),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildItem(
+                Icons.info_outline,
+                "About",
+                RichText(
+                  text: TextSpan(
+                    text: '''
       This is an open-source project created by two passionate students. 
       Our aim is to provide people with a simple, free and open source planner for 
       any type of activity. Since it's open source, the project can be customized to 
       everybodies liking. If you are interested, the full source code can be found'''
-                      .replaceAll("\n", "")
-                      .replaceAll("      ", ""),
-                  style: TextStyle(color: Colors.black),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: " here",
-                      style: TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
-                    )
-                  ],
+                        .replaceAll("\n", "")
+                        .replaceAll("      ", ""),
+                    style: TextStyle(color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: " here",
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Divider(thickness: 1),
-            _buildItem(
-              Icons.favorite_outline,
-              "Support Us",
-              Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Row(
-                  children: [
-                    Icon(Icons.thumb_up_outlined),
-                    SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () {
-                        String androidAppId = "com.lightplanx.xddk";
-                        if (kIsWeb)
-                          launch("https://play.google.com/store/apps/details?id=$androidAppId");
-                        else
-                          LaunchReview.launch(androidAppId: "$androidAppId");
-                      },
-                      child: Text(
-                        "Click me.",
-                        style: TextStyle(fontSize: 18),
+              Divider(thickness: 1),
+              _buildItem(
+                Icons.favorite_outline,
+                "Support Us",
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    children: [
+                      Icon(Icons.thumb_up_outlined),
+                      SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () {
+                          String androidAppId = "com.lightplanx.xddk";
+                          if (kIsWeb)
+                            launch("https://play.google.com/store/apps/details?id=$androidAppId");
+                          else
+                            LaunchReview.launch(androidAppId: "$androidAppId");
+                        },
+                        child: Text(
+                          "Click me.",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Divider(thickness: 1),
-            _buildItem(
-              Icons.code_outlined,
-              "Project Github Repo",
-              Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Row(
-                  children: [
-                    Icon(Icons.touch_app_outlined),
-                    SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () => launch("https://github.com/XDDK/LightPlan"),
-                      child: Text(
-                        "Click to view",
-                        style: TextStyle(fontSize: 18),
+              Divider(thickness: 1),
+              _buildItem(
+                Icons.code_outlined,
+                "Project Github Repo",
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    children: [
+                      Icon(Icons.touch_app_outlined),
+                      SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () => launch("https://github.com/XDDK/LightPlan"),
+                        child: Text(
+                          "Click to view",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Divider(thickness: 1),
-            _buildItem(
-              Icons.code_outlined,
-              "TOS",
-              Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Row(
-                  children: [
-                    Icon(Icons.touch_app_outlined),
-                    SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () => launch("https://lightplanx.com/tos"),
-                      child: Text(
-                        "Click to view",
-                        style: TextStyle(fontSize: 18),
+              Divider(thickness: 1),
+              _buildItem(
+                Icons.code_outlined,
+                "TOS",
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    children: [
+                      Icon(Icons.touch_app_outlined),
+                      SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () => launch("https://lightplanx.com/tos"),
+                        child: Text(
+                          "Click to view",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Divider(thickness: 1),
-            _buildItem(
-              Icons.code_outlined,
-              "Privacy",
-              Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Row(
-                  children: [
-                    Icon(Icons.touch_app_outlined),
-                    SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () => launch("https://lightplanx.com/privacy"),
-                      child: Text(
-                        "Click to view",
-                        style: TextStyle(fontSize: 18),
+              Divider(thickness: 1),
+              _buildItem(
+                Icons.code_outlined,
+                "Privacy",
+                Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    children: [
+                      Icon(Icons.touch_app_outlined),
+                      SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () => launch("https://lightplanx.com/privacy"),
+                        child: Text(
+                          "Click to view",
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Divider(thickness: 1),
-          ],
+            ],
+          ),
         ),
       ),
     );
