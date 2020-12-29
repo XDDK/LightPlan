@@ -23,7 +23,7 @@ class MyContainer extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.margin,
     this.shadowType = ShadowType.NONE,
-    this.color = Colors.white,
+    this.color = Colors.transparent,
     this.radius = 20,
     this.child,
     this.onTap,
@@ -46,14 +46,10 @@ class _MyContainer extends State<MyContainer> {
 
   // Change color on hover - singleton
   changeColor() {
-    if (widget.colorEffect &&
-        finalColor != null &&
-        finalColor == widget.color) {
+    if (widget.colorEffect && finalColor != null && finalColor == widget.color) {
       double saturation = 1 - HSVColor.fromColor(widget.color).saturation;
       setState(() {
-        finalColor = HSVColor.fromColor(widget.color)
-            .withSaturation(saturation)
-            .toColor();
+        finalColor = HSVColor.fromColor(widget.color).withSaturation(saturation).toColor();
       });
     }
   }

@@ -28,10 +28,11 @@ class TaskEditor extends StatefulWidget {
 
   Task getEditedTask() {
     return this.task.copyWith(
-        title: this.title,
-        endDate: this.date,
-        shortDesc: this.shortDesc,
-        desc: this.desc);
+          title: this.title,
+          endDate: this.date,
+          shortDesc: this.shortDesc,
+          desc: this.desc,
+        );
   }
 
   @override
@@ -80,12 +81,7 @@ class _TaskEditor extends State<TaskEditor> {
         _buildDate(widget.task),
         SizedBox(height: 10),
         _buildDesc(widget.task),
-        SizedBox(
-            height: widget.buildAddSubtask &&
-                    widget.isEditing &&
-                    (widget.task?.canHaveChildren ?? true)
-                ? 0
-                : 10),
+        SizedBox(height: widget.buildAddSubtask && widget.isEditing && (widget.task?.canHaveChildren ?? true) ? 0 : 10),
         _buildAddSubtask(widget.task, widget.buildAddSubtask),
       ],
     );
@@ -137,8 +133,7 @@ class _TaskEditor extends State<TaskEditor> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            hintText:
-                'Write just a summary description... this will be the preview',
+            hintText: 'Write just a summary description... this will be the preview',
           ),
         ),
       );
@@ -150,11 +145,9 @@ class _TaskEditor extends State<TaskEditor> {
     DateTime time;
     DateTime now = DateTime.now();
     if (widget.isEditing) {
-      time = DateTime.fromMillisecondsSinceEpoch(
-          widget.dateMap[0] ?? now.millisecondsSinceEpoch);
+      time = DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0] ?? now.millisecondsSinceEpoch);
     } else {
-      time = DateTime.fromMillisecondsSinceEpoch(
-          task?.endDate ?? now.millisecondsSinceEpoch);
+      time = DateTime.fromMillisecondsSinceEpoch(task?.endDate ?? now.millisecondsSinceEpoch);
     }
     widget.dateMap[0] = time.millisecondsSinceEpoch;
     // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} before selection");
@@ -171,9 +164,7 @@ class _TaskEditor extends State<TaskEditor> {
               firstDate: DateTime(2000),
               lastDate: DateTime(time.year + 1),
             );
-            if (selectedTime != null)
-              setState(() =>
-                  widget.dateMap[0] = selectedTime.millisecondsSinceEpoch);
+            if (selectedTime != null) setState(() => widget.dateMap[0] = selectedTime.millisecondsSinceEpoch);
             // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} after selection");
           },
           child: Text(time.toString()),
@@ -220,6 +211,7 @@ class _TaskEditor extends State<TaskEditor> {
       visible: buildAddSubtask,
       child: MyContainer(
         radius: 5,
+        color: Colors.white,
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.symmetric(vertical: 10),
         ripple: true,
