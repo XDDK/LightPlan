@@ -224,19 +224,16 @@ class _TaskEditor extends State<TaskEditor> {
         margin: EdgeInsets.symmetric(vertical: 10),
         ripple: true,
         shadowType: ShadowType.SMALL,
-        onTap: () => print("add a sub task"),
+        onTap: widget.addNewTask,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(Icons.add),
             Flexible(
-              child: GestureDetector(
-                onTap: widget.addNewTask,
-                child: Text(
-                  "ADD A SUBTASK",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+              child: Text(
+                "ADD A SUBTASK",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Icon(Icons.add),

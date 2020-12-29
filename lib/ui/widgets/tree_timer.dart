@@ -55,10 +55,39 @@ class _TreeTimerStateful extends State<TreeTimer> {
     );
   }
 
+  TextStyle customStyle(double _fontSize) {
+    return TextStyle(
+      letterSpacing: 3.0,
+      color: Colors.black,
+      fontSize: _fontSize,
+      fontWeight: FontWeight.bold
+    );
+  }
+
   Widget dateWidgetBuilder(Duration durationLeft) {
     if (durationLeft.isNegative) {
-      return Text("Overdue with ${durationLeft.inDays.abs()} days... Try until you make it!");
+      return Column(
+        children: [
+          //Empty container used for formatting
+          SizedBox(height: 10),
+
+          Text(
+            "Overdue by ${durationLeft.inDays.abs()} days...",
+            textAlign: TextAlign.center,
+            style: customStyle(30),
+          ),
+
+          Text(
+            "Try until you make it!",
+            textAlign: TextAlign.center,
+            style: customStyle(15),
+          ),
+
+          Container(height: 10)
+        ],
+      );
     }
+
     String dateString = formatToDate(durationLeft);
     return Container(
       child: Text(

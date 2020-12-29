@@ -58,6 +58,7 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
             // Stack Task details (title, shortDesc, desc etc) and Edit Button
             Stack(
               children: [
+                //Preview UI: show current task details
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: treeSubTasks.length,
@@ -127,12 +128,12 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
                               );
                             });
                       },
-                      child: Container(
+                      child: MyContainer(
                         height: 35,
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(5)),
                         child: Icon(Icons.delete),
+                        color: Colors.red,
+                        colorEffect: true,
+                        radius: 5,
                       ),
                     ),
                   ),
@@ -146,12 +147,12 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
                   child: Expanded(
                     child: GestureDetector(
                       onTap: () => _saveTaskTree(),
-                      child: Container(
+                      child: MyContainer(
                         height: 35,
                         child: Icon(Icons.save),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(5)),
+                        color: Colors.green,
+                        colorEffect: true,
+                        radius: 5,
                       ),
                     ),
                   ),

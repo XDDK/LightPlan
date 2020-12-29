@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../tree_handler.dart';
+import '../widgets/bottom_bar.dart';
 import '../widgets/tree_preview.dart';
 import '../widgets/tree_timer.dart';
 
@@ -34,6 +35,7 @@ class _MainViewState extends State<MainView> {
                           child: TreePreview(),
                         ),
                       ),
+                      MyBottomBar(),
                     ],
                   );
                 } else {

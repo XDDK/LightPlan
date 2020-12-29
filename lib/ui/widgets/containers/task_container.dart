@@ -50,8 +50,9 @@ class _TaskContainerState extends State<TaskContainer> {
             ? widget.updateCurrentTask(widget.task)
             : null,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Container(width: 30),
             Expanded(
               child: Column(children: [
                 Text(widget.task.title),
@@ -80,6 +81,13 @@ class _TaskContainerState extends State<TaskContainer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          //Empty container just for formatting. Appears only when main parent is YEAR
+          Visibility(
+            visible: widget.task.parentId == null,
+            child: Container(width: 30),
+          ),
+
+          //Back button. Appears only when main parent is != YEAR
           Visibility(
             visible: widget.task.parentId != null,
             child: MyContainer(
@@ -96,11 +104,18 @@ class _TaskContainerState extends State<TaskContainer> {
               },
             ),
           ),
+
+          //Title and Description
           Expanded(
-              child: Column(children: [
-            Text(widget.task.title),
-            Text(widget.task.shortDesc)
-          ])),
+            child: Column(
+              children: [
+                Text(widget.task.title),
+                Text(widget.task.shortDesc)
+              ],
+            ),
+          ),
+
+          //Add (+) button. Appears only when main parent != YEAR
           Visibility(
             visible: widget.task.canHaveChildren,
             child: MyContainer(
@@ -112,6 +127,8 @@ class _TaskContainerState extends State<TaskContainer> {
               child: Icon(Icons.add),
             ),
           ),
+
+          //Menu (three dots :) button.
           MyContainer(
             ripple: true,
             shadowType: ShadowType.NONE,

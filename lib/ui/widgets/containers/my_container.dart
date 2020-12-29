@@ -1,15 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum ShadowType { NONE, LARGE, SMALL }
 
-class MyContainer extends Container {
+class MyContainer extends StatefulWidget {
   final ShadowType shadowType;
   final Color color;
   final double radius;
   final Widget child;
   final bool ripple;
   final Function onTap;
+
+  final bool colorEffect;
 
   final double width;
   final double height;
@@ -27,21 +28,57 @@ class MyContainer extends Container {
     this.child,
     this.onTap,
     this.ripple = false,
+    this.colorEffect = false,
   });
+
+  @override
+  State<StatefulWidget> createState() => _MyContainer();
+}
+
+class _MyContainer extends State<MyContainer> {
+  Color finalColor;
+
+  @override
+  void initState() {
+    super.initState();
+    finalColor = widget.color;
+  }
+
+  // Change color on hover - singleton
+  changeColor() {
+    if (widget.colorEffect &&
+        finalColor != null &&
+        finalColor == widget.color) {
+      double saturation = 1 - HSVColor.fromColor(widget.color).saturation;
+      setState(() {
+        finalColor = HSVColor.fromColor(widget.color)
+            .withSaturation(saturation)
+            .toColor();
+      });
+    }
+  }
+
+  // Change color back on hover exit
+  resetColor() {
+    if (widget.colorEffect) {
+      setState(() {
+        this.finalColor = widget.color;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // *Ripple effect
     // http://stacksecrets.com/flutter/adding-inkwell-splash-ripple-effect-to-custom-widgets-in-flutter
     return MouseRegion(
-      // TODO mouse hover lighten / darken container
-      // onHover: () => print("mouse hover"),
-      // onExit: () => print("mouse exit"),
+      onHover: (e) => changeColor(),
+      onExit: (e) => resetColor(),
       child: Container(
-        width: this.width,
-        height: this.height,
+        width: widget.width,
+        height: widget.height,
         child: _buildChild,
-        margin: this.margin,
+        margin: widget.margin,
         decoration: _getBoxDecoration,
       ),
     );
@@ -49,36 +86,38 @@ class MyContainer extends Container {
 
   BoxDecoration get _getBoxDecoration {
     return BoxDecoration(
-      color: this.color != null ? this.color : Colors.white,
-      borderRadius: BorderRadius.circular(this.radius),
+      color: finalColor != null ? finalColor : Colors.transparent,
+      borderRadius: BorderRadius.circular(widget.radius),
       boxShadow: _getShadow,
     );
   }
 
   Widget get _buildChild {
-    if (this.ripple && !kIsWeb) {
+    if (widget.ripple) {
       return Material(
         type: MaterialType.transparency,
         child: InkWell(
-          borderRadius: BorderRadius.circular(this.radius),
-          onTap: this.onTap,
+          borderRadius: BorderRadius.circular(widget.radius),
+          onTap: widget.onTap,
           child: _containerChild,
         ),
       );
     }
-    if (this.onTap != null) {
+
+    if (widget.onTap != null) {
       return GestureDetector(
-        onTap: this.onTap,
+        onTap: widget.onTap,
         child: _containerChild,
       );
     }
+
     return _containerChild;
   }
 
   Widget get _containerChild {
     return Padding(
-      padding: this.padding,
-      child: this.child,
+      padding: widget.padding,
+      child: widget.child,
     );
   }
 
@@ -86,7 +125,7 @@ class MyContainer extends Container {
     double blurRadius;
     Offset offset;
 
-    switch (this.shadowType) {
+    switch (widget.shadowType) {
       case ShadowType.NONE:
         return [];
       case ShadowType.LARGE:
