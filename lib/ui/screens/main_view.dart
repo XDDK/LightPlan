@@ -6,8 +6,7 @@ import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../tree_handler.dart';
 import '../widgets/bottom_bar.dart';
-import '../widgets/tree_preview.dart';
-import '../widgets/tree_timer.dart';
+import 'package:lighthouse_planner/ui/screens/settings_view.dart';
 
 class MainView extends StatefulWidget {
   @override
@@ -29,12 +28,13 @@ class _MainViewState extends State<MainView> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Column(
                     children: [
-                      TreeTimer(),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: TreePreview(),
-                        ),
-                      ),
+                      SettingsView(),
+                      // TreeTimer(),
+                      // Expanded(
+                      //   child: SingleChildScrollView(
+                      //     child: TreePreview(),
+                      //   ),
+                      // ),
                       MyBottomBar(),
                     ],
                   );
