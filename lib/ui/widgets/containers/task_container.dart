@@ -86,7 +86,6 @@ class _TaskContainerState extends State<TaskContainer> {
             visible: widget.task.parentId == null,
             child: Container(width: 30),
           ),
-
           //Back button. Appears only when main parent is != YEAR
           Visibility(
             visible: widget.task.parentId != null,
@@ -104,22 +103,17 @@ class _TaskContainerState extends State<TaskContainer> {
               },
             ),
           ),
-
           //Title and Description
           Expanded(
             child: Column(
-              children: [
-                Text(widget.task.title),
-                Text(widget.task.shortDesc)
-              ],
+              children: [Text(widget.task.title), Text(widget.task.shortDesc)],
             ),
           ),
-
           //Add (+) button. Appears only when main parent != YEAR
           Visibility(
             visible: widget.task.canHaveChildren,
             child: MyContainer(
-              onTap: () => _showTaskPreview(widget.task, true),
+              onTap: () => _showTaskPreview(widget.task, true, true),
               ripple: true,
               shadowType: ShadowType.NONE,
               color: Colors.transparent,
@@ -127,7 +121,6 @@ class _TaskContainerState extends State<TaskContainer> {
               child: Icon(Icons.add),
             ),
           ),
-
           //Menu (three dots :) button.
           MyContainer(
             ripple: true,
@@ -146,6 +139,7 @@ class _TaskContainerState extends State<TaskContainer> {
   void _showTaskPreview(Task task, [bool canAddTask = false, bool editor = false]) async {
     await showDialog(
         context: context,
+        routeSettings: RouteSettings(), // add the dialog on an unnamed route, so user can go back
         builder: (_) {
           return Align(
             alignment: Alignment.topCenter,
