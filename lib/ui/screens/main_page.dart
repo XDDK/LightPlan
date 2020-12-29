@@ -9,12 +9,12 @@ import '../widgets/bottom_bar.dart';
 import '../widgets/tree_preview.dart';
 import '../widgets/tree_timer.dart';
 
-class MainView extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _MainViewState createState() => _MainViewState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MainViewState extends State<MainView> {
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
