@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'ui/screens/settings_page.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';
 import 'ui/screens/main_page.dart';
+import 'ui/screens/settings_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

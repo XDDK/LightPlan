@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'ui/screens/main_page.dart';
 
 class RouteGenerator {

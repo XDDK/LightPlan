@@ -18,10 +18,10 @@ class _TreeTimerStateful extends State<TreeTimer> {
 
   void startCountdown() {
     int countDownTime;
-    if (treeHandler.currentTask == null) {
+    if (treeHandler.currentRoot == null) {
       countDownTime = DateTime(DateTime.now().year, 12, 31, 24).millisecondsSinceEpoch;
     } else {
-      countDownTime = treeHandler.currentTask.endDate;
+      countDownTime = treeHandler.currentRoot.endDate;
     }
     countDownTime -= 100; // adjust time to be a little early
 

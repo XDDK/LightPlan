@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/task.dart';
-import 'my_container.dart';
+import '../my_container.dart';
 
 class TaskEditor extends StatefulWidget {
   //* Modify the task values, edited Task will result in this.task and his references;
@@ -150,29 +150,30 @@ class _TaskEditor extends State<TaskEditor> {
 
     var tapRecognizer = TapGestureRecognizer()..onTap = functionShowDatePicker;
 
+    String selectedDateTxt = " no date selected";
+    if (time != null) selectedDateTxt = "${time != null ? df.format(time) : 'no date selected'}";
+
     // If Task is editing -> predefined (greyed text) or not (blue text)
     // If it's not editing -> only bold date
     if (widget.isEditing) {
       if (widget.task.isPredefined) {
         // bold grey
         textSpans.add(TextSpan(
-          text: " ${df.format(time)}",
+          text: selectedDateTxt,
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.withOpacity(0.7)),
         ));
       } else {
         // bold blue
-        String text = " select an end date";
-        if (time != null) text = " ${df.format(time)}";
         textSpans.add(TextSpan(
           recognizer: tapRecognizer,
-          text: text,
+          text: selectedDateTxt,
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
         ));
       }
     } else {
       // bold
       textSpans.add(TextSpan(
-        text: " ${df.format(time)}",
+        text: selectedDateTxt,
         style: TextStyle(fontWeight: FontWeight.bold),
       ));
     }

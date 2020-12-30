@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../dao/task_dao_impl.dart';
 import '../../tree_handler.dart';
-import 'containers/my_container.dart';
+import 'my_container.dart';
 
 class MyBottomBar extends StatefulWidget {
   @override
@@ -22,7 +22,7 @@ class _MyBottomBar extends State<MyBottomBar> {
     this.treeHandler = context.watch<TreeHandler>();
 
     if (this.taskDao == null) return Container();
-    if (treeHandler.currentTask == null) treeHandler.setCurrentTask(taskDao.findTaskAt(0), false);
+    if (treeHandler.currentRoot == null) treeHandler.setCurrentRoot(taskDao.findTaskAt(0), false);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +35,7 @@ class _MyBottomBar extends State<MyBottomBar> {
           padding: EdgeInsets.all(10),
           onTap: () {
             print("Home");
-            treeHandler.setCurrentTask(taskDao.findTaskAt(0));
+            treeHandler.setCurrentRoot(taskDao.findTaskAt(0));
           },
         ),
         //BottomBar UI: Divider

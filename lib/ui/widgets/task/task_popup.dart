@@ -4,17 +4,17 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
 import '../../../utils.dart';
-import 'my_container.dart';
+import '../my_container.dart';
 import 'task_editor.dart';
 
-class TaskDetailsContainer extends StatefulWidget {
+class TaskPopup extends StatefulWidget {
   final Task task;
   final bool editor;
   final bool isListedAsChild;
   final TaskDaoImpl taskDao;
   final Function updateCurrentTask;
 
-  TaskDetailsContainer({
+  TaskPopup({
     this.task,
     @required this.editor,
     this.isListedAsChild,
@@ -26,7 +26,7 @@ class TaskDetailsContainer extends StatefulWidget {
   State<StatefulWidget> createState() => _TaskDetailsContainer();
 }
 
-class _TaskDetailsContainer extends State<TaskDetailsContainer> {
+class _TaskDetailsContainer extends State<TaskPopup> {
   double width, height;
   bool editMode;
   List<Task> editingTasks = [];
@@ -42,7 +42,7 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
   }
 
   @override
-  void didUpdateWidget(TaskDetailsContainer oldWidget) {
+  void didUpdateWidget(TaskPopup oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
 
@@ -188,7 +188,7 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
 
   bool _checkInvalidTasks() {
     bool isInvalid = false;
-    for(var task in editingTasks) {
+    for (var task in editingTasks) {
       if (task.title == null || task.title.isEmpty) isInvalid = true;
       if (task.shortDesc == null || task.shortDesc.isEmpty) isInvalid = true;
       if (task.endDate == null) isInvalid = true;
@@ -198,24 +198,24 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
 
   Future<void> _saveTaskTree() async {
     if (_checkInvalidTasks()) {
-        showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              title: Text("Title / Short Description / Date missing"),
-              content: Text("The app had a purpose. Ugh 🙄"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
-        );
-        return;
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("Title / Short Description / Date missing"),
+            content: Text("The app had a purpose. Ugh 🙄"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
     }
 
     for (var editingTask in editingTasks) {

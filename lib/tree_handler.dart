@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'models/task.dart';
 
 class TreeHandler extends ChangeNotifier {
-  Task _currentTask;
+  Task _currentRoot;
 
-  TreeHandler([this._currentTask]);
+  TreeHandler([this._currentRoot]);
 
-  Task get currentTask {
-    return _currentTask;
+  Task get currentRoot {
+    return _currentRoot;
   }
 
-  void setCurrentTask(Task currentTask, [bool notify = true]) {
-    this._currentTask = currentTask;
+  void setCurrentRoot(Task currentTask, [bool notify = true]) {
+    this._currentRoot = currentTask;
     if(notify) notifyListeners();
   }
 }

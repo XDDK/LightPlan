@@ -3,19 +3,15 @@ import 'package:provider/provider.dart';
 
 import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
-import 'my_container.dart';
-import 'task_details_container.dart';
+import '../../../tree_handler.dart';
+import '../my_container.dart';
+import 'task_popup.dart';
 
 class TaskContainer extends StatefulWidget {
   final Task task;
   final bool isChild;
-  final Function updateCurrentTask;
 
-  TaskContainer({
-    @required this.task,
-    @required this.isChild,
-    this.updateCurrentTask,
-  });
+  TaskContainer({@required this.task, @required this.isChild});
 
   @override
   _TaskContainerState createState() => _TaskContainerState();
@@ -23,25 +19,30 @@ class TaskContainer extends StatefulWidget {
 
 class _TaskContainerState extends State<TaskContainer> {
   TaskDaoImpl taskDao;
+  TreeHandler treeHandler;
 
   @override
   Widget build(BuildContext context) {
-    if (widget.task == null) return Text(" - current tree is null - ");
     this.taskDao = context.watch<TaskDaoImpl>();
+    this.treeHandler = context.watch<TreeHandler>();
 
-    return buildTaskTree();
-  }
-
-  Widget buildTaskTree() {
     if (widget.isChild)
       return buildChild();
     else
       return buildParent();
   }
 
+  void _updateCurrentRoot([Task task]) {
+    // If task is null, updade/change the root of the tree
+    if (task == null) {
+      task = taskDao.findTask(treeHandler.currentRoot.id);
+    }
+    treeHandler.setCurrentRoot(task);
+  }
+
   Widget buildChild() {
     return GestureDetector(
-      onTap: () => widget.updateCurrentTask != null ? widget.updateCurrentTask(widget.task) : null,
+      onTap: () => _updateCurrentRoot(widget.task),
       child: MyContainer(
         radius: 10,
         shadowType: ShadowType.MEDIUM,
@@ -74,17 +75,16 @@ class _TaskContainerState extends State<TaskContainer> {
       color: Colors.blue[400],
       shadowType: ShadowType.MEDIUM,
       radius: 10,
-      //width: 300,
       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          //Empty container just for formatting. Appears only when main parent is YEAR
+          // Empty container just for formatting. Appears only when main parent is YEAR
           Visibility(
             visible: widget.task.parentId == null,
             child: Container(width: 30),
           ),
-          //Back button. Appears only when main parent is != YEAR
+          // Back button. Appears only when main parent is != YEAR
           Visibility(
             visible: widget.task.parentId != null,
             child: MyContainer(
@@ -94,22 +94,20 @@ class _TaskContainerState extends State<TaskContainer> {
               padding: EdgeInsets.all(5),
               margin: EdgeInsets.all(5),
               onTap: () {
-                if (widget.updateCurrentTask != null) {
-                  Task parentTask = taskDao.findTask(widget.task.parentId);
-                  widget.updateCurrentTask(parentTask);
-                }
+                Task parentTask = taskDao.findTask(widget.task.parentId);
+                _updateCurrentRoot(parentTask);
               },
             ),
           ),
-          //Title and Description
+          // Title and Description
           Expanded(
             child: Column(
               children: [Text(widget.task.title), Text(widget.task.shortDesc)],
             ),
           ),
-          //Add (+) button. Appears only when main parent != YEAR
+          //Add (+) button. Appears only when root of current tree can have children
           Visibility(
-            visible: widget.task.canHaveChildren,
+            visible: !widget.isChild && widget.task.canHaveChildren,
             child: MyContainer(
               onTap: () => _showTaskPreview(widget.task, true, true),
               ripple: true,
@@ -119,7 +117,7 @@ class _TaskContainerState extends State<TaskContainer> {
               child: Icon(Icons.add),
             ),
           ),
-          //Menu (three dots :) button.
+          // Menu button
           MyContainer(
             ripple: true,
             shadowType: ShadowType.NONE,
@@ -141,12 +139,12 @@ class _TaskContainerState extends State<TaskContainer> {
         builder: (_) {
           return Align(
             alignment: Alignment.topCenter,
-            child: TaskDetailsContainer(
+            child: TaskPopup(
               task: task,
               editor: editor,
               isListedAsChild: canAddTask,
               taskDao: this.taskDao,
-              updateCurrentTask: widget.updateCurrentTask,
+              updateCurrentTask: _updateCurrentRoot,
             ),
           );
         });
