@@ -3,15 +3,16 @@ import 'package:provider/provider.dart';
 
 import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
+import '../../../task_list_handler.dart';
 import '../../../tree_handler.dart';
 import '../my_container.dart';
 import '../tree_timer.dart';
 import 'task_tree_container.dart';
 
 class TasksListView extends StatefulWidget {
-  final double viewPort;
+  final PageController controller;
 
-  TasksListView({this.viewPort});
+  TasksListView({@required this.controller});
 
   @override
   _TasksListViewState createState() => _TasksListViewState();
@@ -19,10 +20,12 @@ class TasksListView extends StatefulWidget {
 
 class _TasksListViewState extends State<TasksListView> {
   TaskDaoImpl taskDao;
+  TaskListHandler taskListHandler;
 
   @override
   Widget build(BuildContext context) {
     taskDao = context.watch<TaskDaoImpl>();
+    taskListHandler = context.watch<TaskListHandler>();
     List<Task> treeRoots = [];
     bool nextYearExists = false;
 
@@ -35,14 +38,13 @@ class _TasksListViewState extends State<TasksListView> {
           treeRoots.add(task);
         }
       }
-      // treeRoots = treeRoots.reversed.toList();
     }
 
     return Expanded(
       child: Stack(
         children: [
           PageView.builder(
-            controller: PageController(initialPage: treeRoots.length-1, viewportFraction: widget.viewPort),
+            controller: widget.controller,
             scrollDirection: Axis.horizontal,
             itemCount: treeRoots.length,
             physics: treeRoots.length > 1 ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
@@ -82,12 +84,11 @@ class _TasksListViewState extends State<TasksListView> {
           child: GestureDetector(
             onTap: () async {
               await taskDao.insertDefaults(DateTime.now().year + 1);
-              setState(() { });
+              setState(() {});
             },
             child: MyContainer(
               color: Colors.deepOrange[100],
               radius: 15,
-              height: double.infinity,
               margin: EdgeInsets.symmetric(vertical: 15),
               padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
               shadowType: ShadowType.SMALL,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:lighthouse_planner/task_list_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/task_dao_impl.dart';
@@ -17,27 +18,37 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: FutureBuilder<Box<Task>>(
-          future: Hive.openBox<Task>('tasks'),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              taskDaoImpl = TaskDaoImpl();
-              var viewPort = MediaQuery.of(context).size.width > 950 ? 0.3 : 0.75;
-              return FutureProvider(
-                create: (_) => taskDaoImpl.insertDefaults(),
-                child: Column(
-                  children: [
-                    TasksListView(viewPort: viewPort),
-                    MyBottomBar(),
-                  ],
-                ),
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+    return WillPopScope(
+      onWillPop: () async => _showConfirmQuit(),
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: FutureBuilder<Box<Task>>(
+            future: Hive.openBox<Task>('tasks'),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                taskDaoImpl = TaskDaoImpl();
+                var controller = PageController(
+                  initialPage: 0,
+                  viewportFraction: MediaQuery.of(context).size.width > 950 ? 0.3 : 1.0,
+                );
+                return FutureProvider(
+                  create: (_) => taskDaoImpl.insertDefaults(),
+                  child: ChangeNotifierProvider(
+                    create: (context) => TaskListHandler(),
+                    child: Column(
+                      children: [
+                        TasksListView(controller: controller),
+                        MyBottomBar(treeController: controller),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       ),
     );
@@ -49,7 +60,7 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
-   Future<bool> _showConfirmQuit() async {
+  Future<bool> _showConfirmQuit() async {
     return await showDialog<bool>(
       context: context,
       builder: (context) {

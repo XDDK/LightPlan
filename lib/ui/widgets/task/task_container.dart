@@ -56,9 +56,9 @@ class _TaskContainerState extends State<TaskContainer> {
               Expanded(
                 child: Column(
                   children: [
-                    Text(widget.task.title, style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+                    Text(widget.task.title, /* style: TextStyle(fontSize: 20), */ textAlign: TextAlign.center),
                     Divider(thickness: 1),
-                    Text(widget.task.shortDesc, style: TextStyle(fontSize: 18), textAlign: TextAlign.center),
+                    Text(widget.task.shortDesc, /* style: TextStyle(fontSize: 18), */ textAlign: TextAlign.center),
                   ],
                 ),
               ),
@@ -77,67 +77,71 @@ class _TaskContainerState extends State<TaskContainer> {
 
   Widget buildParent() {
     return MyContainer(
-      color: Colors.blue[400],
-      shadowType: ShadowType.MEDIUM,
-      radius: 10,
-      margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-      padding: EdgeInsets.all(5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Empty container just for formatting. Appears only when main parent is YEAR
-          Visibility(
-            visible: widget.task.parentId == null,
-            child: Container(width: 30),
-          ),
-          // Back button. Appears only when main parent is != YEAR
-          Visibility(
-            visible: widget.task.parentId != null,
-            child: MyContainer(
-              ripple: true,
-              color: Colors.transparent,
-              child: Icon(Icons.keyboard_backspace, size: 30),
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.all(5),
-              onTap: () {
-                Task parentTask = taskDao.findTask(widget.task.parentId);
-                _updateCurrentRoot(parentTask);
-              },
-            ),
-          ),
-          // Title and Description
-          Expanded(
-            child: Column(
+        color: Colors.blue[400],
+        shadowType: ShadowType.MEDIUM,
+        radius: 10,
+        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+        padding: EdgeInsets.all(5),
+        child: Row(
+          children: [
+            // HOME and BACK buttons
+            Column(
               children: [
-                Text(widget.task.title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                Divider(thickness: 1),
-                Text(widget.task.shortDesc, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center)
+                _buildIcon(
+                  widget.task.parentId != null,
+                  Icons.home_outlined,
+                  () => _updateCurrentRoot(treeHandler.root),
+                ),
+                _buildIcon(
+                  widget.task.parentId != null,
+                  Icons.keyboard_backspace,
+                  () {
+                    Task parentTask = taskDao.findTask(widget.task.parentId);
+                    _updateCurrentRoot(parentTask);
+                  },
+                ),
               ],
             ),
-          ),
-          //Add (+) button. Appears only when root of current tree can have children
-          Visibility(
-            visible: !widget.isChild && widget.task.canHaveChildren,
-            child: MyContainer(
-              onTap: () => _showTaskPreview(widget.task, true, true),
-              ripple: true,
-              shadowType: ShadowType.NONE,
-              color: Colors.transparent,
-              padding: EdgeInsets.all(5),
-              child: Icon(Icons.add, size: 30),
+            // Title and subtitle
+            Expanded(
+              child: Column(
+                children: [
+                  Text(widget.task.title, style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                  Divider(thickness: 1),
+                  Text(widget.task.shortDesc, style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                ],
+              ),
             ),
-          ),
-          // Menu button
-          MyContainer(
-            ripple: true,
-            shadowType: ShadowType.NONE,
-            color: Colors.transparent,
-            child: Icon(Icons.more_vert, size: 30),
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.all(5),
-            onTap: () => _showTaskPreview(widget.task),
-          ),
-        ],
+            // MORE and CREATE buttons
+            Column(
+              children: [
+                _buildIcon(
+                  true,
+                  Icons.more_vert,
+                  () => _showTaskPreview(widget.task),
+                ),
+                _buildIcon(
+                  !widget.isChild && widget.task.canHaveChildren,
+                  Icons.add,
+                  () => _showTaskPreview(widget.task, true, true),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+
+  Widget _buildIcon(bool visible, IconData icon, Function onTap) {
+    return Visibility(
+      visible: visible,
+      child: MyContainer(
+        onTap: onTap,
+        ripple: true,
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.all(5),
+        child: FittedBox(
+          child: Icon(icon, size: 30),
+        ),
       ),
     );
   }

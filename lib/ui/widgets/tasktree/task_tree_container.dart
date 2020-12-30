@@ -19,7 +19,7 @@ class _TaskTreeContainerState extends State<TaskTreeContainer> {
   TaskDaoImpl taskDao;
   TreeHandler treeHandler;
 
-  Task _rootTask;
+  Task _currentRootTask;
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +28,17 @@ class _TaskTreeContainerState extends State<TaskTreeContainer> {
 
     if (this.taskDao == null) return Container();
 
-    _rootTask = treeHandler.currentRoot;
+    _currentRootTask = treeHandler.currentRoot;
 
-    if (this._rootTask == null) {
-      _rootTask = this.taskDao.findTask(widget.taskRootId);
-    }
+    /* if (this._currentRootTask == null) {
+      _currentRootTask = this.taskDao.findTask(widget.taskRootId);
+    } */
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        TaskContainer(task: _rootTask, isChild: false),
-        _buildChildren(_rootTask),
+        TaskContainer(task: _currentRootTask, isChild: false),
+        _buildChildren(_currentRootTask),
       ],
     );
   }
