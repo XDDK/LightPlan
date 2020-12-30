@@ -74,9 +74,9 @@ class _TaskContainerState extends State<TaskContainer> {
   Widget buildParent() {
     return MyContainer(
       color: Colors.blue[400],
-      shadowType: ShadowType.SMALL,
+      shadowType: ShadowType.MEDIUM,
       radius: 10,
-      width: 300,
+      //width: 300,
       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

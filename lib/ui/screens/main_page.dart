@@ -8,6 +8,7 @@ import '../../tree_handler.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tree_preview.dart';
 import '../widgets/tree_timer.dart';
+import 'package:lighthouse_planner/ui/widgets/containers/card_container.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -31,10 +32,15 @@ class _MainPageState extends State<MainPage> {
                     children: [
                       TreeTimer(),
                       Expanded(
-                        child: SingleChildScrollView(
-                          child: TreePreview(),
+                        child: CardContainer(
+                          child: SingleChildScrollView(
+                            child: TreePreview(),
+                          ),
                         ),
                       ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 300),
+                        child: SizedBox()),
                       MyBottomBar(),
                     ],
                   );
