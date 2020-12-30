@@ -6,13 +6,13 @@ import '../../../models/task.dart';
 import 'my_container.dart';
 
 class TaskEditor extends StatefulWidget {
+  //* Modify the task values, edited Task will result in this.task and his references;
   final Task task;
   final bool buildAddSubtask;
   final bool isEditing;
   final Function addNewTask;
 
   final titleController = TextEditingController();
-  final Map<int, int> dateMap = Map();
   final shortDescController = TextEditingController();
   final descController = TextEditingController();
 
@@ -23,30 +23,11 @@ class TaskEditor extends StatefulWidget {
     this.addNewTask,
   });
 
-  String get title => titleController.text;
-  int get date => dateMap[0];
-  String get shortDesc => shortDescController.text;
-  String get desc => descController.text;
-
-  Task getEditedTask() {
-    return this.task.copyWith(
-          title: this.title,
-          endDate: this.date,
-          shortDesc: this.shortDesc,
-          desc: this.desc,
-        );
-  }
-
   @override
   _TaskEditor createState() => _TaskEditor();
 }
 
 class _TaskEditor extends State<TaskEditor> {
-  var titleController = TextEditingController();
-  var dateMap = Map<int, int>();
-  var shortDescController = TextEditingController();
-  var descController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -65,13 +46,10 @@ class _TaskEditor extends State<TaskEditor> {
     widget.titleController.text = widget?.task?.title;
     widget.shortDescController.text = widget?.task?.shortDesc;
     widget.descController.text = widget?.task?.desc;
-    widget.dateMap[0] = widget?.task?.endDate;
   }
 
   @override
   Widget build(BuildContext context) {
-    // on is the way;
-    // print("widget.titlecontrl.text=${widget.titleController.text}; widget.datemap[0]=${widget.dateMap[0]}");
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,6 +77,7 @@ class _TaskEditor extends State<TaskEditor> {
               child: TextField(
                 maxLength: 15,
                 controller: widget.titleController,
+                onChanged: (txt) => widget.task.title = txt.trim(),
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   isDense: true,
@@ -126,6 +105,7 @@ class _TaskEditor extends State<TaskEditor> {
         child: TextField(
           maxLength: 170,
           controller: widget.shortDescController,
+          onChanged: (txt) => widget.task.shortDesc = txt.trim(),
           textInputAction: TextInputAction.done,
           minLines: 2,
           maxLines: 3,
@@ -144,15 +124,8 @@ class _TaskEditor extends State<TaskEditor> {
   }
 
   Widget _buildDate(Task task) {
-    DateTime time;
     DateTime now = DateTime.now();
-    if (widget.isEditing) {
-      time = DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0] ?? now.millisecondsSinceEpoch);
-    } else {
-      time = DateTime.fromMillisecondsSinceEpoch(task?.endDate ?? now.millisecondsSinceEpoch);
-    }
-    widget.dateMap[0] = time.millisecondsSinceEpoch;
-    // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} before selection");
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(task?.endDate ?? now.millisecondsSinceEpoch);
 
     var df = DateFormat("d MMMM yyyy");
     String dateText = "This will end on:";
@@ -167,8 +140,7 @@ class _TaskEditor extends State<TaskEditor> {
         firstDate: DateTime(2000),
         lastDate: DateTime(time.year + 1),
       );
-      if (selectedTime != null) setState(() => widget.dateMap[0] = selectedTime.millisecondsSinceEpoch);
-      // print("${DateTime.fromMillisecondsSinceEpoch(widget.dateMap[0])} after selection");
+      if (selectedTime != null) setState(() => widget.task.endDate = selectedTime.millisecondsSinceEpoch);
     };
 
     var tapRecognizer = TapGestureRecognizer()..onTap = functionShowDatePicker;
@@ -216,6 +188,7 @@ class _TaskEditor extends State<TaskEditor> {
         child: TextField(
           maxLength: 250,
           controller: widget.descController,
+          onChanged: (txt) => widget.task.desc = txt.trim(),
           textInputAction: TextInputAction.done,
           minLines: 3,
           maxLines: 4,

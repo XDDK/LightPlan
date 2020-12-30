@@ -29,8 +29,7 @@ class TaskDetailsContainer extends StatefulWidget {
 class _TaskDetailsContainer extends State<TaskDetailsContainer> {
   double width, height;
   bool editMode;
-  List<Task> treeSubTasks = [];
-  List<TaskEditor> taskEditors = [];
+  List<Task> editingTasks = [];
 
   @override
   void initState() {
@@ -38,16 +37,19 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
 
     editMode = widget.task == null ? true : widget.editor;
 
-    treeSubTasks.clear();
-    treeSubTasks.add(widget.task);
+    editingTasks.clear();
+    editingTasks.add(widget.task);
+  }
+
+  @override
+  void didUpdateWidget(TaskDetailsContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     this.width = MediaQuery.of(context).size.width;
     this.height = MediaQuery.of(context).size.height;
-
-    taskEditors.clear();
 
     return WillPopScope(
       onWillPop: () async => _showConfirmQuit(),
@@ -56,7 +58,9 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
           return MyContainer(
             radius: 10,
             padding: EdgeInsets.all(20),
-            margin: EdgeInsets.fromLTRB(10, 10, 10, isKeyboardVisible ? 10 + MediaQuery.of(context).viewInsets.bottom : 10),
+            //* MediaQuery.of(context).viewInsets.bottom = 0 on mobile web
+            margin:
+                EdgeInsets.fromLTRB(10, 10, 10, isKeyboardVisible ? 10 + MediaQuery.of(context).viewInsets.bottom : 10),
             color: Colors.white,
             width: width < 800 ? (width - 20) * 0.8 : width * .3,
             child: Column(
@@ -70,21 +74,20 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
                       // ! Important so, the entire container can be scrollable (from within, not only edges)
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: treeSubTasks.length,
+                      itemCount: editingTasks.length,
                       itemBuilder: (BuildContext context, int index) {
-                        var te = TaskEditor(
-                          task: treeSubTasks[index],
+                        return TaskEditor(
+                          task: editingTasks[index],
                           buildAddSubtask: index == 0 &&
                               editMode &&
-                              (treeSubTasks[index]?.canHaveChildren ?? true) &&
+                              (editingTasks[index]?.canHaveChildren ?? true) &&
                               widget.isListedAsChild,
                           isEditing: editMode,
-                          addNewTask: () => _addTaskDetails(Task.empty(parentId: widget.task.id)),
+                          addNewTask: _addTaskDetails,
                         );
-                        taskEditors.add(te);
-                        return te;
                       },
                     ),
+                    // Edit Button
                     Positioned(
                       top: 0,
                       right: 0,
@@ -178,14 +181,13 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
   }
 
   // (title, shortDesc, desc etc) add to 'listedTasks' list of widgets
-  void _addTaskDetails(Task task) {
-    setState(() => treeSubTasks.add(task));
+  void _addTaskDetails() {
+    setState(() => editingTasks.add(Task.empty(parentId: widget.task.id)));
   }
 
   void _saveTaskTree() async {
-    for (var te in taskEditors) {
-      Task toSave = te.getEditedTask();
-      await widget.taskDao.insertOrUpdate(toSave);
+    for (var editingTask in editingTasks) {
+      await widget.taskDao.insertOrUpdate(editingTask);
     }
 
     widget.updateCurrentTask();
@@ -194,7 +196,7 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
     // Close Popup Task Details
     Navigator.of(context).pop();
 
-    Utils.showToast(context, "${taskEditors.length} task(s) saved/updated.");
+    Utils.showToast(context, "${editingTasks.length} task(s) saved/updated.");
   }
 
   Future<bool> _showConfirmQuit() async {
