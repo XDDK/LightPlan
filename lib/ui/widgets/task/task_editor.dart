@@ -151,7 +151,7 @@ class _TaskEditor extends State<TaskEditor> {
     var tapRecognizer = TapGestureRecognizer()..onTap = functionShowDatePicker;
 
     String selectedDateTxt = " no date selected";
-    if (time != null) selectedDateTxt = "${time != null ? df.format(time) : 'no date selected'}";
+    if (time != null) selectedDateTxt = " ${time != null ? df.format(time) : 'no date selected'}";
 
     // If Task is editing -> predefined (greyed text) or not (blue text)
     // If it's not editing -> only bold date
@@ -160,21 +160,21 @@ class _TaskEditor extends State<TaskEditor> {
         // bold grey
         textSpans.add(TextSpan(
           text: selectedDateTxt,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.withOpacity(0.7)),
+          style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold, color: Colors.grey.withOpacity(0.7)),
         ));
       } else {
         // bold blue
         textSpans.add(TextSpan(
           recognizer: tapRecognizer,
           text: selectedDateTxt,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+          style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold, color: Colors.blue),
         ));
       }
     } else {
       // bold
       textSpans.add(TextSpan(
         text: selectedDateTxt,
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold),
       ));
     }
 

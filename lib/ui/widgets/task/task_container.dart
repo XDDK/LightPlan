@@ -44,7 +44,6 @@ class _TaskContainerState extends State<TaskContainer> {
     return GestureDetector(
       onTap: () => _updateCurrentRoot(widget.task),
       child: MyContainer(
-          height: 75,
           radius: 10,
           shadowType: ShadowType.MEDIUM,
           padding: EdgeInsets.all(5),
@@ -55,11 +54,13 @@ class _TaskContainerState extends State<TaskContainer> {
             children: [
               Container(width: 30),
               Expanded(
-                child: Column(children: [
-                  Text(widget.task.title, style: TextStyle(fontSize: 20)),
-                  Divider(),
-                  Text(widget.task.shortDesc, style: TextStyle(fontSize: 18))
-                ]),
+                child: Column(
+                  children: [
+                    Text(widget.task.title, style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+                    Divider(thickness: 1),
+                    Text(widget.task.shortDesc, style: TextStyle(fontSize: 18), textAlign: TextAlign.center),
+                  ],
+                ),
               ),
               MyContainer(
                 onTap: () => _showTaskPreview(widget.task),
@@ -80,6 +81,7 @@ class _TaskContainerState extends State<TaskContainer> {
       shadowType: ShadowType.MEDIUM,
       radius: 10,
       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+      padding: EdgeInsets.all(5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -107,9 +109,9 @@ class _TaskContainerState extends State<TaskContainer> {
           Expanded(
             child: Column(
               children: [
-                Text(widget.task.title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Divider(indent: 40, endIndent: 40),
-                Text(widget.task.shortDesc, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+                Text(widget.task.title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                Divider(thickness: 1),
+                Text(widget.task.shortDesc, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center)
               ],
             ),
           ),

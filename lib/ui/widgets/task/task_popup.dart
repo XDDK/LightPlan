@@ -203,7 +203,7 @@ class _TaskDetailsContainer extends State<TaskPopup> {
         builder: (_) {
           return AlertDialog(
             title: Text("Title / Short Description / Date missing"),
-            content: Text("The app had a purpose. Ugh 🙄"),
+            content: Text("The app had a purpose. 😳"),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
