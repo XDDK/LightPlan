@@ -78,6 +78,7 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
                       itemBuilder: (BuildContext context, int index) {
                         return TaskEditor(
                           task: editingTasks[index],
+                          parentTask: widget.taskDao.findTask(editingTasks[index].parentId),
                           buildAddSubtask: index == 0 &&
                               editMode &&
                               (editingTasks[index]?.canHaveChildren ?? true) &&
@@ -185,7 +186,38 @@ class _TaskDetailsContainer extends State<TaskDetailsContainer> {
     setState(() => editingTasks.add(Task.empty(parentId: widget.task.id)));
   }
 
-  void _saveTaskTree() async {
+  bool _checkInvalidTasks() {
+    bool isInvalid = false;
+    for(var task in editingTasks) {
+      if (task.title == null || task.title.isEmpty) isInvalid = true;
+      if (task.shortDesc == null || task.shortDesc.isEmpty) isInvalid = true;
+      if (task.endDate == null) isInvalid = true;
+    }
+    return isInvalid;
+  }
+
+  Future<void> _saveTaskTree() async {
+    if (_checkInvalidTasks()) {
+        showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: Text("Title / Short Description / Date missing"),
+              content: Text("The app had a purpose. Ugh 🙄"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        return;
+    }
+
     for (var editingTask in editingTasks) {
       await widget.taskDao.insertOrUpdate(editingTask);
     }

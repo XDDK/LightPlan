@@ -54,10 +54,13 @@ class _TaskContainerState extends State<TaskContainer> {
           children: [
             Container(width: 30),
             Expanded(
-              child: Column(children: [
-                Text(widget.task.title),
-                Text(widget.task.shortDesc)
-              ]),
+              child: Padding(
+                padding: EdgeInsets.all(5),
+                child: Column(children: [
+                  Text(widget.task.title),
+                  Text(widget.task.shortDesc)
+                ]),
+              ),
             ),
             MyContainer(
               onTap: () => _showTaskPreview(widget.task),
