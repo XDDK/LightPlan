@@ -23,16 +23,25 @@ class SettingsPage extends StatelessWidget {
       This is an open-source project created by two passionate students. 
       Our aim is to provide people with a simple, free and open source planner for 
       any type of activity. Since it's open source, the project can be customized to 
-      everybody's liking. If you are interested, the full source code can be found'''
+      everybody's liking. If you are interested, the '''
                         .replaceAll("\n", "")
                         .replaceAll("      ", ""),
                     style: TextStyle(color: Colors.black),
                     children: <TextSpan>[
                       TextSpan(
-                        text: " here",
+                        text: "full source code can be found here",
                         style: TextStyle(color: Colors.blue),
                         recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
-                      )
+                      ),
+                      TextSpan(
+                        text: "\n\nThis app is also available online and ",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      TextSpan(
+                        text: "can be found here",
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()..onTap = () => launch("https://lightplanx.com"),
+                      ),
                     ],
                   ),
                 ),

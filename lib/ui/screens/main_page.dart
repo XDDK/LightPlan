@@ -6,6 +6,7 @@ import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../tree_handler.dart';
 import '../widgets/bottom_bar.dart';
+import '../widgets/containers/card_container.dart';
 import '../widgets/tree_preview.dart';
 import '../widgets/tree_timer.dart';
 
@@ -31,10 +32,15 @@ class _MainPageState extends State<MainPage> {
                     children: [
                       TreeTimer(),
                       Expanded(
-                        child: SingleChildScrollView(
-                          child: TreePreview(),
+                        child: CardContainer(
+                          child: SingleChildScrollView(
+                            child: TreePreview(),
+                          ),
                         ),
                       ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 300),
+                        child: SizedBox()),
                       MyBottomBar(),
                     ],
                   );

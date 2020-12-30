@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/ui/screens/main_page.dart';
+import 'ui/screens/main_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

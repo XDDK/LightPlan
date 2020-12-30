@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lighthouse_planner/ui/screens/settings_page.dart';
+import 'ui/screens/settings_page.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';

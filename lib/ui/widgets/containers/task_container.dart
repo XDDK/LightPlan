@@ -40,27 +40,20 @@ class _TaskContainerState extends State<TaskContainer> {
   }
 
   Widget buildChild() {
-    return MyContainer(
+    return GestureDetector(
+      onTap: () => widget.updateCurrentTask != null ? widget.updateCurrentTask(widget.task) : null,
+      child: MyContainer(
         radius: 10,
         shadowType: ShadowType.MEDIUM,
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
         color: Colors.deepOrange[400],
-        onTap: () => widget.updateCurrentTask != null
-            ? widget.updateCurrentTask(widget.task)
-            : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(width: 30),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(5),
-                child: Column(children: [
-                  Text(widget.task.title),
-                  Text(widget.task.shortDesc)
-                ]),
-              ),
+              child: Column(children: [Text(widget.task.title), Text(widget.task.shortDesc)]),
             ),
             MyContainer(
               onTap: () => _showTaskPreview(widget.task),
@@ -71,15 +64,17 @@ class _TaskContainerState extends State<TaskContainer> {
               child: Icon(Icons.more_vert),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Widget buildParent() {
     return MyContainer(
       color: Colors.blue[400],
-      shadowType: ShadowType.SMALL,
+      shadowType: ShadowType.MEDIUM,
       radius: 10,
-      width: 300,
+      //width: 300,
       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
