@@ -42,7 +42,7 @@ class _TreePreviewState extends State<TreePreview> {
     if (tree == null) return Container();
     var children = taskDao.findTaskChildren(tree.id);
     if (children.isEmpty) {
-      return Divider(indent: 50, endIndent: 50, color: Colors.purple, thickness: 1);
+      return Divider(indent: 10, endIndent: 10, color: Colors.black, thickness: 1);
     }
     return Column(
       children: children.map((child) {

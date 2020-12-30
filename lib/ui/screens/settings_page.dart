@@ -47,6 +47,7 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                context,
               ),
               Divider(thickness: 1),
               _buildItem(
@@ -56,7 +57,7 @@ class SettingsPage extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
                     children: [
-                      Icon(Icons.thumb_up_outlined),
+                      Icon(Icons.star_outline),
                       SizedBox(width: 5),
                       GestureDetector(
                         onTap: () {
@@ -64,18 +65,19 @@ class SettingsPage extends StatelessWidget {
                           launch("https://play.google.com/store/apps/details?id=$androidAppId");
                         },
                         child: Text(
-                          "Click me.",
+                          "Rate us on Google Play",
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ],
                   ),
                 ),
+                context,
               ),
               Divider(thickness: 1),
               _buildItem(
                 Icons.code_outlined,
-                "Project Github Repo",
+                "Github Project",
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
@@ -92,6 +94,7 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                context,
               ),
               Divider(thickness: 1),
               _buildItem(
@@ -113,11 +116,12 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                context,
               ),
               Divider(thickness: 1),
               _buildItem(
                 Icons.text_snippet_outlined,
-                "Privacy",
+                "Privacy Policy",
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
@@ -134,6 +138,7 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                context,
               ),
             ],
           ),
@@ -142,14 +147,15 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(IconData icon, String title, Widget child) {
+  Widget _buildItem(IconData icon, String title, Widget child, BuildContext context) {
     return MyContainer(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      //padding: EdgeInsets.all(10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(icon),

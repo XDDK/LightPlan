@@ -34,10 +34,10 @@ class _MyBottomBar extends State<MyBottomBar> {
           child: Icon(Icons.home, size: 50),
           padding: EdgeInsets.all(10),
           onTap: () {
-            print("Home");
             treeHandler.setCurrentTask(taskDao.findTaskAt(0));
           },
         ),
+
         //BottomBar UI: Divider
         SizedBox(
           height: 40,
@@ -47,6 +47,7 @@ class _MyBottomBar extends State<MyBottomBar> {
             endIndent: 5,
           ),
         ),
+
         //BottomBar UI: Settings menu
         MyContainer(
           ripple: true,

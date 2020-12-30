@@ -30,7 +30,7 @@ class Task {
   bool canHaveChildren;
 
   Task.empty({int parentId}) {
-    this.endDate = DateTime.now().millisecondsSinceEpoch;
+    // this.endDate = DateTime.now().millisecondsSinceEpoch;
     this.parentId = parentId;
     this.isPredefined = false;
     this.canHaveChildren = true;

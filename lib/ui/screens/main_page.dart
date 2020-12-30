@@ -23,31 +23,35 @@ class _MainPageState extends State<MainPage> {
         create: (_) => TaskDaoImpl().init(),
         child: ChangeNotifierProvider(
           create: (_) => TreeHandler(),
-          child: Scaffold(
-            body: FutureBuilder<Box<Task>>(
-              future: Hive.openBox<Task>('tasks'),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Column(
-                    children: [
-                      TreeTimer(),
-                      Expanded(
-                        child: CardContainer(
-                          child: SingleChildScrollView(
-                            child: TreePreview(),
+          child: WillPopScope(
+            onWillPop: () async => _showConfirmQuit(),
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: FutureBuilder<Box<Task>>(
+                future: Hive.openBox<Task>('tasks'),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Column(
+                      children: [
+                        TreeTimer(),
+                        Expanded(
+                          child: CardContainer(
+                            child: SingleChildScrollView(
+                              child: TreePreview(),
+                            ),
                           ),
                         ),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 300),
-                        child: SizedBox()),
-                      MyBottomBar(),
-                    ],
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxHeight: 300),
+                          child: SizedBox()),
+                        MyBottomBar(),
+                      ],
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
           ),
         ),
@@ -59,5 +63,30 @@ class _MainPageState extends State<MainPage> {
   void dispose() {
     Hive.close();
     super.dispose();
+  }
+
+   Future<bool> _showConfirmQuit() async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text('Are you sure you want to quit?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -7,14 +7,6 @@ class CardContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MyContainer(
-    //   margin: EdgeInsets.all(10),
-    //   padding: EdgeInsets.all(20),
-    //   radius: 20,
-    //   shadowType: ShadowType.MEDIUM,
-    //   color: Colors.white,
-    // );
-
     return IntrinsicWidth(
       stepWidth: 200,
       child: Container(

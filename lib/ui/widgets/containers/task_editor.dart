@@ -8,6 +8,7 @@ import 'my_container.dart';
 class TaskEditor extends StatefulWidget {
   //* Modify the task values, edited Task will result in this.task and his references;
   final Task task;
+  final Task parentTask;
   final bool buildAddSubtask;
   final bool isEditing;
   final Function addNewTask;
@@ -18,6 +19,7 @@ class TaskEditor extends StatefulWidget {
 
   TaskEditor({
     this.task,
+    this.parentTask,
     this.buildAddSubtask = false,
     this.isEditing = false,
     this.addNewTask,
@@ -125,7 +127,8 @@ class _TaskEditor extends State<TaskEditor> {
 
   Widget _buildDate(Task task) {
     DateTime now = DateTime.now();
-    DateTime time = DateTime.fromMillisecondsSinceEpoch(task?.endDate ?? now.millisecondsSinceEpoch);
+    DateTime time;
+    if (task?.endDate != null) time = DateTime.fromMillisecondsSinceEpoch(task.endDate);
 
     var df = DateFormat("d MMMM yyyy");
     String dateText = "This will end on:";
@@ -134,11 +137,13 @@ class _TaskEditor extends State<TaskEditor> {
     var functionShowDatePicker = () async {
       if (widget.task.isPredefined) return;
       if (!widget.isEditing) return;
+      var lastDate =
+          DateTime.fromMillisecondsSinceEpoch(widget.parentTask?.endDate ?? DateTime(now.year).millisecondsSinceEpoch);
       DateTime selectedTime = await showDatePicker(
         context: context,
-        initialDate: time,
+        initialDate: time ?? lastDate,
         firstDate: DateTime(2000),
-        lastDate: DateTime(time.year + 1),
+        lastDate: lastDate,
       );
       if (selectedTime != null) setState(() => widget.task.endDate = selectedTime.millisecondsSinceEpoch);
     };
@@ -156,9 +161,11 @@ class _TaskEditor extends State<TaskEditor> {
         ));
       } else {
         // bold blue
+        String text = " select an end date";
+        if (time != null) text = " ${df.format(time)}";
         textSpans.add(TextSpan(
           recognizer: tapRecognizer,
-          text: " ${df.format(time)}",
+          text: text,
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
         ));
       }
@@ -234,7 +241,7 @@ class _TaskEditor extends State<TaskEditor> {
             Icon(Icons.add),
             Flexible(
               child: Text(
-                "ADD A SUBTASK",
+                "CREATE A SUBTASK",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

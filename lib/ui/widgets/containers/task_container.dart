@@ -45,6 +45,7 @@ class _TaskContainerState extends State<TaskContainer> {
               ? widget.updateCurrentTask(widget.task)
               : null,
         child: MyContainer(
+          height: 75,
           radius: 10,
           shadowType: ShadowType.MEDIUM,
           padding: EdgeInsets.all(5),
@@ -56,8 +57,9 @@ class _TaskContainerState extends State<TaskContainer> {
               Container(width: 30),
               Expanded(
                 child: Column(children: [
-                  Text(widget.task.title),
-                  Text(widget.task.shortDesc)
+                  Text(widget.task.title, style: TextStyle(fontSize: 20)),
+                  Divider(),
+                  Text(widget.task.shortDesc, style: TextStyle(fontSize: 18))
                 ]),
               ),
               MyContainer(
@@ -66,7 +68,7 @@ class _TaskContainerState extends State<TaskContainer> {
                 shadowType: ShadowType.NONE,
                 color: Colors.transparent,
                 padding: EdgeInsets.all(5),
-                child: Icon(Icons.more_vert),
+                child: Icon(Icons.more_vert, size: 30),
               ),
             ],
           )),
@@ -78,7 +80,8 @@ class _TaskContainerState extends State<TaskContainer> {
       color: Colors.blue[400],
       shadowType: ShadowType.MEDIUM,
       radius: 10,
-      //width: 300,
+      height: 75,
+      width: 350,
       margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,13 +91,14 @@ class _TaskContainerState extends State<TaskContainer> {
             visible: widget.task.parentId == null,
             child: Container(width: 30),
           ),
+
           //Back button. Appears only when main parent is != YEAR
           Visibility(
             visible: widget.task.parentId != null,
             child: MyContainer(
               ripple: true,
               color: Colors.transparent,
-              child: Icon(Icons.keyboard_backspace),
+              child: Icon(Icons.keyboard_backspace, size: 30),
               padding: EdgeInsets.all(5),
               margin: EdgeInsets.all(5),
               onTap: () {
@@ -105,12 +109,18 @@ class _TaskContainerState extends State<TaskContainer> {
               },
             ),
           ),
+
           //Title and Description
           Expanded(
             child: Column(
-              children: [Text(widget.task.title), Text(widget.task.shortDesc)],
+              children: [
+                Text(widget.task.title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Divider(indent: 40, endIndent: 40), 
+                Text(widget.task.shortDesc, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+              ],
             ),
           ),
+
           //Add (+) button. Appears only when main parent != YEAR
           Visibility(
             visible: widget.task.canHaveChildren,
@@ -120,15 +130,16 @@ class _TaskContainerState extends State<TaskContainer> {
               shadowType: ShadowType.NONE,
               color: Colors.transparent,
               padding: EdgeInsets.all(5),
-              child: Icon(Icons.add),
+              child: Icon(Icons.add, size: 30),
             ),
           ),
+
           //Menu (three dots :) button.
           MyContainer(
             ripple: true,
             shadowType: ShadowType.NONE,
             color: Colors.transparent,
-            child: Icon(Icons.more_vert),
+            child: Icon(Icons.more_vert, size: 30),
             padding: EdgeInsets.all(5),
             margin: EdgeInsets.all(5),
             onTap: () => _showTaskPreview(widget.task),
