@@ -51,7 +51,7 @@ class SettingsPage extends StatelessWidget {
                         onTap: () {
                           String androidAppId = "com.lightplanx.xddk";
                           launch("https://play.google.com/store/apps/details?id=$androidAppId");
-                          },
+                        },
                         child: Text(
                           "Click me.",
                           style: TextStyle(fontSize: 18),
@@ -84,8 +84,8 @@ class SettingsPage extends StatelessWidget {
               ),
               Divider(thickness: 1),
               _buildItem(
-                Icons.code_outlined,
-                "TOS",
+                Icons.text_snippet_outlined,
+                "Terms of Service",
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: Row(
@@ -105,7 +105,7 @@ class SettingsPage extends StatelessWidget {
               ),
               Divider(thickness: 1),
               _buildItem(
-                Icons.code_outlined,
+                Icons.text_snippet_outlined,
                 "Privacy",
                 Padding(
                   padding: const EdgeInsets.only(left: 30),

@@ -48,6 +48,9 @@ flutter:
     - family: digital-7
       fonts:
         - asset: fonts/digital-7.ttf
+    - family: dpcomic
+      fonts:
+        - asset: fonts/dpcomic.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

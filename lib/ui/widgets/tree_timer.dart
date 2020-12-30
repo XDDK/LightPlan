@@ -55,11 +55,11 @@ class _TreeTimerStateful extends State<TreeTimer> {
     );
   }
 
-  TextStyle customStyle(double _fontSize) {
+  TextStyle customStyle(double fontSize) {
     return TextStyle(
       letterSpacing: 3.0,
       color: Colors.black,
-      fontSize: _fontSize,
+      fontSize: fontSize,
       fontWeight: FontWeight.bold
     );
   }
@@ -95,9 +95,9 @@ class _TreeTimerStateful extends State<TreeTimer> {
         style: TextStyle(
           letterSpacing: 3.0,
           color: Colors.black,
-          fontSize: 30,
+          fontSize: 35,
+          fontFamily: 'dpcomic', //! - custom font 'digital-7' doesnt render on mobile web + it's licensed under Freeware home use only
           fontWeight: FontWeight.bold,
-          fontFamily: 'digital-7',
         ),
       ),
       padding: EdgeInsets.all(10),
