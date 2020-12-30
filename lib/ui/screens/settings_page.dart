@@ -35,7 +35,7 @@ class SettingsPage extends StatelessWidget {
                       ),
 
                       TextSpan(
-                        text: "\n\nThis app is also available online and ",
+                        text: "\n\nA web version of this app is also available online and ",
                         style: TextStyle(color: Colors.black),
                       ),
 
