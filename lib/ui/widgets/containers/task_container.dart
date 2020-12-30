@@ -40,35 +40,37 @@ class _TaskContainerState extends State<TaskContainer> {
   }
 
   Widget buildChild() {
-    return MyContainer(
-        radius: 10,
-        shadowType: ShadowType.MEDIUM,
-        padding: EdgeInsets.all(5),
-        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-        color: Colors.deepOrange[400],
+    return GestureDetector(
         onTap: () => widget.updateCurrentTask != null
-            ? widget.updateCurrentTask(widget.task)
-            : null,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(width: 30),
-            Expanded(
-              child: Column(children: [
-                Text(widget.task.title),
-                Text(widget.task.shortDesc)
-              ]),
-            ),
-            MyContainer(
-              onTap: () => _showTaskPreview(widget.task),
-              ripple: true,
-              shadowType: ShadowType.NONE,
-              color: Colors.transparent,
-              padding: EdgeInsets.all(5),
-              child: Icon(Icons.more_vert),
-            ),
-          ],
-        ));
+              ? widget.updateCurrentTask(widget.task)
+              : null,
+        child: MyContainer(
+          radius: 10,
+          shadowType: ShadowType.MEDIUM,
+          padding: EdgeInsets.all(5),
+          margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          color: Colors.deepOrange[400],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(width: 30),
+              Expanded(
+                child: Column(children: [
+                  Text(widget.task.title),
+                  Text(widget.task.shortDesc)
+                ]),
+              ),
+              MyContainer(
+                onTap: () => _showTaskPreview(widget.task),
+                ripple: true,
+                shadowType: ShadowType.NONE,
+                color: Colors.transparent,
+                padding: EdgeInsets.all(5),
+                child: Icon(Icons.more_vert),
+              ),
+            ],
+          )),
+    );
   }
 
   Widget buildParent() {
