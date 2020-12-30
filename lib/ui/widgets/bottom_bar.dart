@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/task_dao_impl.dart';
-import '../../tree_handler.dart';
 import 'my_container.dart';
 
 class MyBottomBar extends StatefulWidget {
@@ -38,6 +37,7 @@ class _MyBottomBar extends State<MyBottomBar> {
             // treeHandler.setCurrentRoot(taskDao.findTaskAt(0));
           },
         ),
+
         //BottomBar UI: Divider
         SizedBox(
           height: 40,
@@ -47,6 +47,7 @@ class _MyBottomBar extends State<MyBottomBar> {
             endIndent: 5,
           ),
         ),
+
         //BottomBar UI: Settings menu
         MyContainer(
           ripple: true,

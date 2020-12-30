@@ -242,7 +242,7 @@ class _TaskEditor extends State<TaskEditor> {
             Icon(Icons.add),
             Flexible(
               child: Text(
-                "ADD A SUBTASK",
+                "CREATE A SUBTASK",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

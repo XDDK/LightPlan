@@ -44,29 +44,33 @@ class _TaskContainerState extends State<TaskContainer> {
     return GestureDetector(
       onTap: () => _updateCurrentRoot(widget.task),
       child: MyContainer(
-        radius: 10,
-        shadowType: ShadowType.MEDIUM,
-        padding: EdgeInsets.all(5),
-        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-        color: Colors.deepOrange[400],
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(width: 30),
-            Expanded(
-              child: Column(children: [Text(widget.task.title), Text(widget.task.shortDesc)]),
-            ),
-            MyContainer(
-              onTap: () => _showTaskPreview(widget.task),
-              ripple: true,
-              shadowType: ShadowType.NONE,
-              color: Colors.transparent,
-              padding: EdgeInsets.all(5),
-              child: Icon(Icons.more_vert),
-            ),
-          ],
-        ),
-      ),
+          height: 75,
+          radius: 10,
+          shadowType: ShadowType.MEDIUM,
+          padding: EdgeInsets.all(5),
+          margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          color: Colors.deepOrange[400],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(width: 30),
+              Expanded(
+                child: Column(children: [
+                  Text(widget.task.title, style: TextStyle(fontSize: 20)),
+                  Divider(),
+                  Text(widget.task.shortDesc, style: TextStyle(fontSize: 18))
+                ]),
+              ),
+              MyContainer(
+                onTap: () => _showTaskPreview(widget.task),
+                ripple: true,
+                shadowType: ShadowType.NONE,
+                color: Colors.transparent,
+                padding: EdgeInsets.all(5),
+                child: Icon(Icons.more_vert, size: 30),
+              ),
+            ],
+          )),
     );
   }
 
@@ -90,7 +94,7 @@ class _TaskContainerState extends State<TaskContainer> {
             child: MyContainer(
               ripple: true,
               color: Colors.transparent,
-              child: Icon(Icons.keyboard_backspace),
+              child: Icon(Icons.keyboard_backspace, size: 30),
               padding: EdgeInsets.all(5),
               margin: EdgeInsets.all(5),
               onTap: () {
@@ -102,7 +106,11 @@ class _TaskContainerState extends State<TaskContainer> {
           // Title and Description
           Expanded(
             child: Column(
-              children: [Text(widget.task.title), Text(widget.task.shortDesc)],
+              children: [
+                Text(widget.task.title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Divider(indent: 40, endIndent: 40),
+                Text(widget.task.shortDesc, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+              ],
             ),
           ),
           //Add (+) button. Appears only when root of current tree can have children
@@ -114,7 +122,7 @@ class _TaskContainerState extends State<TaskContainer> {
               shadowType: ShadowType.NONE,
               color: Colors.transparent,
               padding: EdgeInsets.all(5),
-              child: Icon(Icons.add),
+              child: Icon(Icons.add, size: 30),
             ),
           ),
           // Menu button
@@ -122,7 +130,7 @@ class _TaskContainerState extends State<TaskContainer> {
             ripple: true,
             shadowType: ShadowType.NONE,
             color: Colors.transparent,
-            child: Icon(Icons.more_vert),
+            child: Icon(Icons.more_vert, size: 30),
             padding: EdgeInsets.all(5),
             margin: EdgeInsets.all(5),
             onTap: () => _showTaskPreview(widget.task),

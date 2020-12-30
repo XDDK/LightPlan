@@ -48,4 +48,29 @@ class _MainPageState extends State<MainPage> {
     Hive.close();
     super.dispose();
   }
+
+   Future<bool> _showConfirmQuit() async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text('Are you sure you want to quit?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
