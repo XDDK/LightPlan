@@ -48,6 +48,9 @@ flutter:
     - family: dpcomic
       fonts:
         - asset: fonts/dpcomic.ttf
+    - family: WorkSans
+      fonts:
+        - asset: fonts/WorkSans-Regular.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

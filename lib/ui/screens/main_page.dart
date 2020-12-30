@@ -4,10 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
-import '../../tree_handler.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tasktree/tasks_listview.dart';
-import '../widgets/tree_timer.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -15,27 +13,31 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  TaskDaoImpl taskDaoImpl;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: FutureProvider(
-        create: (_) => TaskDaoImpl().init(),
-        child: Scaffold(
-          body: FutureBuilder<Box<Task>>(
-            future: Hive.openBox<Task>('tasks'),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Column(
+      child: Scaffold(
+        body: FutureBuilder<Box<Task>>(
+          future: Hive.openBox<Task>('tasks'),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              taskDaoImpl = TaskDaoImpl();
+              var viewPort = MediaQuery.of(context).size.width > 950 ? 0.3 : 0.75;
+              return FutureProvider(
+                create: (_) => taskDaoImpl.insertDefaults(),
+                child: Column(
                   children: [
-                    TasksListView(),
-                    // MyBottomBar(),
+                    TasksListView(viewPort: viewPort),
+                    MyBottomBar(),
                   ],
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
+                ),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );

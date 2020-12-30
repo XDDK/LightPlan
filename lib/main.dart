@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Lightplan',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'WorkSans',
       ),
       initialRoute: '/',
       routes: {

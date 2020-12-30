@@ -14,15 +14,15 @@ class MyBottomBar extends StatefulWidget {
 
 class _MyBottomBar extends State<MyBottomBar> {
   TaskDaoImpl taskDao;
-  TreeHandler treeHandler;
+  // TreeHandler treeHandler;
 
   @override
   Widget build(BuildContext context) {
     this.taskDao = context.watch<TaskDaoImpl>();
-    this.treeHandler = context.watch<TreeHandler>();
+    // this.treeHandler = context.watch<TreeHandler>();
 
     if (this.taskDao == null) return Container();
-    if (treeHandler.currentRoot == null) treeHandler.setCurrentRoot(taskDao.findTaskAt(0), false);
+    // if (treeHandler.currentRoot == null) treeHandler.setCurrentRoot(taskDao.findTaskAt(0), false);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +35,7 @@ class _MyBottomBar extends State<MyBottomBar> {
           padding: EdgeInsets.all(10),
           onTap: () {
             print("Home");
-            treeHandler.setCurrentRoot(taskDao.findTaskAt(0));
+            // treeHandler.setCurrentRoot(taskDao.findTaskAt(0));
           },
         ),
         //BottomBar UI: Divider
