@@ -12,7 +12,7 @@ class SettingsPage extends StatelessWidget {
         appBar: AppBar(title: Text("")),
         body: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            //mainAxisSize: MainAxisSize.min,
             children: [
               _buildItem(
                 Icons.info_outline,
@@ -53,24 +53,22 @@ class SettingsPage extends StatelessWidget {
               _buildItem(
                 Icons.favorite_outline,
                 "Support Us",
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Row(
-                    children: [
-                      Icon(Icons.star_outline),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () {
-                          String androidAppId = "com.lightplanx.xddk";
-                          launch("https://play.google.com/store/apps/details?id=$androidAppId");
-                        },
-                        child: Text(
-                          "Rate us on Google Play",
-                          style: TextStyle(fontSize: 18),
-                        ),
+                Row(
+                  mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.star_outline),
+                    SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () {
+                        String androidAppId = "com.lightplanx.xddk";
+                        launch("https://play.google.com/store/apps/details?id=$androidAppId");
+                      },
+                      child: Text(
+                        "Rate us on Google Play",
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 context,
               ),
@@ -78,21 +76,19 @@ class SettingsPage extends StatelessWidget {
               _buildItem(
                 Icons.code_outlined,
                 "Github Project",
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Row(
-                    children: [
-                      Icon(Icons.touch_app_outlined),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () => launch("https://github.com/XDDK/LightPlan"),
-                        child: Text(
-                          "Click to view",
-                          style: TextStyle(fontSize: 18),
-                        ),
+                Row(
+                  mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.touch_app_outlined),
+                    SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () => launch("https://github.com/XDDK/LightPlan"),
+                      child: Text(
+                        "Click to view",
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 context,
               ),
@@ -100,21 +96,19 @@ class SettingsPage extends StatelessWidget {
               _buildItem(
                 Icons.text_snippet_outlined,
                 "Terms of Service",
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Row(
-                    children: [
-                      Icon(Icons.touch_app_outlined),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () => launch("https://lightplanx.com/tos"),
-                        child: Text(
-                          "Click to view",
-                          style: TextStyle(fontSize: 18),
-                        ),
+                Row(
+                  mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.touch_app_outlined),
+                    SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () => launch("https://lightplanx.com/tos"),
+                      child: Text(
+                        "Click to view",
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 context,
               ),
@@ -122,21 +116,19 @@ class SettingsPage extends StatelessWidget {
               _buildItem(
                 Icons.text_snippet_outlined,
                 "Privacy Policy",
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Row(
-                    children: [
-                      Icon(Icons.touch_app_outlined),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () => launch("https://lightplanx.com/privacy"),
-                        child: Text(
-                          "Click to view",
-                          style: TextStyle(fontSize: 18),
-                        ),
+                Row(
+                  mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.touch_app_outlined),
+                    SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () => launch("https://lightplanx.com/privacy"),
+                      child: Text(
+                        "Click to view",
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 context,
               ),
@@ -148,24 +140,29 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget _buildItem(IconData icon, String title, Widget child, BuildContext context) {
-    return MyContainer(
-      padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      //padding: EdgeInsets.all(10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(icon),
-              SizedBox(width: 10),
-              Text(title, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-            ],
-          ),
-          SizedBox(height: 10),
-          child,
-        ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 500),
+      child: MyContainer(
+        padding: EdgeInsets.all(10),
+        //padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 35),
+                SizedBox(width: 10),
+                Text(title, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+              ],
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: MediaQuery.of(context).size.width < 600 ? EdgeInsets.only(left: 30, right: 30) : EdgeInsets.all(0),
+              child: child,
+            ),
+          ],
+        ),
       ),
     );
   }
