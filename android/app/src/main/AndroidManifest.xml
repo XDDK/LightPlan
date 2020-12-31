@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.lighthouse.planner.lighthouse_planner">
+    package="com.lightplanx.xddk">
    <application
-        android:label="lighthouse_planner"
+        android:label="Lightplan"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

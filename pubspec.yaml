@@ -1,5 +1,5 @@
-name: lighthouse_planner
-description: The easiest to use planner. And it's FOSS <3
+name: lightplan
+description: The easiest planner to use. And it's FOSS <3
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -35,6 +35,12 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^0.8.2
   build_runner: ^1.10.11
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  image_path: 'assets/images/icon.png'
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

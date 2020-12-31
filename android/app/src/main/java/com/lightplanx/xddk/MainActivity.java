@@ -1,4 +1,4 @@
-package org.lighthouse.planner.lighthouse_planner;
+package com.lightplanx.xddk;
 
 import io.flutter.embedding.android.FlutterActivity;
 

@@ -20,11 +20,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:lighthouse_planner/task_list_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
+import '../../task_list_handler.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tasktree/tasks_listview.dart';
 
