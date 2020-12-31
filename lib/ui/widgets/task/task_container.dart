@@ -105,6 +105,10 @@ class _TaskContainerState extends State<TaskContainer> {
         child: Row(
           children: [
             // HOME and BACK buttons
+            Visibility(
+              visible: widget.task.parentId == null,
+              child: Container(width: 30),
+            ),
             Column(
               children: [
                 _buildIcon(
