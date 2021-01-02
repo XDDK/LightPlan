@@ -70,7 +70,7 @@ class _TasksListViewState extends State<TasksListView> {
             physics: treeRoots.length > 1 ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return MyContainer(
-                color: Theme.of(context).cardColor,
+                color: Theme.of(context).primaryColor,
                 margin: EdgeInsets.all(15),
                 padding: EdgeInsets.all(10),
                 shadowType: ShadowType.MEDIUM,

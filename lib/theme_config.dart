@@ -18,29 +18,7 @@
 *    Contact the authors at: contact@lightplanx.com
 */
 
-import 'package:flutter/material.dart';
+library config.global;
+import 'package:lighthouse_planner/theme_handler.dart';
 
-class ThemeHandler with ChangeNotifier {
-  static bool isDarkTheme = false;
-
-  final ThemeData lightMode = ThemeData(
-    primaryColor: Colors.white,
-    brightness: Brightness.light,
-    fontFamily: 'WorkSans',
-  );
-
-  final ThemeData darkMode = ThemeData(
-    primaryColor: Colors.grey[900],
-    brightness: Brightness.dark,
-    fontFamily: 'WorkSans',
-  );
-
-  ThemeData currTheme() {
-    return isDarkTheme ? darkMode : lightMode;
-  }
-
-  void switchTheme() {
-    isDarkTheme = !isDarkTheme;
-    notifyListeners();
-  }
-}
+ThemeHandler currentTheme = ThemeHandler();

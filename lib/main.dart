@@ -21,7 +21,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lighthouse_planner/theme_handler.dart';
+import 'package:lighthouse_planner/theme_config.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';
@@ -42,14 +42,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeHandler theme = ThemeHandler();
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() { setState(() {}); });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lightplan',
-      //theme: ,
+      theme: currentTheme.currTheme(),
       initialRoute: '/',
       routes: {
         '/': (_) => MainPage(),

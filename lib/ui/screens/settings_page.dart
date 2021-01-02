@@ -22,6 +22,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../theme_config.dart';
 import '../widgets/my_container.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -55,7 +56,10 @@ class _SettingsPage extends State<SettingsPage> {
                     Transform.scale(  
                       scale: 1.25,  
                       child: Switch(  
-                        onChanged: (e) => setState(() { isSwitched = !isSwitched; }),
+                        onChanged: (e) => setState(() { 
+                          isSwitched = !isSwitched; 
+                          currentTheme.switchTheme(); 
+                        }),
                         value: isSwitched,   
                       )  
                     ),
