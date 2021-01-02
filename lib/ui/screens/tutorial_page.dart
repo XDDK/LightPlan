@@ -19,22 +19,92 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:lightplan/dao/preferences.dart';
 
 import '../widgets/my_container.dart';
 
-class TutorialPage extends StatelessWidget {
-  final bool isVisible;
-  
-  TutorialPage({@required this.isVisible});
-  
-  @override 
+class TutorialPage extends StatefulWidget {
+  @override
+  _TutorialPageState createState() => _TutorialPageState();
+}
+
+class _TutorialPageState extends State<TutorialPage> {
+  int currPage = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isVisible,
-      child: MyContainer(
-        color: Colors.grey[200],
-        child: Image.asset('assets/tutorial/tutorialP1-min.png'),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildTutorialPage(0),
+                  _buildTutorialPage(1),
+                  _buildTutorialPage(2),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildButton(true),
+                _buildButton(false),
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildTutorialPage(int page) {
+    return Visibility(
+      visible: currPage == page,
+      child: MyContainer(
+        color: Colors.grey[200],
+        child: Image.asset('assets/tutorial/tutorialP${currPage + 1}-min.png'),
+      ),
+    );
+  }
+
+  Widget _buildButton(bool isLeft) {
+    if (isLeft && currPage == 0) return Container();
+    return MyContainer(
+      width: 50,
+      height: 50,
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(5),
+      ripple: true,
+      child: FittedBox(child: isLeft ? Icon(Icons.arrow_back_ios) : Icon(Icons.arrow_forward_ios)),
+      onTap: () {
+        if (isLeft)
+          goBack();
+        else
+          goForward();
+      },
+    );
+  }
+
+  void goBack() {
+    if (currPage > 0) {
+      setState(() {
+        currPage--;
+      });
+    }
+  }
+
+  void goForward() {
+    if (currPage < 3) {
+      setState(() {
+        currPage++;
+      });
+    }
+    if (currPage == 3) {
+      Preferences.getInstance().setShowTutorial(false);
+      Navigator.pushReplacementNamed(context, "/tasks");
+    }
   }
 }
