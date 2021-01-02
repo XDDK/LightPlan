@@ -26,6 +26,7 @@ import 'models/task.dart';
 import 'route_generator.dart';
 import 'ui/screens/main_page.dart';
 import 'ui/screens/settings_page.dart';
+import 'ui/screens/tasks_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,9 +49,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (_) => MainPage(),
-        // '/tasks': (_) => TasksPage(),
+        '/tasks': (_) => TasksPage(),
         '/settings': (_) => SettingsPage(),
-        // '/terms': (_) => TermsPage(),
       },
       onUnknownRoute: RouteGenerator.generateRoute,
       //* GenerateRoute is currently bugged and doesn't have browser history and doesn't pass route names to url

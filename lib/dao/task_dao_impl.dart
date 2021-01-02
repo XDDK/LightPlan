@@ -19,8 +19,9 @@
 */
 
 import 'package:hive/hive.dart';
-import 'task_dao.dart';
+
 import '../models/task.dart';
+import 'task_dao.dart';
 
 class TaskDaoImpl extends TaskDao {
   final Box<Task> tasksBox = Hive.box("tasks");
