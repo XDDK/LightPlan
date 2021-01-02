@@ -21,17 +21,20 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lighthouse_planner/theme_config.dart';
+import 'package:lightplan/dao/preferences.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';
+import 'theme_handler.dart';
 import 'ui/screens/main_page.dart';
 import 'ui/screens/settings_page.dart';
+import 'ui/screens/tasks_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // init hive boxes
   await Hive.initFlutter();
+  await Preferences.getFutureInstance();
   Hive.registerAdapter<Task>(TaskAdapter());
   runApp(MyApp());
 }
@@ -45,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    currentTheme.addListener(() { setState(() {}); });
+    themeHandler.addListener(() => setState(() {}));
   }
 
   @override
@@ -53,10 +56,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lightplan',
-      theme: currentTheme.currTheme(),
+      theme: themeHandler.currentTheme,
       initialRoute: '/',
       routes: {
         '/': (_) => MainPage(),
+        '/tasks': (_) => TasksPage(),
         '/settings': (_) => SettingsPage(),
       },
       onUnknownRoute: RouteGenerator.generateRoute,

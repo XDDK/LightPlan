@@ -21,6 +21,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../dao/preferences.dart';
 import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
 import '../../../tree_handler.dart';
@@ -58,6 +59,8 @@ class _TaskContainerState extends State<TaskContainer> {
       task = taskDao.findTask(treeHandler.currentRoot.id);
     }
     treeHandler.setCurrentRoot(task);
+    Preferences.getInstance().setLastViewedTask(task.id);
+    Preferences.getInstance().setLastViewedYear(treeHandler.root.getEndDateTime().year-1);
   }
 
   Widget buildChild() {
@@ -107,7 +110,7 @@ class _TaskContainerState extends State<TaskContainer> {
             // HOME and BACK buttons
             Visibility(
               visible: widget.task.parentId == null,
-              child: Container(width: 30)
+              child: Container(width: 30),
             ),
             Column(
               children: [

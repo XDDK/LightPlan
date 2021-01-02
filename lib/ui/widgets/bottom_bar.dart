@@ -19,10 +19,10 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:lighthouse_planner/task_list_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/task_dao_impl.dart';
+import '../../task_list_handler.dart';
 import 'my_container.dart';
 
 class MyBottomBar extends StatefulWidget {

@@ -33,7 +33,7 @@ class TutorialPage extends StatelessWidget {
       visible: isVisible,
       child: MyContainer(
         color: Colors.grey[200],
-        child: Image.asset('fonts/tutorial/tutorialP1.png'),
+        child: Image.asset('assets/tutorial/tutorialP1-min.png'),
       ),
     );
   }

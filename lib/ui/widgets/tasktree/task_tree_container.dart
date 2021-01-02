@@ -27,10 +27,6 @@ import '../../../tree_handler.dart';
 import '../task/task_container.dart';
 
 class TaskTreeContainer extends StatefulWidget {
-  final int taskRootId;
-
-  TaskTreeContainer({this.taskRootId});
-
   @override
   _TaskTreeContainerState createState() => _TaskTreeContainerState();
 }
@@ -49,10 +45,6 @@ class _TaskTreeContainerState extends State<TaskTreeContainer> {
     if (this.taskDao == null) return Container();
 
     _currentRootTask = treeHandler.currentRoot;
-
-    /* if (this._currentRootTask == null) {
-      _currentRootTask = this.taskDao.findTask(widget.taskRootId);
-    } */
 
     return Column(
       mainAxisSize: MainAxisSize.min,

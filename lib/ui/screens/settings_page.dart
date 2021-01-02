@@ -20,9 +20,9 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lightplan/theme_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../theme_config.dart';
 import '../widgets/my_container.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -31,8 +31,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPage extends State<SettingsPage> {
-  bool isSwitched = false;  
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -43,36 +41,29 @@ class _SettingsPage extends State<SettingsPage> {
             //mainAxisSize: MainAxisSize.min,
             children: [
               _buildItem(
-                Icons.nightlight_round, 
-                "Night mode", 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedOpacity(
-                      duration: Duration(milliseconds: 500),
-                      opacity: isSwitched ? 0 : 1,
-                      child: Icon(Icons.wb_sunny_outlined)
-                    ),
-                    Transform.scale(  
-                      scale: 1.25,  
-                      child: Switch(  
-                        onChanged: (e) => setState(() { 
-                          isSwitched = !isSwitched; 
-                          currentTheme.switchTheme(); 
-                        }),
-                        value: isSwitched,   
-                      )  
-                    ),
-                    AnimatedOpacity(
-                      duration: Duration(milliseconds: 500),
-                      opacity: isSwitched ? 1 : 0,
-                      child: Icon(Icons.nights_stay_outlined)
-                    ),
-                  ],
-                ),  
-                context),
+                  Icons.nightlight_round,
+                  "Night mode",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AnimatedOpacity(
+                          duration: Duration(milliseconds: 500),
+                          opacity: themeHandler.isDarkTheme ? 0 : 1,
+                          child: Icon(Icons.wb_sunny_outlined)),
+                      Transform.scale(
+                          scale: 1.25,
+                          child: Switch(
+                            onChanged: (e) => setState(() => themeHandler.switchTheme()),
+                            value: themeHandler.isDarkTheme,
+                          )),
+                      AnimatedOpacity(
+                          duration: Duration(milliseconds: 500),
+                          opacity: themeHandler.isDarkTheme ? 1 : 0,
+                          child: Icon(Icons.nights_stay_outlined)),
+                    ],
+                  ),
+                  context),
               Divider(thickness: 1),
-
               _buildItem(
                 Icons.info_outline,
                 "About",
