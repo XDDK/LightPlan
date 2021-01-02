@@ -81,7 +81,7 @@ class _TasksListViewState extends State<TasksListView> {
               }
 
               return MyContainer(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 margin: EdgeInsets.all(15),
                 padding: EdgeInsets.all(10),
                 shadowType: ShadowType.MEDIUM,

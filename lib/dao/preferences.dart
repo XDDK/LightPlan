@@ -6,6 +6,7 @@ class Preferences {
 
   static const _lastViewedYearKey = 'lastViewedYearKey';
   static const _lastViewedTaskKey = 'lastViewedTaskKey';
+  static const _darkTheme = 'darkThemeKey';
 
   Preferences._(Box<dynamic> box) {
     _box = box;
@@ -28,11 +29,20 @@ class Preferences {
   Future<void> setLastViewedYear(int lastYear) {
     return _box.put(_lastViewedYearKey, lastYear);
   }
+
   int getLastViewedTask() {
     return _box.get(_lastViewedTaskKey);
   }
 
   Future<void> setLastViewedTask(int lastTask) {
     return _box.put(_lastViewedTaskKey, lastTask);
+  }
+
+  bool getDarkTheme() {
+    return _box.get(_darkTheme);
+  }
+
+  Future<void> setDarkTheme(bool darkTheme) {
+    return _box.put(_darkTheme, darkTheme);
   }
 }

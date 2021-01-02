@@ -21,9 +21,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lightplan/dao/preferences.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';
+import 'theme_handler.dart';
 import 'ui/screens/main_page.dart';
 import 'ui/screens/settings_page.dart';
 import 'ui/screens/tasks_page.dart';
@@ -32,20 +34,29 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // init hive boxes
   await Hive.initFlutter();
+  await Preferences.getFutureInstance();
   Hive.registerAdapter<Task>(TaskAdapter());
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    themeHandler.addListener(() => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lightplan',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'WorkSans',
-      ),
+      theme: themeHandler.currentTheme,
       initialRoute: '/',
       routes: {
         '/': (_) => MainPage(),

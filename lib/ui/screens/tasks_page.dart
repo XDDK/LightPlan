@@ -30,6 +30,7 @@ import '../../dao/preferences.dart';
 import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../task_list_handler.dart';
+import '../../theme_handler.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tasktree/tasks_listview.dart';
 
@@ -44,6 +45,9 @@ class _TasksPage extends State<TasksPage> {
   @override
   Widget build(BuildContext context) {
     int searchedTaskId, searchedTaskYear;
+
+    searchedTaskYear = Preferences.getInstance().getLastViewedYear();
+    searchedTaskId = Preferences.getInstance().getLastViewedTask();
     // Routing arguments
     /*Map routeArgs = ModalRoute.of(context).settings.arguments;
     if (routeArgs != null) {
@@ -63,41 +67,32 @@ class _TasksPage extends State<TasksPage> {
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: FutureBuilder<Preferences>(
-              future: Preferences.getFutureInstance(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) return Container();
-
-                searchedTaskYear = snapshot.data.getLastViewedYear();
-                searchedTaskId = snapshot.data.getLastViewedTask();
-
-                return FutureBuilder<Box<Task>>(
-                  future: Hive.openBox<Task>('tasks'),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return FutureProvider(
-                        create: (_) => TaskDaoImpl().insertDefaults(),
-                        child: ChangeNotifierProvider(
-                          create: (context) => TaskListHandler(),
-                          child: Column(
-                            children: [
-                              TasksListView(
-                                controller: controller,
-                                searchedTask: {
-                                  searchedTaskYear: searchedTaskId,
-                                },
-                              ),
-                              MyBottomBar(treeController: controller),
-                            ],
-                          ),
+          body: FutureBuilder<Box<Task>>(
+            future: Hive.openBox<Task>('tasks'),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return FutureProvider(
+                  create: (_) => TaskDaoImpl().insertDefaults(),
+                  child: ChangeNotifierProvider(
+                    create: (context) => TaskListHandler(),
+                    child: Column(
+                      children: [
+                        TasksListView(
+                          controller: controller,
+                          searchedTask: {
+                            searchedTaskYear: searchedTaskId,
+                          },
                         ),
-                      );
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  },
+                        MyBottomBar(treeController: controller),
+                      ],
+                    ),
+                  ),
                 );
-              }),
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       ),
     );

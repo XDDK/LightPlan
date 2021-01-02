@@ -306,7 +306,7 @@ class _TaskEditor extends State<TaskEditor> {
       visible: buildAddSubtask,
       child: MyContainer(
         radius: 5,
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.symmetric(vertical: 10),
         ripple: true,
@@ -320,7 +320,7 @@ class _TaskEditor extends State<TaskEditor> {
             Flexible(
               child: Text(
                 "CREATE A SUBTASK",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             Icon(Icons.add),

@@ -57,6 +57,10 @@ flutter:
     - family: WorkSans
       fonts:
         - asset: fonts/WorkSans-Regular.ttf
+  assets:
+    - assets/tutorial/tutorialP1-min.png
+    - assets/tutorial/tutorialP2-min.png
+    - assets/tutorial/tutorialP3-min.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
