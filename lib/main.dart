@@ -21,6 +21,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lighthouse_planner/theme_handler.dart';
 
 import 'models/task.dart';
 import 'route_generator.dart';
@@ -35,22 +36,24 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeHandler theme = ThemeHandler();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lightplan',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'WorkSans',
-      ),
+      //theme: ,
       initialRoute: '/',
       routes: {
         '/': (_) => MainPage(),
-        // '/tasks': (_) => TasksPage(),
         '/settings': (_) => SettingsPage(),
-        // '/terms': (_) => TermsPage(),
       },
       onUnknownRoute: RouteGenerator.generateRoute,
       //* GenerateRoute is currently bugged and doesn't have browser history and doesn't pass route names to url

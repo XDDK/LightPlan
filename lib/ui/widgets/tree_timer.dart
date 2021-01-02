@@ -112,13 +112,19 @@ class _TreeTimerStateful extends State<TreeTimer> {
     return Container(
       child: Text(
         dateString,
-        style: TextStyle(
+        style: DefaultTextStyle.of(context).style.copyWith(
           letterSpacing: 3.0,
-          color: Colors.black,
           fontSize: 35,
           fontFamily: 'dpcomic', //! - custom font 'digital-7' doesnt render on mobile web + it's licensed under Freeware home use only
           fontWeight: FontWeight.bold,
-        ),
+        )
+        // (
+        //   letterSpacing: 3.0,
+        //   color: Colors.black,
+        //   fontSize: 35,
+        //   fontFamily: 'dpcomic', //! - custom font 'digital-7' doesnt render on mobile web + it's licensed under Freeware home use only
+        //   fontWeight: FontWeight.bold,
+        // ),
       ),
       padding: EdgeInsets.all(10),
     );

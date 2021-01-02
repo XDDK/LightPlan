@@ -57,6 +57,7 @@ class MyContainer extends StatefulWidget {
 
 class _MyContainer extends State<MyContainer> {
   Color finalColor;
+  //Theme.of(context);
 
   @override
   void initState() {

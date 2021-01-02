@@ -24,7 +24,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/my_container.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPage createState() => _SettingsPage();
+}
+
+class _SettingsPage extends State<SettingsPage> {
+  bool isSwitched = false;  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,6 +41,34 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             //mainAxisSize: MainAxisSize.min,
             children: [
+              _buildItem(
+                Icons.nightlight_round, 
+                "Night mode", 
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 500),
+                      opacity: isSwitched ? 0 : 1,
+                      child: Icon(Icons.wb_sunny_outlined)
+                    ),
+                    Transform.scale(  
+                      scale: 1.25,  
+                      child: Switch(  
+                        onChanged: (e) => setState(() { isSwitched = !isSwitched; }),
+                        value: isSwitched,   
+                      )  
+                    ),
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 500),
+                      opacity: isSwitched ? 1 : 0,
+                      child: Icon(Icons.nights_stay_outlined)
+                    ),
+                  ],
+                ),  
+                context),
+              Divider(thickness: 1),
+
               _buildItem(
                 Icons.info_outline,
                 "About",
