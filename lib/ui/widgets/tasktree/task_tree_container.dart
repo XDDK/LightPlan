@@ -50,10 +50,6 @@ class _TaskTreeContainerState extends State<TaskTreeContainer> {
 
     _currentRootTask = treeHandler.currentRoot;
 
-    /* if (this._currentRootTask == null) {
-      _currentRootTask = this.taskDao.findTask(widget.taskRootId);
-    } */
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

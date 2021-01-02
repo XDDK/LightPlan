@@ -29,9 +29,11 @@ class TaskEditor extends StatefulWidget {
   //* Modify the task values, edited Task will result in this.task and his references;
   final Task task;
   final Task parentTask;
+  final bool isSubtask;
   final bool buildAddSubtask;
   final bool isEditing;
   final Function addNewTask;
+  final Function deleteTask;
 
   final titleController = TextEditingController();
   final shortDescController = TextEditingController();
@@ -40,9 +42,11 @@ class TaskEditor extends StatefulWidget {
   TaskEditor({
     this.task,
     this.parentTask,
+    this.isSubtask = false,
     this.buildAddSubtask = false,
     this.isEditing = false,
     this.addNewTask,
+    @required this.deleteTask,
   });
 
   @override
@@ -84,6 +88,7 @@ class _TaskEditor extends State<TaskEditor> {
         SizedBox(height: 10),
         _buildDesc(widget.task),
         SizedBox(height: widget.buildAddSubtask && widget.isEditing && (widget.task?.canHaveChildren ?? true) ? 0 : 10),
+        _buildDeleteSubtask(widget.task, widget.isEditing && widget.isSubtask),
         _buildAddSubtask(widget.task, widget.buildAddSubtask),
       ],
     );
@@ -146,9 +151,13 @@ class _TaskEditor extends State<TaskEditor> {
   }
 
   Widget _buildDate(Task task) {
-    DateTime now = DateTime.now();
+    if(task == null) return Text("error: task is null");
+    var now = DateTime.now();
+    var lastDate = DateTime.fromMillisecondsSinceEpoch(widget.parentTask?.endDate ?? DateTime(now.year).millisecondsSinceEpoch);
+
     DateTime time;
-    if (task?.endDate != null) time = DateTime.fromMillisecondsSinceEpoch(task.endDate);
+    if(task.endDate == null) task.endDate = lastDate.millisecondsSinceEpoch;
+    time = DateTime.fromMillisecondsSinceEpoch(task.endDate);
 
     var df = DateFormat("d MMMM yyyy");
     String dateText = "This will end on:";
@@ -157,8 +166,6 @@ class _TaskEditor extends State<TaskEditor> {
     var functionShowDatePicker = () async {
       if (widget.task.isPredefined) return;
       if (!widget.isEditing) return;
-      var lastDate =
-          DateTime.fromMillisecondsSinceEpoch(widget.parentTask?.endDate ?? DateTime(now.year).millisecondsSinceEpoch);
       DateTime selectedTime = await showDatePicker(
         context: context,
         initialDate: time ?? lastDate,
@@ -239,6 +246,56 @@ class _TaskEditor extends State<TaskEditor> {
         color: Color.fromRGBO(0, 0, 0, 0.05),
         padding: EdgeInsets.all(10),
         child: Text(task?.desc ?? "Add a description"),
+      ),
+    );
+  }
+
+  Widget _buildDeleteSubtask(Task task, bool deleteTask) {
+    return Visibility(
+      visible: deleteTask,
+      child: GestureDetector(
+        onTap: () {
+          // Show confirm Dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Are you sure?"),
+                content: Text("Subtask ${task.title ?? '-'} will be deleted."),
+                actions: [
+                  FlatButton(
+                    child: Text("Cancel"),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  FlatButton(
+                    child: Text("Delete"),
+                    onPressed: () async {
+                      widget.deleteTask();
+                      // Pop dialog box
+                      Navigator.of(context).pop(true);
+                    },
+                  )
+                ],
+              );
+            },
+          );
+        },
+        child: MyContainer(
+          height: 36,
+          margin: EdgeInsets.only(bottom: 5),
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FittedBox(child: Icon(Icons.delete)),
+              Text("Delete subtask"), 
+            ],
+          ),
+          color: Colors.red,
+          colorEffect: true,
+          radius: 5,
+        ),
       ),
     );
   }

@@ -55,10 +55,13 @@ class _TaskDetailsContainer extends State<TaskPopup> {
   void initState() {
     super.initState();
 
-    editMode = widget.task == null ? true : widget.editor;
-
     editingTasks.clear();
-    editingTasks.add(widget.task);
+    editingTasks.add(widget.task.copyWith());
+
+    editMode = widget.editor;
+    if(editMode == true) {
+      this._addSubtask();
+    }
   }
 
   @override
@@ -99,12 +102,16 @@ class _TaskDetailsContainer extends State<TaskPopup> {
                         return TaskEditor(
                           task: editingTasks[index],
                           parentTask: widget.taskDao.findTask(editingTasks[index].parentId),
+                          isSubtask: index > 0,
                           buildAddSubtask: index == 0 &&
                               editMode &&
                               (editingTasks[index]?.canHaveChildren ?? true) &&
                               widget.isListedAsChild,
                           isEditing: editMode,
-                          addNewTask: _addTaskDetails,
+                          addNewTask: _addSubtask,
+                          deleteTask: () {
+                            setState(() => editingTasks.removeAt(index));
+                          },
                         );
                       },
                     ),
@@ -113,7 +120,14 @@ class _TaskDetailsContainer extends State<TaskPopup> {
                       top: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () => setState(() => editMode = !editMode),
+                        onTap: () async {
+                          var quit = await _showConfirmQuit();
+                          if (quit) {
+                            editingTasks.clear();
+                            editingTasks.add(widget.task.copyWith());
+                            setState(() => editMode = !editMode);
+                          }
+                        },
                         child: Container(
                           height: 30,
                           padding: EdgeInsets.all(5),
@@ -202,7 +216,7 @@ class _TaskDetailsContainer extends State<TaskPopup> {
   }
 
   // (title, shortDesc, desc etc) add to 'listedTasks' list of widgets
-  void _addTaskDetails() {
+  void _addSubtask() {
     setState(() => editingTasks.add(Task.empty(parentId: widget.task.id)));
   }
 
@@ -257,7 +271,7 @@ class _TaskDetailsContainer extends State<TaskPopup> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Are you sure you want to exit?'),
+          title: Text('Are you sure you want to exit edit mode?'),
           content: Text("You will lose all the modifications."),
           actions: <Widget>[
             FlatButton(
