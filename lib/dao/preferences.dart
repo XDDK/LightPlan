@@ -6,6 +6,7 @@ class Preferences {
 
   static const _lastViewedYearKey = 'lastViewedYearKey';
   static const _lastViewedTaskKey = 'lastViewedTaskKey';
+  static const _tutorial = 'tutorialKey';
   static const _darkTheme = 'darkThemeKey';
 
   Preferences._(Box<dynamic> box) {
@@ -15,7 +16,6 @@ class Preferences {
   static Future<Preferences> getFutureInstance() async {
     final box = await Hive.openBox<dynamic>(_preferencesBox);
     return Preferences._(box);
-    // return Preferences._(box);
   }
 
   static Preferences getInstance() {
@@ -39,10 +39,18 @@ class Preferences {
   }
 
   bool getDarkTheme() {
-    return _box.get(_darkTheme);
+    return _box.get(_darkTheme, defaultValue: false);
   }
 
   Future<void> setDarkTheme(bool darkTheme) {
     return _box.put(_darkTheme, darkTheme);
+  }
+
+  bool showTutorial() {
+    return _box.get(_tutorial, defaultValue: true);
+  }
+
+  Future<void> setShowTutorial(bool showTutorial) {
+    return _box.put(_tutorial, showTutorial);
   }
 }

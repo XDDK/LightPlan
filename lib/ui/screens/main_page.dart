@@ -19,6 +19,8 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:lightplan/dao/preferences.dart';
+import 'package:lightplan/ui/screens/tutorial_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -27,10 +29,16 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushReplacementNamed("/tasks");
+      if (Preferences.getInstance().showTutorial()) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => TutorialPage()),
+        );
+      } else {
+        Navigator.of(context).pushReplacementNamed("/tasks");
+      }
     });
   }
 
