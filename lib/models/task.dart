@@ -50,7 +50,6 @@ class Task {
   bool canHaveChildren;
 
   Task.empty({int parentId}) {
-    // this.endDate = DateTime.now().millisecondsSinceEpoch;
     this.parentId = parentId;
     this.isPredefined = false;
     this.canHaveChildren = true;
@@ -92,6 +91,17 @@ class Task {
   Task setId(int id) {
     this.id = id;
     return this;
+  }
+
+  DateTime endDateTime;
+
+  DateTime getEndDateTime() {
+    DateTime date = endDateTime;
+    if (date == null) {
+      date = DateTime.fromMillisecondsSinceEpoch(endDate);
+      endDateTime = date;
+    }
+    return date;
   }
 
   @override

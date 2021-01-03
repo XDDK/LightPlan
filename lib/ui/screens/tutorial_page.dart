@@ -104,7 +104,7 @@ class _TutorialPageState extends State<TutorialPage> {
     }
     if (currPage == 3) {
       Preferences.getInstance().setShowTutorial(false);
-      Navigator.pushReplacementNamed(context, "/tasks");
+      Navigator.pushReplacementNamed(context, "/");
     }
   }
 }

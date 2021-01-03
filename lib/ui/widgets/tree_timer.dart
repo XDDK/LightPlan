@@ -21,8 +21,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../tree_handler.dart';
 import 'package:provider/provider.dart';
+
+import '../../tree_handler.dart';
 
 class TreeTimer extends StatefulWidget {
   @override
