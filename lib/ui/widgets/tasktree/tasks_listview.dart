@@ -31,12 +31,8 @@ import 'task_tree_container.dart';
 
 class TasksListView extends StatefulWidget {
   final PageController controller;
-  final Map<int, int> searchedTask;
 
-  TasksListView({
-    @required this.controller,
-    this.searchedTask,
-  });
+  TasksListView({@required this.controller});
 
   @override
   _TasksListViewState createState() => _TasksListViewState();
@@ -53,8 +49,8 @@ class _TasksListViewState extends State<TasksListView> {
     List<Task> treeRoots = [];
     bool nextYearExists = false;
 
-    // Add all the tree roots into the list
     if (taskDao != null) {
+      // Add all the tree roots into the list
       for (var task in taskDao.findAllTasks()) {
         if (task.parentId == null) {
           var rootYear = DateTime.fromMillisecondsSinceEpoch(task.endDate).year;
@@ -73,13 +69,6 @@ class _TasksListViewState extends State<TasksListView> {
             itemCount: treeRoots.length,
             physics: treeRoots.length > 1 ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              var currentTreeRoot = treeRoots[index];
-              var currentTreeRootYear = treeRoots[index].getEndDateTime().year-1;
-              var searchedTaskId = widget.searchedTask[currentTreeRootYear];
-              if(searchedTaskId != null)  {
-                currentTreeRoot = taskDao.findTask(searchedTaskId);
-              }
-
               return MyContainer(
                 color: Theme.of(context).cardColor,
                 margin: EdgeInsets.all(15),
@@ -88,7 +77,7 @@ class _TasksListViewState extends State<TasksListView> {
                 radius: 20,
                 child: ChangeNotifierProvider(
                   // Every Tree will have their own TreeTimer and TaskTreeContainer
-                  create: (_) => TreeHandler(currentTreeRoot, treeRoots[index]),
+                  create: (_) => TreeHandler(treeRoots[index]),
                   child: ListView(
                     children: [
                       TreeTimer(),

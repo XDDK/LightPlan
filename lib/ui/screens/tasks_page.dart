@@ -30,7 +30,6 @@ import '../../dao/preferences.dart';
 import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../task_list_handler.dart';
-import '../../theme_handler.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tasktree/tasks_listview.dart';
 
@@ -77,12 +76,7 @@ class _TasksPage extends State<TasksPage> {
                     create: (context) => TaskListHandler(),
                     child: Column(
                       children: [
-                        TasksListView(
-                          controller: controller,
-                          searchedTask: {
-                            searchedTaskYear: searchedTaskId,
-                          },
-                        ),
+                        TasksListView(controller: controller),
                         MyBottomBar(treeController: controller),
                       ],
                     ),

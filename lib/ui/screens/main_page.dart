@@ -19,8 +19,14 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:lightplan/dao/preferences.dart';
-import 'package:lightplan/ui/screens/tutorial_page.dart';
+import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
+
+import '../../dao/task_dao_impl.dart';
+import '../../models/task.dart';
+import '../../task_list_handler.dart';
+import '../widgets/bottom_bar.dart';
+import '../widgets/tasktree/tasks_listview.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -28,34 +34,53 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Preferences.getInstance().showTutorial()) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => TutorialPage()),
-        );
-      } else {
-        Navigator.of(context).pushReplacementNamed("/tasks");
-      }
-    });
-  }
+  TaskDaoImpl taskDaoImpl;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => _showConfirmQuit(context),
+      onWillPop: () async => _showConfirmQuit(),
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Container(),
+          body: FutureBuilder<Box<Task>>(
+            future: Hive.openBox<Task>('tasks'),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                taskDaoImpl = TaskDaoImpl();
+                var controller = PageController(
+                  initialPage: 0,
+                  viewportFraction: MediaQuery.of(context).size.width > 950 ? 0.3 : 1.0,
+                );
+                return FutureProvider(
+                  create: (_) => taskDaoImpl.insertDefaults(),
+                  child: ChangeNotifierProvider(
+                    create: (context) => TaskListHandler(),
+                    child: Column(
+                      children: [
+                        TasksListView(controller: controller),
+                        MyBottomBar(treeController: controller),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       ),
     );
   }
 
-  Future<bool> _showConfirmQuit(BuildContext context) async {
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
+  Future<bool> _showConfirmQuit() async {
     return await showDialog<bool>(
       context: context,
       builder: (context) {

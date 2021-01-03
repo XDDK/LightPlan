@@ -26,7 +26,9 @@ class TreeHandler extends ChangeNotifier {
   Task _root;
   Task _currentRoot;
 
-  TreeHandler([this._currentRoot, this._root]);
+  TreeHandler([this._currentRoot]) {
+    this._root = this._currentRoot;
+  }
 
   Task get currentRoot {
     return _currentRoot;

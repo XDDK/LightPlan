@@ -27,6 +27,10 @@ import '../../../tree_handler.dart';
 import '../task/task_container.dart';
 
 class TaskTreeContainer extends StatefulWidget {
+  final int taskRootId;
+
+  TaskTreeContainer({this.taskRootId});
+
   @override
   _TaskTreeContainerState createState() => _TaskTreeContainerState();
 }
