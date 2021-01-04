@@ -20,6 +20,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:lightplan/theme_handler.dart';
+import 'package:lightplan/ui/screens/tutorial_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/preferences.dart';
@@ -28,7 +30,6 @@ import '../../models/task.dart';
 import '../../task_list_handler.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tasktree/tasks_listview.dart';
-import 'tutorial_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -41,58 +42,63 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    /* WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Preferences.getInstance().showTutorial()) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => TutorialPage()),
-        );
-      }
-    }); */
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      themeHandler.switchTheme(await Preferences.getFutureInstance(), Preferences.getInstance().getDarkTheme());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var controller = PageController(
-      initialPage: 0,
-      viewportFraction: MediaQuery.of(context).size.width > 950 ? 0.3 : 1.0,
-    );
-
-    // if (Preferences.getInstance().showTutorial()) return Center(child: CircularProgressIndicator());
-
     return WillPopScope(
       onWillPop: () async => _showConfirmQuit(),
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: FutureBuilder<Box<Task>>(
-            future: Hive.openBox<Task>('tasks'),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return FutureProvider(
-                  create: (_) => TaskDaoImpl().insertDefaults(),
-                  child: ChangeNotifierProvider(
-                    create: (context) => TaskListHandler(),
-                    child: Column(
-                      children: [
-                        TasksListView(
-                          controller: controller,
-                          searchedTask: {
-                            Preferences.getInstance().getLastViewedYear():
-                                Preferences.getInstance().getLastViewedTask(),
-                          },
-                        ),
-                        MyBottomBar(treeController: controller),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
+          body: AnimatedSwitcher(
+            child: FutureBuilder<Preferences>(
+                future: Preferences.getFutureInstance(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) return Container();
+                  return Preferences.getInstance().showTutorial() ? TutorialWidget() : _buildTasksPage;
+                }),
+            duration: Duration(seconds: 3),
           ),
         ),
       ),
+    );
+  }
+
+  Widget get _buildTasksPage {
+    var controller = PageController(
+      initialPage: 0,
+      viewportFraction: MediaQuery.of(context).size.width > 950 ? 0.3 : 1.0,
+    );
+    return FutureBuilder<Box<Task>>(
+      future: Hive.openBox<Task>('tasks'),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return FutureProvider(
+            create: (_) => TaskDaoImpl().insertDefaults(),
+            child: ChangeNotifierProvider(
+              create: (context) => TaskListHandler(),
+              child: Column(
+                children: [
+                  TasksListView(
+                    controller: controller,
+                    searchedTask: {
+                      Preferences.getInstance().getLastViewedYear(): Preferences.getInstance().getLastViewedTask(),
+                    },
+                  ),
+                  MyBottomBar(treeController: controller),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 

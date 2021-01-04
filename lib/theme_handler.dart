@@ -19,8 +19,7 @@
 */
 
 import 'package:flutter/material.dart';
-
-import 'dao/preferences.dart';
+import 'package:lightplan/dao/preferences.dart';
 
 ThemeHandler themeHandler = ThemeHandler();
 
@@ -28,8 +27,14 @@ class ThemeHandler with ChangeNotifier {
   static bool _isDarkTheme = false;
 
   ThemeHandler() {
-    _isDarkTheme = Preferences.getInstance().getDarkTheme() ?? false;
+    // _isDarkTheme = Preferences.getInstance().getDarkTheme() ?? false;
   }
+
+  // TODO
+  final ThemeData blackMode = ThemeData(
+    colorScheme: ColorScheme.dark(),
+    fontFamily: 'WorkSans',
+  );
 
   final ThemeData darkMode = ThemeData(
     brightness: Brightness.dark,
@@ -44,14 +49,21 @@ class ThemeHandler with ChangeNotifier {
   bool get isDarkTheme {
     return _isDarkTheme;
   }
-
+  
   ThemeData get currentTheme {
     return _isDarkTheme ? darkMode : whiteMode;
   }
 
-  void switchTheme() {
-    _isDarkTheme = !_isDarkTheme;
-    Preferences.getInstance().setDarkTheme(_isDarkTheme);
+  ThemeMode get currentThemeMode {
+    return _isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  void switchTheme(Preferences prefs, [bool isDarkTheme]) {
+    if (isDarkTheme == null)
+      _isDarkTheme = !_isDarkTheme;
+    else
+      _isDarkTheme = isDarkTheme;
+    prefs.setDarkTheme(_isDarkTheme);
     notifyListeners();
   }
 }

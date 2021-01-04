@@ -20,9 +20,11 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lightplan/dao/preferences.dart';
 import 'package:lightplan/theme_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../main.dart';
 import '../widgets/my_container.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -53,7 +55,10 @@ class _SettingsPage extends State<SettingsPage> {
                       Transform.scale(
                           scale: 1.25,
                           child: Switch(
-                            onChanged: (e) => setState(() => themeHandler.switchTheme()),
+                            onChanged: (e) async {
+                              await Preferences.getFutureInstance();
+                              setState(() => themeHandler.switchTheme(Preferences.getInstance()));
+                            },
                             value: themeHandler.isDarkTheme,
                           )),
                       AnimatedOpacity(

@@ -80,6 +80,9 @@ class _TasksListViewState extends State<TasksListView> {
                 currentTreeRoot = taskDao.findTask(searchedTaskId);
               }
 
+              var theme = Theme.of(context);
+              print(theme.cardColor);
+
               return MyContainer(
                 color: Theme.of(context).cardColor,
                 margin: EdgeInsets.all(15),

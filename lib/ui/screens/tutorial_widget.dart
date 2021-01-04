@@ -19,23 +19,23 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:lightplan/dao/preferences.dart';
 
+import '../../dao/preferences.dart';
 import '../widgets/my_container.dart';
 
-class TutorialPage extends StatefulWidget {
+class TutorialWidget extends StatefulWidget {
   @override
-  _TutorialPageState createState() => _TutorialPageState();
+  _TutorialWidgetState createState() => _TutorialWidgetState();
 }
 
-class _TutorialPageState extends State<TutorialPage> {
+class _TutorialWidgetState extends State<TutorialWidget> {
   int currPage = 0;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Center(
+      child: IntrinsicWidth(
+        child: Column(
           children: [
             Expanded(
               child: Stack(
