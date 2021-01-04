@@ -18,21 +18,30 @@
 *    Contact the authors at: contact@lightplanx.com
 */
 
+library library_th;
+
 import 'package:flutter/material.dart';
-import 'package:lightplan/dao/preferences.dart';
+import 'package:flutter/scheduler.dart';
+
+import 'dao/preferences.dart';
 
 ThemeHandler themeHandler = ThemeHandler();
 
+enum _CurrentTheme { SYSTEM, LIGHT, DARK, BLACK }
+
 class ThemeHandler with ChangeNotifier {
-  static bool _isDarkTheme = false;
+  _CurrentTheme _currentTheme;
 
   ThemeHandler() {
     // _isDarkTheme = Preferences.getInstance().getDarkTheme() ?? false;
   }
 
-  // TODO
   final ThemeData blackMode = ThemeData(
-    colorScheme: ColorScheme.dark(),
+    brightness: Brightness.dark,
+    canvasColor: Colors.black,
+    cardColor: Colors.grey[900],
+    primaryColor: Colors.black,
+    accentColor: Colors.black,
     fontFamily: 'WorkSans',
   );
 
@@ -46,24 +55,42 @@ class ThemeHandler with ChangeNotifier {
     fontFamily: 'WorkSans',
   );
 
-  bool get isDarkTheme {
-    return _isDarkTheme;
+  // SYSTEM=0, LIGHT=1, DARK=2, BLACK=3,
+  int get currentThemeIndex {
+    return _currentTheme?.index ?? 0;
   }
-  
+
   ThemeData get currentTheme {
-    return _isDarkTheme ? darkMode : whiteMode;
+    // _CurrentTheme.values[isDarkTheme].inde
+    // return isDarkTheme ? darkMode : whiteMode;
+    switch (_currentTheme) {
+      case _CurrentTheme.LIGHT:
+        return whiteMode;
+      case _CurrentTheme.DARK:
+        return darkMode;
+      case _CurrentTheme.BLACK:
+        return blackMode;
+      default:
+        return SchedulerBinding.instance.window.platformBrightness == Brightness.dark ? darkMode : whiteMode;
+    }
   }
 
   ThemeMode get currentThemeMode {
-    return _isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+    switch (_currentTheme) {
+      case _CurrentTheme.LIGHT:
+        return ThemeMode.light;
+      case _CurrentTheme.DARK:
+        return ThemeMode.dark;
+      case _CurrentTheme.BLACK:
+        return ThemeMode.light;
+      default:
+        return ThemeMode.system;
+    }
   }
 
-  void switchTheme(Preferences prefs, [bool isDarkTheme]) {
-    if (isDarkTheme == null)
-      _isDarkTheme = !_isDarkTheme;
-    else
-      _isDarkTheme = isDarkTheme;
-    prefs.setDarkTheme(_isDarkTheme);
+  void changeTheme(Preferences prefs, [int themeIndex = 0]) {
+    _currentTheme = _CurrentTheme.values[themeIndex];
+    prefs.setAppTheme(themeIndex);
     notifyListeners();
   }
 }

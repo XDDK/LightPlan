@@ -20,11 +20,10 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:lightplan/dao/preferences.dart';
-import 'package:lightplan/theme_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../main.dart';
+import '../../dao/preferences.dart';
+import '../../theme_handler.dart';
 import '../widgets/my_container.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -44,28 +43,19 @@ class _SettingsPage extends State<SettingsPage> {
             children: [
               _buildItem(
                   Icons.nightlight_round,
-                  "Night mode",
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnimatedOpacity(
-                          duration: Duration(milliseconds: 500),
-                          opacity: themeHandler.isDarkTheme ? 0 : 1,
-                          child: Icon(Icons.wb_sunny_outlined)),
-                      Transform.scale(
-                          scale: 1.25,
-                          child: Switch(
-                            onChanged: (e) async {
-                              await Preferences.getFutureInstance();
-                              setState(() => themeHandler.switchTheme(Preferences.getInstance()));
-                            },
-                            value: themeHandler.isDarkTheme,
-                          )),
-                      AnimatedOpacity(
-                          duration: Duration(milliseconds: 500),
-                          opacity: themeHandler.isDarkTheme ? 1 : 0,
-                          child: Icon(Icons.nights_stay_outlined)),
-                    ],
+                  "Current Theme",
+                  DropdownButton(
+                    value: themeHandler.currentThemeIndex,
+                    onChanged: (int newSelection) async {
+                      await Preferences.getFutureInstance();
+                      setState(() => themeHandler.changeTheme(Preferences.getInstance(), newSelection));
+                    },
+                    items: <int>[0, 1, 2, 3].map((currentSelection) {
+                      return DropdownMenuItem<int>(
+                        value: currentSelection,
+                        child: _buildDropdownWidget(currentSelection),
+                      );
+                    }).toList(),
                   ),
                   context),
               Divider(thickness: 1),
@@ -81,20 +71,20 @@ class _SettingsPage extends State<SettingsPage> {
       everybody's liking. If you are interested, the '''
                         .replaceAll("\n", "")
                         .replaceAll("      ", ""),
-                    style: TextStyle(color: Colors.black),
+                    style: themeHandler.currentTheme.textTheme.headline4,
                     children: <TextSpan>[
                       TextSpan(
                         text: "full source code can be found here",
-                        style: TextStyle(color: Colors.blue),
+                        style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
                         recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
                       ),
                       TextSpan(
                         text: "\n\nA web version of this app is also available online and ",
-                        style: TextStyle(color: Colors.black),
+                        style: themeHandler.currentTheme.textTheme.headline4,
                       ),
                       TextSpan(
                         text: "can be found here",
-                        style: TextStyle(color: Colors.blue),
+                        style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
                         recognizer: TapGestureRecognizer()..onTap = () => launch("https://lightplanx.com"),
                       ),
                     ],
@@ -193,6 +183,35 @@ class _SettingsPage extends State<SettingsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDropdownWidget(int value) {
+    IconData iconData;
+    String text;
+
+    switch (value) {
+      case 1:
+        iconData = Icons.wb_sunny_outlined; text = "LIGHT";
+        break;
+      case 2:
+        iconData = Icons.nights_stay_outlined; text = "DARK";
+        break;
+      case 3:
+        iconData = Icons.blur_on; text = "BLACK";
+        break;
+      default:
+        iconData = Icons.phone_android_outlined; text = "SYSTEM";
+        break;
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Icon(iconData),
+        Text("$text"),
+      ],
     );
   }
 

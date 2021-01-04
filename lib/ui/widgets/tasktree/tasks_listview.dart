@@ -24,6 +24,7 @@ import 'package:provider/provider.dart';
 import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
 import '../../../task_list_handler.dart';
+import '../../../theme_handler.dart';
 import '../../../tree_handler.dart';
 import '../my_container.dart';
 import '../tree_timer.dart';
@@ -74,17 +75,14 @@ class _TasksListViewState extends State<TasksListView> {
             physics: treeRoots.length > 1 ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               var currentTreeRoot = treeRoots[index];
-              var currentTreeRootYear = treeRoots[index].getEndDateTime().year-1;
+              var currentTreeRootYear = treeRoots[index].getEndDateTime().year - 1;
               var searchedTaskId = widget.searchedTask[currentTreeRootYear];
-              if(searchedTaskId != null)  {
+              if (searchedTaskId != null) {
                 currentTreeRoot = taskDao.findTask(searchedTaskId);
               }
 
-              var theme = Theme.of(context);
-              print(theme.cardColor);
-
               return MyContainer(
-                color: Theme.of(context).cardColor,
+                color: themeHandler.currentTheme.cardColor,
                 margin: EdgeInsets.all(15),
                 padding: EdgeInsets.all(10),
                 shadowType: ShadowType.MEDIUM,

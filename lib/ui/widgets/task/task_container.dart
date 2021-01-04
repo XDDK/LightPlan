@@ -53,12 +53,13 @@ class _TaskContainerState extends State<TaskContainer> {
       return buildParent();
   }
 
-  void _updateCurrentRoot([Task task]) {
+  void _updateCurrentRoot([Task task]) async {
     // If task is null, updade/change the root of the tree
     if (task == null) {
       task = taskDao.findTask(treeHandler.currentRoot.id);
     }
     treeHandler.setCurrentRoot(task);
+    await Preferences.getFutureInstance();
     Preferences.getInstance().setLastViewedTask(task.id);
     Preferences.getInstance().setLastViewedYear(treeHandler.root.getEndDateTime().year-1);
   }

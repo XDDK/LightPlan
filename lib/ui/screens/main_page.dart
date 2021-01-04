@@ -20,14 +20,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:lightplan/theme_handler.dart';
-import 'package:lightplan/ui/screens/tutorial_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/preferences.dart';
 import '../../dao/task_dao_impl.dart';
 import '../../models/task.dart';
 import '../../task_list_handler.dart';
+import '../../theme_handler.dart';
+import '../../ui/screens/tutorial_widget.dart';
 import '../widgets/bottom_bar.dart';
 import '../widgets/tasktree/tasks_listview.dart';
 
@@ -44,7 +44,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      themeHandler.switchTheme(await Preferences.getFutureInstance(), Preferences.getInstance().getDarkTheme());
+      themeHandler.changeTheme(await Preferences.getFutureInstance(), Preferences.getInstance().getAppTheme());
     });
   }
 

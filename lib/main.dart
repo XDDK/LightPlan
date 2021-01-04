@@ -46,9 +46,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     themeHandler.addListener(() {
-      print("main theme listener");
       setState(() {});
-    } );
+    });
   }
 
   @override
@@ -56,9 +55,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lightplan',
-      theme: themeHandler.whiteMode,
-      darkTheme: themeHandler.darkMode,
-      themeMode: themeHandler.currentThemeMode,
+      theme: themeHandler.currentTheme,
+      // darkTheme: themeHandler.darkMode,
+      // themeMode: themeHandler.currentThemeMode,
       initialRoute: '/',
       routes: {
         '/': (_) => MainPage(),
