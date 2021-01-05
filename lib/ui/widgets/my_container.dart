@@ -64,6 +64,12 @@ class _MyContainer extends State<MyContainer> {
     finalColor = widget.color;
   }
 
+  @override
+  void didUpdateWidget(MyContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    finalColor = widget.color;
+  }
+
   // Change color on hover - singleton
   changeColor() {
     if (widget.colorEffect && finalColor != null && finalColor == widget.color) {

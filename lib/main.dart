@@ -34,8 +34,8 @@ void main() async {
   // init hive boxes
   await Hive.initFlutter();
   await Preferences.getFutureInstance();
-  await Hive.openBox<Task>('tasks');
   Hive.registerAdapter<Task>(TaskAdapter());
+  await Hive.openBox<Task>('tasks');
   runApp(MyApp());
 }
 
@@ -48,9 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    themeHandler.addListener(() {
-      setState(() {});
-    });
+    themeHandler.addListener(() => setState(() {}));
   }
 
   @override
