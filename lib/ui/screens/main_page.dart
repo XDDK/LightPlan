@@ -24,7 +24,6 @@ import 'package:provider/provider.dart';
 
 import '../../dao/preferences.dart';
 import '../../dao/task_dao_impl.dart';
-import '../../models/task.dart';
 import '../../task_list_handler.dart';
 import '../../theme_handler.dart';
 import '../../ui/screens/tutorial_widget.dart';
@@ -37,8 +36,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  TaskDaoImpl taskDaoImpl;
-
   @override
   void initState() {
     super.initState();
@@ -56,12 +53,12 @@ class _MainPageState extends State<MainPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: AnimatedSwitcher(
-            child: FutureBuilder<Preferences>(
-                future: Preferences.getFutureInstance(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) return Container();
-                  return Preferences.getInstance().showTutorial() ? TutorialWidget() : _buildTasksPage;
-                }),
+            child: Preferences.getInstance().showTutorial()
+                ? TutorialWidget(updatePreferences: (e) {
+                    Preferences.getInstance().setShowTutorial(e);
+                    setState(() {});
+                  })
+                : _buildTasksPage,
             duration: Duration(seconds: 3),
           ),
         ),
@@ -74,30 +71,23 @@ class _MainPageState extends State<MainPage> {
       initialPage: 0,
       viewportFraction: MediaQuery.of(context).size.width > 950 ? 0.3 : 1.0,
     );
-    return FutureBuilder<Box<Task>>(
-      future: Hive.openBox<Task>('tasks'),
+    return FutureProvider(
+      create: (_) => TaskDaoImpl().insertDefaults(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return FutureProvider(
-            create: (_) => TaskDaoImpl().insertDefaults(),
-            child: ChangeNotifierProvider(
-              create: (context) => TaskListHandler(),
-              child: Column(
-                children: [
-                  TasksListView(
-                    controller: controller,
-                    searchedTask: {
-                      Preferences.getInstance().getLastViewedYear(): Preferences.getInstance().getLastViewedTask(),
-                    },
-                  ),
-                  MyBottomBar(treeController: controller),
-                ],
+        return ChangeNotifierProvider<TaskListHandler>(
+          create: (context) => TaskListHandler(),
+          child: Column(
+            children: [
+              TasksListView(
+                controller: controller,
+                searchedTask: {
+                  Preferences.getInstance().getLastViewedYear(): Preferences.getInstance().getLastViewedTask(),
+                },
               ),
-            ),
-          );
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
+              MyBottomBar(treeController: controller),
+            ],
+          ),
+        );
       },
     );
   }

@@ -87,7 +87,7 @@ class _TasksListViewState extends State<TasksListView> {
                 padding: EdgeInsets.all(10),
                 shadowType: ShadowType.MEDIUM,
                 radius: 20,
-                child: ChangeNotifierProvider(
+                child: ChangeNotifierProvider<TreeHandler>(
                   // Every Tree will have their own TreeTimer and TaskTreeContainer
                   create: (_) => TreeHandler(currentTreeRoot, treeRoots[index]),
                   child: ListView(

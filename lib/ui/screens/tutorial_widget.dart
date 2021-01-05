@@ -20,10 +20,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../../dao/preferences.dart';
 import '../widgets/my_container.dart';
 
 class TutorialWidget extends StatefulWidget {
+  final Function updatePreferences;
+
+  TutorialWidget({@required this.updatePreferences});
+
   @override
   _TutorialWidgetState createState() => _TutorialWidgetState();
 }
@@ -103,8 +106,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
       });
     }
     if (currPage == 3) {
-      Preferences.getInstance().setShowTutorial(false);
-      Navigator.pushReplacementNamed(context, "/");
+      widget.updatePreferences(false);
     }
   }
 }

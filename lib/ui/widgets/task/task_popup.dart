@@ -43,10 +43,10 @@ class TaskPopup extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _TaskDetailsContainer();
+  State<StatefulWidget> createState() => _TaskPopupState();
 }
 
-class _TaskDetailsContainer extends State<TaskPopup> {
+class _TaskPopupState extends State<TaskPopup> {
   double width, height;
   bool editMode;
   List<Task> editingTasks = [];
@@ -82,8 +82,7 @@ class _TaskDetailsContainer extends State<TaskPopup> {
             radius: 10,
             padding: EdgeInsets.all(20),
             //* MediaQuery.of(context).viewInsets.bottom = 0 on mobile web
-            margin:
-                EdgeInsets.fromLTRB(10, 10, 10, isKeyboardVisible ? 10 + MediaQuery.of(context).viewInsets.bottom : 10),
+            margin: EdgeInsets.fromLTRB(10, 10, 10, isKeyboardVisible ? 10 + MediaQuery.of(context).viewInsets.bottom : 10),
             color: Theme.of(context).cardColor,
             width: width < 800 ? (width - 20) * 0.8 : width * .3,
             child: Column(

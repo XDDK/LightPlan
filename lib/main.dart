@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'dao/preferences.dart';
 import 'models/task.dart';
 import 'route_generator.dart';
 import 'theme_handler.dart';
@@ -32,6 +33,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // init hive boxes
   await Hive.initFlutter();
+  await Preferences.getFutureInstance();
+  await Hive.openBox<Task>('tasks');
   Hive.registerAdapter<Task>(TaskAdapter());
   runApp(MyApp());
 }
