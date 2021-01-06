@@ -73,12 +73,12 @@ class TaskDaoImpl extends TaskDao {
   }
 
   @override
-  Future<void> deleteTask(Task treeTask) {
+  Future<void> deleteTask(Task treeTask) async {
+    // Delete the task + all his direct and indirect children
     if (treeTask == null) return null;
-    for (int i = 0; i < tasksBox.length; i++) {
-      Task taskAt = tasksBox.getAt(i);
-      if (taskAt.parentId == treeTask.id) tasksBox.delete(taskAt.id);
-    }
+    List<Task> toDeleteChildren = [];
+    findDeepChildren(treeTask, toDeleteChildren);
+    toDeleteChildren.forEach((element) => tasksBox.delete(element.id));
     return tasksBox.delete(treeTask.id);
   }
 
@@ -92,11 +92,21 @@ class TaskDaoImpl extends TaskDao {
   @override
   List<Task> findAllTasks() {
     return tasksBox.values.toList();
-    /* List<Task> tasksList = [];
-    for (int i = 0; i < tasksBox.length; i++) {
-      tasksList.add(tasksBox.getAt(i));
+  }
+
+  List<Task> findChildren(Task parentTask) {
+    List<Task> children = [];
+    for (var task in tasksBox.values) {
+      if (task.parentId == parentTask.id) children.add(task);
     }
-    return tasksList; */
+    return children;
+  }
+
+  void findDeepChildren(Task parentTask, List<Task> deepChildren) {
+    for (var child in findChildren(parentTask)) {
+      findDeepChildren(child, deepChildren);
+      deepChildren.add(child);
+    }
   }
 
   @override

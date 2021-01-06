@@ -23,7 +23,7 @@ import 'package:hive/hive.dart';
 
 part 'task.g.dart';
 
-enum Repetition {
+enum Recurrence {
   NONE,
   MONTHLY,
   WEEKLY,
@@ -61,13 +61,13 @@ class Task {
   int startDate;
 
   @HiveField(9)
-  int repeatPeriod;
+  int recurrenceIndex;
 
   Task.empty({int parentId}) {
     this.parentId = parentId;
     this.isPredefined = false;
     this.canHaveChildren = true;
-    this.repeatPeriod = 0;
+    this.recurrenceIndex = 0;
   }
 
   Task copyWith({
@@ -80,7 +80,7 @@ class Task {
     bool isPredefined,
     bool canHaveChildren,
     int startDate,
-    Repetition repeatPeriod,
+    Recurrence recurrence,
   }) {
     return Task(
       id: id ?? this.id,
@@ -92,7 +92,7 @@ class Task {
       isPredefined: isPredefined ?? this.isPredefined,
       canHaveChildren: canHaveChildren ?? this.canHaveChildren,
       startDate: startDate ?? this.startDate,
-      repeatPeriod: repeatPeriod?.index ?? this.repeatPeriod,
+      recurrenceIndex: recurrence?.index ?? this.recurrenceIndex,
     );
   }
 
@@ -106,7 +106,7 @@ class Task {
     @required this.isPredefined,
     this.canHaveChildren = true,
     this.startDate,
-    this.repeatPeriod = 0,
+    this.recurrenceIndex = 0,
   });
 
   Task setId(int id) {
@@ -114,12 +114,23 @@ class Task {
     return this;
   }
 
-  Repetition get repetition {
-    return Repetition.values[this.repeatPeriod];
+  Recurrence get recurrence {
+    return Recurrence.values[this.recurrenceIndex];
   }
 
-  set repetition(Repetition repetition) {
-    this.repeatPeriod = repetition.index;
+  set recurrence(Recurrence recurrence) {
+    this.recurrenceIndex = recurrence.index;
+  }
+
+  DateTime startDateTime;
+
+  DateTime getStartDateTime() {
+    DateTime date = startDateTime;
+    if (date == null) {
+      date = DateTime.fromMillisecondsSinceEpoch(startDate);
+      startDateTime = date;
+    }
+    return date;
   }
 
   DateTime endDateTime;

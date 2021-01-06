@@ -68,6 +68,28 @@ class Utils {
     return _defaultTasks[year];
   }
 
+  static String recurrenceToText(Recurrence repetition) {
+    String text;
+    switch (repetition) {
+      case Recurrence.MONTHLY:
+        text = "monthly";
+        break;
+      case Recurrence.WEEKLY:
+        text = "weekly";
+        break;
+      case Recurrence.DAILY:
+        text = "daily";
+        break;
+      case Recurrence.HOURLY:
+        text = "hourly";
+        break;
+      default:
+        text = "none";
+        break;
+    }
+    return text;
+  }
+
   static void showToast(BuildContext context, String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(

@@ -21,8 +21,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
+import '../../../utils.dart';
 import '../my_container.dart';
 
 class TaskEditor extends StatefulWidget {
@@ -54,6 +57,8 @@ class TaskEditor extends StatefulWidget {
 }
 
 class _TaskEditor extends State<TaskEditor> {
+  TaskDaoImpl taskDao;
+
   @override
   void initState() {
     super.initState();
@@ -76,6 +81,8 @@ class _TaskEditor extends State<TaskEditor> {
 
   @override
   Widget build(BuildContext context) {
+    this.taskDao = context.watch<TaskDaoImpl>();
+    
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,6 +91,7 @@ class _TaskEditor extends State<TaskEditor> {
         SizedBox(height: 10),
         _buildShortDesc(widget.task),
         Divider(thickness: 1),
+        _buildRepetition(widget.task),
         _buildDate(widget.task),
         SizedBox(height: 10),
         _buildDesc(widget.task),
@@ -150,14 +158,70 @@ class _TaskEditor extends State<TaskEditor> {
     return Text(task?.shortDesc ?? "Add a task short description");
   }
 
+  Widget _buildRepetition(Task task) {
+    if (task.isPredefined || (!widget.isEditing && task.recurrence == Recurrence.NONE)) return Container();
+    List<Recurrence> availableOptions = [Recurrence.NONE, Recurrence.MONTHLY, Recurrence.WEEKLY, Recurrence.DAILY];
+    // remove options higher than the first parent_task.with(recurrence != null)
+    Task _currentParentTask = taskDao.findTask(task.parentId);
+    while (_currentParentTask.recurrence == null) _currentParentTask = taskDao.findTask(_currentParentTask.parentId);
+    availableOptions = availableOptions.where((option) {
+      return option.index >= _currentParentTask.recurrence.index;
+    }).toList();
+
+    // change the current task recurrence if options changed
+    task.recurrence = task.recurrence.index < availableOptions[0].index ? availableOptions[0] : task.recurrence;
+
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Material(
+        type: MaterialType.transparency,
+        child: SizedBox(
+          height: 40,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Task recurrence:"),
+              SizedBox(width: 5),
+              Visibility(
+                visible: !widget.isEditing,
+                child: Text(
+                  Utils.recurrenceToText(task.recurrence),
+                  style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Visibility(
+                visible: widget.isEditing && !widget.task.isPredefined,
+                child: DropdownButton(
+                  value: task.recurrence,
+                  onChanged: (Recurrence val) => setState(() => task.recurrence = val),
+                  items: availableOptions.map((currentSelection) {
+                    return DropdownMenuItem<Recurrence>(
+                      value: currentSelection,
+                      child: Text(Utils.recurrenceToText(currentSelection)),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildDate(Task task) {
-    if(task == null) return Text("error: task is null");
+    if (task == null) return Text("error: task is null");
     var now = DateTime.now();
-    var lastDate = DateTime.fromMillisecondsSinceEpoch(widget.parentTask?.endDate ?? DateTime(now.year).millisecondsSinceEpoch);
+    var lastDate =
+        DateTime.fromMillisecondsSinceEpoch(widget.parentTask?.endDate ?? DateTime(now.year).millisecondsSinceEpoch);
 
     DateTime time;
-    if(task.endDate == null) task.endDate = lastDate.millisecondsSinceEpoch;
+    if (task.endDate == null) task.endDate = lastDate.millisecondsSinceEpoch;
     time = DateTime.fromMillisecondsSinceEpoch(task.endDate);
+
+    Task _currentTask = task.copyWith();
+    while (_currentTask.startDate == null) _currentTask = taskDao.findTask(_currentTask.parentId);
+    DateTime startTime = _currentTask.getStartDateTime();
 
     var df = DateFormat("d MMMM yyyy");
     String dateText = "This will end on:";
@@ -169,7 +233,7 @@ class _TaskEditor extends State<TaskEditor> {
       DateTime selectedTime = await showDatePicker(
         context: context,
         initialDate: time ?? lastDate,
-        firstDate: DateTime(2000),
+        firstDate: startTime,
         lastDate: lastDate,
       );
       if (selectedTime != null) setState(() => widget.task.endDate = selectedTime.millisecondsSinceEpoch);
@@ -187,7 +251,9 @@ class _TaskEditor extends State<TaskEditor> {
         // bold grey
         textSpans.add(TextSpan(
           text: selectedDateTxt,
-          style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold, color: Colors.grey.withOpacity(0.7)),
+          style: DefaultTextStyle.of(context)
+              .style
+              .copyWith(fontWeight: FontWeight.bold, color: Colors.grey.withOpacity(0.7)),
         ));
       } else {
         // bold blue
@@ -289,7 +355,7 @@ class _TaskEditor extends State<TaskEditor> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FittedBox(child: Icon(Icons.delete)),
-              Text("Delete subtask"), 
+              Text("Delete subtask"),
             ],
           ),
           color: Colors.red,

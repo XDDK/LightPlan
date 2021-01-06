@@ -61,7 +61,7 @@ class _TaskContainerState extends State<TaskContainer> {
     treeHandler.setCurrentRoot(task);
     await Preferences.getFutureInstance();
     Preferences.getInstance().setLastViewedTask(task.id);
-    Preferences.getInstance().setLastViewedYear(treeHandler.root.getEndDateTime().year-1);
+    Preferences.getInstance().setLastViewedYear(treeHandler.root.getEndDateTime().year - 1);
   }
 
   Widget buildChild() {
@@ -180,14 +180,17 @@ class _TaskContainerState extends State<TaskContainer> {
         context: context,
         routeSettings: RouteSettings(), // add the dialog on an unnamed route, so user can go back
         builder: (_) {
-          return Align(
-            alignment: Alignment.topCenter,
-            child: TaskPopup(
-              task: task,
-              editor: editor,
-              isListedAsChild: canAddTask,
-              taskDao: this.taskDao,
-              updateCurrentTask: _updateCurrentRoot,
+          return Provider(
+            create: (_) => TaskDaoImpl.getInstance(),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: TaskPopup(
+                task: task,
+                editor: editor,
+                isListedAsChild: canAddTask,
+                taskDao: this.taskDao,
+                updateCurrentTask: _updateCurrentRoot,
+              ),
             ),
           );
         });

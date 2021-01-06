@@ -98,15 +98,16 @@ class _TaskPopupState extends State<TaskPopup> {
                       shrinkWrap: true,
                       itemCount: editingTasks.length,
                       itemBuilder: (BuildContext context, int index) {
+                        var canBuildSubtask = index == 0 &&
+                              editMode &&
+                              (editingTasks[index]?.canHaveChildren ?? true) &&
+                              widget.isListedAsChild;
                         return TaskEditor(
                           task: editingTasks[index],
                           parentTask: widget.taskDao.findTask(editingTasks[index].parentId),
                           isSubtask: index > 0,
-                          buildAddSubtask: index == 0 &&
-                              editMode &&
-                              (editingTasks[index]?.canHaveChildren ?? true) &&
-                              widget.isListedAsChild,
-                          isEditing: editMode,
+                          buildAddSubtask: canBuildSubtask,
+                          isEditing: !canBuildSubtask && editMode,
                           addNewTask: _addSubtask,
                           deleteTask: () {
                             setState(() => editingTasks.removeAt(index));

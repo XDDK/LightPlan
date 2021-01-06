@@ -21,15 +21,15 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lightplan/dao/task_dao_impl.dart';
-import 'package:lightplan/version_handler.dart';
 
 import 'dao/preferences.dart';
+import 'dao/task_dao_impl.dart';
 import 'models/task.dart';
 import 'route_generator.dart';
 import 'theme_handler.dart';
 import 'ui/screens/main_page.dart';
 import 'ui/screens/settings_page.dart';
+import 'version_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

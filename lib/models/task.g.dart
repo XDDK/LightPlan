@@ -26,7 +26,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       isPredefined: fields[6] as bool,
       canHaveChildren: fields[7] as bool,
       startDate: fields[8] as int,
-      repeatPeriod: fields[9] as int,
+      recurrenceIndex: fields[9] as int,
     );
   }
 
@@ -53,7 +53,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(8)
       ..write(obj.startDate)
       ..writeByte(9)
-      ..write(obj.repeatPeriod);
+      ..write(obj.recurrenceIndex);
   }
 
   @override
