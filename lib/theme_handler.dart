@@ -60,9 +60,16 @@ class ThemeHandler with ChangeNotifier {
     return _currentTheme?.index ?? 0;
   }
 
+  Color baseColor([bool opposite = false]) {
+    if (_currentTheme == _CurrentTheme.LIGHT ||
+        (_currentTheme == _CurrentTheme.SYSTEM &&
+            SchedulerBinding.instance.window.platformBrightness == Brightness.light)) {
+      return opposite ? Colors.black : Colors.white;
+    }
+    return opposite ? Colors.white : Colors.black;
+  }
+
   ThemeData get currentTheme {
-    // _CurrentTheme.values[isDarkTheme].inde
-    // return isDarkTheme ? darkMode : whiteMode;
     switch (_currentTheme) {
       case _CurrentTheme.LIGHT:
         return whiteMode;

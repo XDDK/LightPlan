@@ -19,60 +19,54 @@
 */
 
 import 'package:hive/hive.dart';
-import 'task_dao.dart';
+
 import '../models/task.dart';
+import '../utils.dart';
+import 'task_dao.dart';
 
 class TaskDaoImpl extends TaskDao {
+  static TaskDaoImpl instance;
   final Box<Task> tasksBox = Hive.box("tasks");
 
+  static TaskDaoImpl getInstance() {
+    if (instance == null) instance = TaskDaoImpl();
+    return instance;
+  }
+
+  Future<void> updateDefaults(int oldVer, int newVer) async {
+    if (tasksBox.isEmpty) return;
+    print("updating current predefined tasks");
+    print("old tasks: ${findAllTasks()}\n\n");
+    // Update the existing predefined tasks (root + first children)
+    List<Task> parentTasks = findAllTasks().where((task) => task.parentId == null).toList();
+    parentTasks.forEach((parentTask) async {
+      List<Task> defaultTasks = Utils.getTaskDefaults(parentTask.getEndDateTime().year - 1);
+      List<Task> children = findAllTasks().where((task) => task.parentId == parentTask.id).toList();
+      Task q1Task = children[0], q2Task = children[1], q3Task = children[2], q4Task = children[3];
+
+      await updateTask(parentTask.id, parentTask.copyWith(startDate: defaultTasks[0].startDate));
+      await updateTask(q1Task.id, q1Task.copyWith(startDate: defaultTasks[1].startDate));
+      await updateTask(q2Task.id, q2Task.copyWith(startDate: defaultTasks[2].startDate));
+      await updateTask(q3Task.id, q3Task.copyWith(startDate: defaultTasks[3].startDate));
+      await updateTask(q4Task.id, q4Task.copyWith(startDate: defaultTasks[4].startDate));
+    });
+    print("updated tasks: ${findAllTasks()}\n\n");
+  }
+
   Future<TaskDaoImpl> insertDefaults([int year]) async {
-    if(year == null) {
+    if (year == null) {
       year = DateTime.now().year;
       if (tasksBox.isNotEmpty) return this;
     }
 
     print("inserting db defaults for year $year");
-    Task yearTask = Task(
-        title: "$year",
-        endDate: DateTime(year, 12, 31, 24).millisecondsSinceEpoch,
-        isPredefined: true,
-        canHaveChildren: false,
-        shortDesc: "New year new me, right?",
-        desc: "Get a car, quit smoking, be healthy. I think you got it!");
-    int yearId = await insertTask(yearTask);
-    Task quarter1 = Task(
-        title: "January - March",
-        parentId: yearId,
-        endDate: DateTime(year, 3, 31, 24).millisecondsSinceEpoch,
-        isPredefined: true,
-        shortDesc: "Stuff we do in spring",
-        desc: "blah blah");
-    Task quarter2 = Task(
-        title: "April - June",
-        parentId: yearId,
-        endDate: DateTime(year, 6, 30, 24).millisecondsSinceEpoch,
-        isPredefined: true,
-        shortDesc: "Stuff we do in summer",
-        desc: "blah blah");
-    Task quarter3 = Task(
-        title: "July - September",
-        parentId: yearId,
-        endDate: DateTime(year, 9, 30, 24).millisecondsSinceEpoch,
-        isPredefined: true,
-        shortDesc: "Stuff we do in autumn",
-        desc: "blah blah");
-    Task quarter4 = Task(
-        title: "Octomber - December",
-        parentId: yearId,
-        endDate: DateTime(year, 12, 31, 24).millisecondsSinceEpoch,
-        isPredefined: true,
-        shortDesc: "Stuff we do in winter",
-        desc: "blah blah");
-
-    await insertTask(quarter1);
-    await insertTask(quarter2);
-    await insertTask(quarter3);
-    await insertTask(quarter4);
+    // Insert default Tasks in Hive Box ('tasks')
+    List<Task> defaults = Utils.getTaskDefaults(year);
+    int yearId = await insertTask(defaults[0]);
+    await insertTask(defaults[1].copyWith(parentId: yearId));
+    await insertTask(defaults[2].copyWith(parentId: yearId));
+    await insertTask(defaults[3].copyWith(parentId: yearId));
+    await insertTask(defaults[4].copyWith(parentId: yearId));
 
     print("end db insertion of defaults");
     return this;
@@ -97,11 +91,12 @@ class TaskDaoImpl extends TaskDao {
 
   @override
   List<Task> findAllTasks() {
-    List<Task> tasksList = [];
+    return tasksBox.values.toList();
+    /* List<Task> tasksList = [];
     for (int i = 0; i < tasksBox.length; i++) {
       tasksList.add(tasksBox.getAt(i));
     }
-    return tasksList;
+    return tasksList; */
   }
 
   @override

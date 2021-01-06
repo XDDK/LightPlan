@@ -23,6 +23,14 @@ import 'package:hive/hive.dart';
 
 part 'task.g.dart';
 
+enum Repetition {
+  NONE,
+  MONTHLY,
+  WEEKLY,
+  DAILY,
+  HOURLY,
+}
+
 @HiveType(typeId: 0)
 class Task {
   @HiveField(0)
@@ -49,10 +57,17 @@ class Task {
   @HiveField(7)
   bool canHaveChildren;
 
+  @HiveField(8)
+  int startDate;
+
+  @HiveField(9)
+  int repeatPeriod;
+
   Task.empty({int parentId}) {
     this.parentId = parentId;
     this.isPredefined = false;
     this.canHaveChildren = true;
+    this.repeatPeriod = 0;
   }
 
   Task copyWith({
@@ -64,6 +79,8 @@ class Task {
     String desc,
     bool isPredefined,
     bool canHaveChildren,
+    int startDate,
+    Repetition repeatPeriod,
   }) {
     return Task(
       id: id ?? this.id,
@@ -74,6 +91,8 @@ class Task {
       desc: desc ?? this.desc,
       isPredefined: isPredefined ?? this.isPredefined,
       canHaveChildren: canHaveChildren ?? this.canHaveChildren,
+      startDate: startDate ?? this.startDate,
+      repeatPeriod: repeatPeriod?.index ?? this.repeatPeriod,
     );
   }
 
@@ -82,15 +101,25 @@ class Task {
     this.parentId,
     @required this.title,
     @required this.endDate,
-    @required this.shortDesc,
+    this.shortDesc,
     this.desc,
     @required this.isPredefined,
     this.canHaveChildren = true,
+    this.startDate,
+    this.repeatPeriod = 0,
   });
 
   Task setId(int id) {
     this.id = id;
     return this;
+  }
+
+  Repetition get repetition {
+    return Repetition.values[this.repeatPeriod];
+  }
+
+  set repetition(Repetition repetition) {
+    this.repeatPeriod = repetition.index;
   }
 
   DateTime endDateTime;
@@ -106,6 +135,6 @@ class Task {
 
   @override
   String toString() {
-    return "Task[id=$id,parentId=$parentId,title=$title,endDate=$endDate,shortDesc=$shortDesc,desc=$desc";
+    return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,shortDesc=$shortDesc,desc=$desc";
   }
 }
