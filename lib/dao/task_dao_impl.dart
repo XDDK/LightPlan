@@ -94,16 +94,8 @@ class TaskDaoImpl extends TaskDao {
     return tasksBox.values.toList();
   }
 
-  List<Task> findChildren(Task parentTask) {
-    List<Task> children = [];
-    for (var task in tasksBox.values) {
-      if (task.parentId == parentTask.id) children.add(task);
-    }
-    return children;
-  }
-
   void findDeepChildren(Task parentTask, List<Task> deepChildren) {
-    for (var child in findChildren(parentTask)) {
+    for (var child in findTaskChildren(parentTask.id)) {
       findDeepChildren(child, deepChildren);
       deepChildren.add(child);
     }

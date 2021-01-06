@@ -144,6 +144,33 @@ class Task {
     return date;
   }
 
+  Duration tillEndDate() {
+    return getEndDateTime().difference(DateTime.now());
+  }
+
+  Duration tillEndOfRecurrence() {
+    var now = DateTime.now();
+    DateTime endRecurrence;
+    switch (recurrence) {
+      case Recurrence.MONTHLY:
+        // end of the current month
+        endRecurrence = DateTime(now.year, now.month + 1, 0);
+        break;
+      case Recurrence.WEEKLY:
+        // end of the current week
+        endRecurrence = DateTime(now.year, now.month, now.day + (7 - now.weekday));
+        break;
+      case Recurrence.DAILY:
+        // end of the current day
+        endRecurrence = DateTime(now.year, now.month, now.day + 1);
+        break;
+      default:
+        // end of the task
+        return tillEndDate();
+    }
+    return endRecurrence.difference(now);
+  }
+
   @override
   String toString() {
     return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,shortDesc=$shortDesc,desc=$desc";
