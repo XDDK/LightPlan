@@ -115,7 +115,7 @@ class Task {
   }
 
   Recurrence get recurrence {
-    return Recurrence.values[this.recurrenceIndex /* ?? 0 */];
+    return Recurrence.values[this.recurrenceIndex ?? 0];
   }
 
   set recurrence(Recurrence recurrence) {

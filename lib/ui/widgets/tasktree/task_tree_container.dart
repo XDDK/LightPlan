@@ -63,7 +63,6 @@ class _TaskTreeContainerState extends State<TaskTreeContainer> {
     }
     List<Task> outgoingTasks = [];
     List<Task> overdueTasks = [];
-    print("childen: $children");
     children.forEach((element) {
       if(element.tillEndDate().isNegative) {
         overdueTasks.add(element);
