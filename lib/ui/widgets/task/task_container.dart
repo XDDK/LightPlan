@@ -61,10 +61,22 @@ class _TaskContainerState extends State<TaskContainer> {
     treeHandler.setCurrentRoot(task);
     await Preferences.getFutureInstance();
     Preferences.getInstance().setLastViewedTask(task.id);
-    Preferences.getInstance().setLastViewedYear(treeHandler.root.getEndDateTime().year-1);
+    Preferences.getInstance().setLastViewedYear(treeHandler.root.getEndDateTime().year - 1);
   }
 
   Widget buildChild() {
+    Color widgetColor = Colors.deepOrange[400];
+    Duration tillRecurrence = widget.task.tillEndOfRecurrence();
+    Duration tillEndDate = widget.task.tillEndDate();
+    Duration result = tillRecurrence.compareTo(tillEndDate) < 0 ? tillRecurrence : tillEndDate;
+    if(result.isNegative) {
+      widgetColor = Colors.redAccent;
+    } else if(result.inHours < 24 && result.inHours >= 6) {
+      widgetColor = Colors.red[500];
+    } else if(result.inHours < 6) {
+      widgetColor = Colors.red[900];
+    }
+
     return GestureDetector(
       onTap: () => _updateCurrentRoot(widget.task),
       child: MyContainer(
@@ -72,7 +84,7 @@ class _TaskContainerState extends State<TaskContainer> {
           shadowType: ShadowType.MEDIUM,
           padding: EdgeInsets.all(5),
           margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-          color: Colors.deepOrange[400],
+          color: widgetColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -180,14 +192,17 @@ class _TaskContainerState extends State<TaskContainer> {
         context: context,
         routeSettings: RouteSettings(), // add the dialog on an unnamed route, so user can go back
         builder: (_) {
-          return Align(
-            alignment: Alignment.topCenter,
-            child: TaskPopup(
-              task: task,
-              editor: editor,
-              isListedAsChild: canAddTask,
-              taskDao: this.taskDao,
-              updateCurrentTask: _updateCurrentRoot,
+          return Provider(
+            create: (_) => TaskDaoImpl.getInstance(),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: TaskPopup(
+                task: task,
+                editor: editor,
+                isListedAsChild: canAddTask,
+                taskDao: this.taskDao,
+                updateCurrentTask: _updateCurrentRoot,
+              ),
             ),
           );
         });

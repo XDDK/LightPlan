@@ -26,11 +26,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app_localizations.dart';
 import 'dao/preferences.dart';
+import 'dao/task_dao_impl.dart';
 import 'models/task.dart';
 import 'route_generator.dart';
 import 'theme_handler.dart';
 import 'ui/screens/main_page.dart';
 import 'ui/screens/settings_page.dart';
+import 'version_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,12 @@ void main() async {
   await Preferences.getFutureInstance();
   Hive.registerAdapter<Task>(TaskAdapter());
   await Hive.openBox<Task>('tasks');
+
+  VersionHandler(Preferences.getInstance(), (int oldVer, int newVer) async {
+    // If the last known version of Tasks is lower that the current version => update the existing defaults
+    await TaskDaoImpl.getInstance().updateDefaults(oldVer, newVer);
+  });
+
   runApp(MyApp());
 }
 

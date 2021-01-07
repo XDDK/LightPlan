@@ -85,7 +85,7 @@ class _TaskPopupState extends State<TaskPopup> {
             //* MediaQuery.of(context).viewInsets.bottom = 0 on mobile web
             margin: EdgeInsets.fromLTRB(10, 10, 10, isKeyboardVisible ? 10 + MediaQuery.of(context).viewInsets.bottom : 10),
             color: Theme.of(context).cardColor,
-            width: width < 800 ? (width - 20) * 0.8 : width * .3,
+            width: width < 800 ? (width - 20) : width * .3,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -99,15 +99,16 @@ class _TaskPopupState extends State<TaskPopup> {
                       shrinkWrap: true,
                       itemCount: editingTasks.length,
                       itemBuilder: (BuildContext context, int index) {
+                        var canBuildSubtask = index == 0 &&
+                              editMode &&
+                              (editingTasks[index]?.canHaveChildren ?? true) &&
+                              widget.isListedAsChild;
                         return TaskEditor(
                           task: editingTasks[index],
                           parentTask: widget.taskDao.findTask(editingTasks[index].parentId),
                           isSubtask: index > 0,
-                          buildAddSubtask: index == 0 &&
-                              editMode &&
-                              (editingTasks[index]?.canHaveChildren ?? true) &&
-                              widget.isListedAsChild,
-                          isEditing: editMode,
+                          buildAddSubtask: canBuildSubtask,
+                          isEditing: !canBuildSubtask && editMode,
                           addNewTask: _addSubtask,
                           deleteTask: () {
                             setState(() => editingTasks.removeAt(index));

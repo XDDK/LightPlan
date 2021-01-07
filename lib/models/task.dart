@@ -23,6 +23,14 @@ import 'package:hive/hive.dart';
 
 part 'task.g.dart';
 
+enum Recurrence {
+  NONE,
+  MONTHLY,
+  WEEKLY,
+  DAILY,
+  HOURLY,
+}
+
 @HiveType(typeId: 0)
 class Task {
   @HiveField(0)
@@ -49,10 +57,17 @@ class Task {
   @HiveField(7)
   bool canHaveChildren;
 
+  @HiveField(8)
+  int startDate;
+
+  @HiveField(9)
+  int recurrenceIndex;
+
   Task.empty({int parentId}) {
     this.parentId = parentId;
     this.isPredefined = false;
     this.canHaveChildren = true;
+    this.recurrenceIndex = 0;
   }
 
   Task copyWith({
@@ -64,6 +79,8 @@ class Task {
     String desc,
     bool isPredefined,
     bool canHaveChildren,
+    int startDate,
+    Recurrence recurrence,
   }) {
     return Task(
       id: id ?? this.id,
@@ -74,6 +91,8 @@ class Task {
       desc: desc ?? this.desc,
       isPredefined: isPredefined ?? this.isPredefined,
       canHaveChildren: canHaveChildren ?? this.canHaveChildren,
+      startDate: startDate ?? this.startDate,
+      recurrenceIndex: recurrence?.index ?? this.recurrenceIndex,
     );
   }
 
@@ -82,15 +101,36 @@ class Task {
     this.parentId,
     @required this.title,
     @required this.endDate,
-    @required this.shortDesc,
+    this.shortDesc,
     this.desc,
     @required this.isPredefined,
     this.canHaveChildren = true,
+    this.startDate,
+    this.recurrenceIndex = 0,
   });
 
   Task setId(int id) {
     this.id = id;
     return this;
+  }
+
+  Recurrence get recurrence {
+    return Recurrence.values[this.recurrenceIndex ?? 0];
+  }
+
+  set recurrence(Recurrence recurrence) {
+    this.recurrenceIndex = recurrence.index;
+  }
+
+  DateTime startDateTime;
+
+  DateTime getStartDateTime() {
+    DateTime date = startDateTime;
+    if (date == null) {
+      date = DateTime.fromMillisecondsSinceEpoch(startDate);
+      startDateTime = date;
+    }
+    return date;
   }
 
   DateTime endDateTime;
@@ -104,8 +144,35 @@ class Task {
     return date;
   }
 
+  Duration tillEndDate() {
+    return getEndDateTime().difference(DateTime.now());
+  }
+
+  Duration tillEndOfRecurrence() {
+    var now = DateTime.now();
+    DateTime endRecurrence;
+    switch (recurrence) {
+      case Recurrence.MONTHLY:
+        // end of the current month
+        endRecurrence = DateTime(now.year, now.month + 1, 0);
+        break;
+      case Recurrence.WEEKLY:
+        // end of the current week
+        endRecurrence = DateTime(now.year, now.month, now.day + (7 - now.weekday));
+        break;
+      case Recurrence.DAILY:
+        // end of the current day
+        endRecurrence = DateTime(now.year, now.month, now.day + 1);
+        break;
+      default:
+        // end of the task
+        return tillEndDate();
+    }
+    return endRecurrence.difference(now);
+  }
+
   @override
   String toString() {
-    return "Task[id=$id,parentId=$parentId,title=$title,endDate=$endDate,shortDesc=$shortDesc,desc=$desc";
+    return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,recurrence=$recurrenceIndex,shortDesc=$shortDesc,desc=$desc";
   }
 }

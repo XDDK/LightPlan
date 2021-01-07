@@ -61,6 +61,33 @@ class _TaskTreeContainerState extends State<TaskTreeContainer> {
     if (children.isEmpty) {
       return Divider(indent: 50, endIndent: 50, color: Colors.black, thickness: 1);
     }
+    List<Task> outgoingTasks = [];
+    List<Task> overdueTasks = [];
+    children.forEach((element) {
+      if(element.tillEndDate().isNegative) {
+        overdueTasks.add(element);
+      } else {
+        outgoingTasks.add(element);
+      }
+    });
+    outgoingTasks.sort((t1, t2) {
+      // sort children by min(endOfDay / endOfWeek / endOfMonth, endDate)
+      Duration endRec1 = t1.tillEndOfRecurrence(), endDate1 = t1.tillEndDate();
+      Duration endRec2 = t2.tillEndOfRecurrence(), endDate2 = t2.tillEndDate();
+      Duration mostRecent1 = endRec1.compareTo(endDate1) < 0 ? endRec1 : endDate1;
+      Duration mostRecent2 = endRec2.compareTo(endDate2) < 0 ? endRec2 : endDate2;
+      return mostRecent1.compareTo(mostRecent2);
+    });
+    overdueTasks.sort((t1, t2) {
+      // sort children by min(endOfDay / endOfWeek / endOfMonth, endDate)
+      Duration endRec1 = t1.tillEndOfRecurrence(), endDate1 = t1.tillEndDate();
+      Duration endRec2 = t2.tillEndOfRecurrence(), endDate2 = t2.tillEndDate();
+      Duration mostRecent1 = endRec1.compareTo(endDate1) < 0 ? endRec1 : endDate1;
+      Duration mostRecent2 = endRec2.compareTo(endDate2) < 0 ? endRec2 : endDate2;
+      return mostRecent1.abs().compareTo(mostRecent2.abs());
+    });
+    outgoingTasks.addAll(overdueTasks);
+    children = outgoingTasks;
     return Column(
       children: children.map((child) {
         return TaskContainer(task: child, isChild: true);

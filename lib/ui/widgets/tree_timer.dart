@@ -77,9 +77,8 @@ class _TreeTimerStateful extends State<TreeTimer> {
   }
 
   TextStyle customStyle(double fontSize) {
-    return TextStyle(
+    return DefaultTextStyle.of(context).style.copyWith(
       letterSpacing: 1.0,
-      color: Colors.black,
       fontSize: fontSize,
       fontWeight: FontWeight.bold
     );

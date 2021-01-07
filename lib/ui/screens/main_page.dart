@@ -60,7 +60,7 @@ class _MainPageState extends State<MainPage> {
                     setState(() {});
                   })
                 : _buildTasksPage,
-            duration: Duration(seconds: 3),
+            duration: Duration(seconds: 1),
           ),
         ),
       ),

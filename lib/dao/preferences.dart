@@ -28,6 +28,7 @@ class Preferences {
   static Box<dynamic> _box;
   static const _preferencesBox = 'preferencesBox';
 
+  static const _lastTaskVersion = 'lastTaskVersionKey';
   static const _lastViewedYearKey = 'lastViewedYearKey';
   static const _lastViewedTaskKey = 'lastViewedTaskKey';
   static const _tutorial = 'tutorialKey';
@@ -76,5 +77,13 @@ class Preferences {
 
   Future<void> setShowTutorial(bool showTutorial) {
     return _box.put(_tutorial, showTutorial);
+  }
+
+  int getLastTaskVersion() {
+    return _box.get(_lastTaskVersion, defaultValue: 1);
+  }
+
+  Future<void> setLastTaskVersion(int taskDbVersion) {
+    return _box.put(_lastTaskVersion, taskDbVersion);
   }
 }

@@ -63,6 +63,7 @@ flutter:
     - assets/tutorial/tutorialP1-min.png
     - assets/tutorial/tutorialP2-min.png
     - assets/tutorial/tutorialP3-min.png
+    - assets/tutorial/tutorialP4-min.png
     - lang/en.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
