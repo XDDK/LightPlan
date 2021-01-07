@@ -21,6 +21,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
+import '../../../app_localizations.dart';
 import '../../../dao/task_dao_impl.dart';
 import '../../../models/task.dart';
 import '../../../utils.dart';
@@ -151,15 +152,15 @@ class _TaskPopupState extends State<TaskPopup> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text("Are you sure?"),
-                                  content: Text("Task with title '${widget.task.title}' will be deleted."),
+                                  title: Text(AppLocalizations.of(context).translate('editExit')),
+                                  content: Text(AppLocalizations.of(context).translate('editExitDesc1') + "'${widget.task.title ?? '-'}'" + AppLocalizations.of(context).translate('editExitDesc2')),
                                   actions: [
                                     FlatButton(
-                                      child: Text("Cancel"),
+                                      child: Text(AppLocalizations.of(context).translate('no')),
                                       onPressed: () => Navigator.of(context).pop(false),
                                     ),
                                     FlatButton(
-                                      child: Text("Delete"),
+                                      child: Text(AppLocalizations.of(context).translate('yes')),
                                       onPressed: () async {
                                         await widget.taskDao.deleteTask(widget.task);
                                         widget.updateCurrentTask(widget.taskDao.findTask(widget.task.parentId));
@@ -167,7 +168,7 @@ class _TaskPopupState extends State<TaskPopup> {
                                         Navigator.of(context).pop(true);
                                         // Pop task details
                                         Navigator.of(context).pop(true);
-                                        Utils.showToast(context, "'${widget.task.title}' task deleted.");
+                                        Utils.showToast(context, "'${widget.task.title}'" + AppLocalizations.of(context).translate('editExitConfirmation'));
                                       },
                                     )
                                   ],
@@ -270,17 +271,17 @@ class _TaskPopupState extends State<TaskPopup> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Are you sure you want to exit edit mode?'),
-          content: Text("You will lose all the modifications."),
+          title: Text(AppLocalizations.of(context).translate('editExit2')),
+          content: Text(AppLocalizations.of(context).translate('editExit2Desc')),
           actions: <Widget>[
             FlatButton(
-              child: Text('No'),
+              child: Text(AppLocalizations.of(context).translate('no')),
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
             ),
             FlatButton(
-              child: Text('Exit'),
+              child: Text(AppLocalizations.of(context).translate('yes')),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },

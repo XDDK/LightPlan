@@ -21,7 +21,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+
+import 'app_localizations.dart';
 import 'dao/preferences.dart';
 import 'models/task.dart';
 import 'route_generator.dart';
@@ -54,6 +57,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: [
+        Locale('en', ''),
+      ],
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for(var supportedLocale in supportedLocales) 
+          if(supportedLocale.languageCode == locale.languageCode) 
+            return supportedLocale;
+        
+        return supportedLocales.first;
+      },
       debugShowCheckedModeBanner: false,
       title: 'Lightplan',
       theme: themeHandler.currentTheme,

@@ -1,0 +1,39 @@
+{
+    "yes" : "Yes",
+    "no" : "No",
+    "quitPopUpTitle" : "Are you sure you want to quit?",
+
+    "editTitle" : "Add a funky title",
+    "editShortDesc" : "Add just a summary here... this will be the preview",
+    "editLongDesc" : "Here you can write more",
+    "editEndDate" : "This will end on:",
+    "editEndDateNotSelected" : " no date selected",
+    "editDelete" : "Delete subtask",
+    "editCreate" : "CREATE A SUBTASK",
+    "editExit" : "Are you sure?",
+    "editExit2" : "Are you sure you want to exit edit mode?",
+    "editExitDesc1" : "Subtask ",
+    "editExitDesc2" : " will be deleted.",
+    "editExit2Desc" : "You will lose all modifications",
+    "editExitConfirmation" : " task deleted.",
+
+    "currentThemeTitle" : "Current Theme",
+    "themeLight" : "LIGHT",
+    "themeDark" : "DARK",
+    "themeBlack" : "BLACK",
+    "themeSystem" : "SYSTEM",
+
+    "aboutTitle" : "About",
+    "aboutLine1": "This is an open-source project created by two passionate students. Our aim is to provide people with a simple, free and open source planner for any type of activity. Since it's open source, the project can be customized to everybody's liking. If you are interested, the ",
+    "aboutLink-Github" : "full source code can be found here",
+    "aboutLine2": "\n\nA web version of this app is also available online and ",
+    "aboutLink-Web": "can be found here",
+
+    "supportUsTitle" : "Support Us",
+    "supportUsClick" : "Rate us on Google Play",
+
+    "clickToView" : "Click to view",
+    "githubTitle" : "Github Project",
+    "tosTitle" : "Terms of Service",
+    "privacyTitle" : "Privacy Policy"
+}

@@ -22,6 +22,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../app_localizations.dart';
 import '../../../models/task.dart';
 import '../my_container.dart';
 
@@ -112,7 +113,7 @@ class _TaskEditor extends State<TaskEditor> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  hintText: 'Add a funky title',
+                  hintText: AppLocalizations.of(context).translate('editTitle'),
                 ),
               ),
             ),
@@ -142,7 +143,7 @@ class _TaskEditor extends State<TaskEditor> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            hintText: 'Write just a summary description... this will be the preview',
+            hintText: AppLocalizations.of(context).translate('editShortDesc'),
           ),
         ),
       );
@@ -160,7 +161,7 @@ class _TaskEditor extends State<TaskEditor> {
     time = DateTime.fromMillisecondsSinceEpoch(task.endDate);
 
     var df = DateFormat("d MMMM yyyy");
-    String dateText = "This will end on:";
+    String dateText = AppLocalizations.of(context).translate('editEndDate');
     List<TextSpan> textSpans = [];
 
     var functionShowDatePicker = () async {
@@ -177,7 +178,7 @@ class _TaskEditor extends State<TaskEditor> {
 
     var tapRecognizer = TapGestureRecognizer()..onTap = functionShowDatePicker;
 
-    String selectedDateTxt = " no date selected";
+    String selectedDateTxt = AppLocalizations.of(context).translate('editEndDateNotSelected');
     if (time != null) selectedDateTxt = " ${time != null ? df.format(time) : 'no date selected'}";
 
     // If Task is editing -> predefined (greyed text) or not (blue text)
@@ -233,8 +234,7 @@ class _TaskEditor extends State<TaskEditor> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            hintText:
-                'Here you can write more, add details until 250 characters.\nYes, you also need to summarize this.',
+            hintText: AppLocalizations.of(context).translate('editLongDesc'),
           ),
         ),
       );
@@ -260,15 +260,15 @@ class _TaskEditor extends State<TaskEditor> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Are you sure?"),
-                content: Text("Subtask ${task.title ?? '-'} will be deleted."),
+                title: Text(AppLocalizations.of(context).translate('editExit')),
+                content: Text(AppLocalizations.of(context).translate('editExitDesc1') + "'${task.title ?? '-'}'" + AppLocalizations.of(context).translate('editExitDesc2')),
                 actions: [
                   FlatButton(
-                    child: Text("Cancel"),
+                    child: Text(AppLocalizations.of(context).translate('no')),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                   FlatButton(
-                    child: Text("Delete"),
+                    child: Text(AppLocalizations.of(context).translate('yes')),
                     onPressed: () async {
                       widget.deleteTask();
                       // Pop dialog box
@@ -289,7 +289,7 @@ class _TaskEditor extends State<TaskEditor> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FittedBox(child: Icon(Icons.delete)),
-              Text("Delete subtask"), 
+              Text(AppLocalizations.of(context).translate('editDelete')), 
             ],
           ),
           color: Colors.red,
@@ -319,7 +319,7 @@ class _TaskEditor extends State<TaskEditor> {
             Icon(Icons.add),
             Flexible(
               child: Text(
-                "CREATE A SUBTASK",
+                AppLocalizations.of(context).translate('editCreate'),
                 style: DefaultTextStyle.of(context).style.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
