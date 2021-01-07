@@ -46,11 +46,13 @@ class ThemeHandler with ChangeNotifier {
   );
 
   final ThemeData darkMode = ThemeData(
+    primaryColor: Colors.grey[900],
     brightness: Brightness.dark,
     fontFamily: 'WorkSans',
   );
 
   final ThemeData whiteMode = ThemeData(
+    primaryColor: Colors.white,
     brightness: Brightness.light,
     fontFamily: 'WorkSans',
   );
