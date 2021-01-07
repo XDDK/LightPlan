@@ -39,9 +39,18 @@ class TaskDaoImpl extends TaskDao {
     print("old tasks: ${findAllTasks()}\n\n");
     // Update the existing predefined tasks (root + first children)
     List<Task> parentTasks = findAllTasks().where((task) => task.parentId == null).toList();
+    parentTasks.forEach((element) async {
+      await updateTask(element.id, element.copyWith(recurrence: Recurrence.NONE));
+      List<Task> deepChildren = [];
+      findDeepChildren(element, deepChildren);
+      deepChildren.forEach((element) async {
+        await updateTask(element.id, element.copyWith(recurrence: Recurrence.NONE));
+      });
+    });
+    
     parentTasks.forEach((parentTask) async {
       List<Task> defaultTasks = Utils.getTaskDefaults(parentTask.getEndDateTime().year - 1);
-      List<Task> children = findAllTasks().where((task) => task.parentId == parentTask.id).toList();
+      List<Task> children = findTaskChildren(parentTask.id);
       Task q1Task = children[0], q2Task = children[1], q3Task = children[2], q4Task = children[3];
 
       await updateTask(parentTask.id, parentTask.copyWith(startDate: defaultTasks[0].startDate));

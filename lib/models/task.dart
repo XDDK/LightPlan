@@ -115,7 +115,7 @@ class Task {
   }
 
   Recurrence get recurrence {
-    return Recurrence.values[this.recurrenceIndex];
+    return Recurrence.values[this.recurrenceIndex /* ?? 0 */];
   }
 
   set recurrence(Recurrence recurrence) {
@@ -173,6 +173,6 @@ class Task {
 
   @override
   String toString() {
-    return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,shortDesc=$shortDesc,desc=$desc";
+    return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,recurrence=$recurrenceIndex,shortDesc=$shortDesc,desc=$desc";
   }
 }
