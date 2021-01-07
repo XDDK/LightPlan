@@ -23,7 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.16.1
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0-nullsafety.2
   hive_flutter: ^0.3.1
   hive: ^1.4.4+1
   provider: ^4.3.2+3
@@ -61,6 +63,7 @@ flutter:
     - assets/tutorial/tutorialP1-min.png
     - assets/tutorial/tutorialP2-min.png
     - assets/tutorial/tutorialP3-min.png
+    - lang/en.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

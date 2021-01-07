@@ -20,6 +20,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lightplan/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../dao/preferences.dart';
@@ -43,7 +44,7 @@ class _SettingsPage extends State<SettingsPage> {
             children: [
               _buildItem(
                   Icons.nightlight_round,
-                  "Current Theme",
+                  AppLocalizations.of(context).translate('currentThemeTitle'),
                   DropdownButton(
                     value: themeHandler.currentThemeIndex,
                     onChanged: (int newSelection) async {
@@ -61,29 +62,23 @@ class _SettingsPage extends State<SettingsPage> {
               Divider(thickness: 1),
               _buildItem(
                 Icons.info_outline,
-                "About",
+                AppLocalizations.of(context).translate('aboutTitle'),
                 RichText(
                   text: TextSpan(
-                    text: '''
-      This is an open-source project created by two passionate students. 
-      Our aim is to provide people with a simple, free and open source planner for 
-      any type of activity. Since it's open source, the project can be customized to 
-      everybody's liking. If you are interested, the '''
-                        .replaceAll("\n", "")
-                        .replaceAll("      ", ""),
+                    text: AppLocalizations.of(context).translate('aboutLine1'),
                     style: themeHandler.currentTheme.textTheme.headline4,
                     children: <TextSpan>[
                       TextSpan(
-                        text: "full source code can be found here",
+                        text: AppLocalizations.of(context).translate('aboutLink-Github'),
                         style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
                         recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
                       ),
                       TextSpan(
-                        text: "\n\nA web version of this app is also available online and ",
+                        text: AppLocalizations.of(context).translate('aboutLine2'),
                         style: themeHandler.currentTheme.textTheme.headline4,
                       ),
                       TextSpan(
-                        text: "can be found here",
+                        text: AppLocalizations.of(context).translate('aboutLink-Web'),
                         style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
                         recognizer: TapGestureRecognizer()..onTap = () => launch("https://lightplanx.com"),
                       ),
@@ -95,7 +90,7 @@ class _SettingsPage extends State<SettingsPage> {
               Divider(thickness: 1),
               _buildItem(
                 Icons.favorite_outline,
-                "Support Us",
+                AppLocalizations.of(context).translate('supportUsTitle'),
                 Row(
                   mainAxisAlignment:
                       MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
@@ -108,7 +103,7 @@ class _SettingsPage extends State<SettingsPage> {
                         launch("https://play.google.com/store/apps/details?id=$androidAppId");
                       },
                       child: Text(
-                        "Rate us on Google Play",
+                        AppLocalizations.of(context).translate('supportUsClick'),
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -119,7 +114,7 @@ class _SettingsPage extends State<SettingsPage> {
               Divider(thickness: 1),
               _buildItem(
                 Icons.code_outlined,
-                "Github Project",
+                AppLocalizations.of(context).translate('githubTitle'),
                 Row(
                   mainAxisAlignment:
                       MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
@@ -129,7 +124,7 @@ class _SettingsPage extends State<SettingsPage> {
                     GestureDetector(
                       onTap: () => launch("https://github.com/XDDK/LightPlan"),
                       child: Text(
-                        "Click to view",
+                        AppLocalizations.of(context).translate('clickToView'),
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -140,7 +135,7 @@ class _SettingsPage extends State<SettingsPage> {
               Divider(thickness: 1),
               _buildItem(
                 Icons.text_snippet_outlined,
-                "Terms of Service",
+                AppLocalizations.of(context).translate('tosTitle'),
                 Row(
                   mainAxisAlignment:
                       MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
@@ -150,7 +145,7 @@ class _SettingsPage extends State<SettingsPage> {
                     GestureDetector(
                       onTap: () => launch("https://lightplanx.com/tos"),
                       child: Text(
-                        "Click to view",
+                        AppLocalizations.of(context).translate('clickToView'),
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -161,7 +156,7 @@ class _SettingsPage extends State<SettingsPage> {
               Divider(thickness: 1),
               _buildItem(
                 Icons.text_snippet_outlined,
-                "Privacy Policy",
+                AppLocalizations.of(context).translate('privacyTitle'),
                 Row(
                   mainAxisAlignment:
                       MediaQuery.of(context).size.width < 600 ? MainAxisAlignment.start : MainAxisAlignment.center,
@@ -171,7 +166,7 @@ class _SettingsPage extends State<SettingsPage> {
                     GestureDetector(
                       onTap: () => launch("https://lightplanx.com/privacy"),
                       child: Text(
-                        "Click to view",
+                        AppLocalizations.of(context).translate('clickToView'),
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -192,16 +187,16 @@ class _SettingsPage extends State<SettingsPage> {
 
     switch (value) {
       case 1:
-        iconData = Icons.wb_sunny_outlined; text = "LIGHT";
+        iconData = Icons.wb_sunny_outlined; text = AppLocalizations.of(context).translate('themeLight');
         break;
       case 2:
-        iconData = Icons.nights_stay_outlined; text = "DARK";
+        iconData = Icons.nights_stay_outlined; text = AppLocalizations.of(context).translate('themeDark');
         break;
       case 3:
-        iconData = Icons.blur_on; text = "BLACK";
+        iconData = Icons.blur_on; text = AppLocalizations.of(context).translate('themeBlack');
         break;
       default:
-        iconData = Icons.phone_android_outlined; text = "SYSTEM";
+        iconData = Icons.phone_android_outlined; text = AppLocalizations.of(context).translate('themeSystem');
         break;
     }
 

@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+import '../../app_localizations.dart';
 import '../../dao/preferences.dart';
 import '../../dao/task_dao_impl.dart';
 import '../../task_list_handler.dart';
@@ -103,16 +104,16 @@ class _MainPageState extends State<MainPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: Text('Are you sure you want to quit?'),
+          content: Text(AppLocalizations.of(context).translate('quitPopUpTitle')),
           actions: <Widget>[
             FlatButton(
-              child: Text('No'),
+              child: Text(AppLocalizations.of(context).translate('no')),
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
             ),
             FlatButton(
-              child: Text('Yes'),
+              child: Text(AppLocalizations.of(context).translate('yes')),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
