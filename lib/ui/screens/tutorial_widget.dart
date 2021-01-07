@@ -46,6 +46,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
                   _buildTutorialPage(0),
                   _buildTutorialPage(1),
                   _buildTutorialPage(2),
+                  _buildTutorialPage(3),
                 ],
               ),
             ),
@@ -68,7 +69,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
       visible: currPage == page,
       child: MyContainer(
         color: Colors.grey[200],
-        child: Image.asset('assets/tutorial/tutorialP${currPage + 1}-min.png'),
+        child: Image.asset('images/tutorial/p${currPage + 1}-min.png'),
       ),
     );
   }
@@ -100,12 +101,12 @@ class _TutorialWidgetState extends State<TutorialWidget> {
   }
 
   void goForward() {
-    if (currPage < 3) {
+    if (currPage < 4) {
       setState(() {
         currPage++;
       });
     }
-    if (currPage == 3) {
+    if (currPage == 4) {
       widget.updatePreferences(false);
     }
   }
