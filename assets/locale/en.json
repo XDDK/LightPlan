@@ -4,7 +4,7 @@
     "quitPopUpTitle" : "Are you sure you want to quit?",
 
     "editTitle" : "Add a funky title",
-    "editShortDesc" : "Add just a summary here... this will be the preview",
+    "editShortDesc" : "Add a description... The first 75 characters will be seen in the preview.",
     "editLongDesc" : "Here you can write more",
     "editEndDate" : "This will end on:",
     "editEndDateNotSelected" : " no date selected",

@@ -96,7 +96,7 @@ class _TaskContainerState extends State<TaskContainer> {
                     Divider(thickness: 1),
                     Visibility(
                       visible: widget.task?.desc != null,
-                      child: Text(widget.task?.desc ?? "", textAlign: TextAlign.center),
+                      child: Text(_formatDescPreview(widget.task?.desc) ?? "", textAlign: TextAlign.center),
                     ),
                   ],
                 ),
@@ -153,7 +153,7 @@ class _TaskContainerState extends State<TaskContainer> {
                   Divider(thickness: 1),
                   Visibility(
                     visible: widget.task?.desc != null,
-                    child: Text(widget.task?.desc ?? "", style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                    child: Text(_formatDescPreview(widget.task?.desc) ?? "", style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                   ),
                 ],
               ),
@@ -175,6 +175,15 @@ class _TaskContainerState extends State<TaskContainer> {
             ),
           ],
         ));
+  }
+
+  /// Returns the first 75 characters followed by '...'
+  String _formatDescPreview(String desc) {
+    if(desc != null) {
+      if(desc.length > 75)
+        return "${desc.substring(0, 75)}...";
+    }
+    return desc;
   }
 
   Widget _buildIcon(bool visible, IconData icon, Function onTap) {

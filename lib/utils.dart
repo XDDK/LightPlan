@@ -34,7 +34,7 @@ class Utils {
         endDate: DateTime(year, 12, 31, 24).millisecondsSinceEpoch,
         isPredefined: true,
         canHaveChildren: false,
-        desc: "New year new me, right?\nGet a car, quit smoking, be healthy. I think you got it!");
+        desc: "New year new me, right?\nI think you got it!");
     Task quarter1 = Task(
         title: "January - March",
         startDate: DateTime(year, 1, 1).millisecondsSinceEpoch,
