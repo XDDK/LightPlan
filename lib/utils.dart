@@ -34,36 +34,31 @@ class Utils {
         endDate: DateTime(year, 12, 31, 24).millisecondsSinceEpoch,
         isPredefined: true,
         canHaveChildren: false,
-        shortDesc: "New year new me, right?",
-        desc: "Get a car, quit smoking, be healthy. I think you got it!");
+        desc: "New year new me, right?\nGet a car, quit smoking, be healthy. I think you got it!");
     Task quarter1 = Task(
         title: "January - March",
         startDate: DateTime(year, 1, 1).millisecondsSinceEpoch,
         endDate: DateTime(year, 3, 31, 24).millisecondsSinceEpoch,
         isPredefined: true,
-        shortDesc: "Stuff we do in spring",
-        desc: "blah blah");
+        desc: "Stuff we do in spring");
     Task quarter2 = Task(
         title: "April - June",
         startDate: DateTime(year, 4, 1).millisecondsSinceEpoch,
         endDate: DateTime(year, 6, 30, 24).millisecondsSinceEpoch,
         isPredefined: true,
-        shortDesc: "Stuff we do in summer",
-        desc: "blah blah");
+        desc: "Stuff we do in summer");
     Task quarter3 = Task(
         title: "July - September",
         startDate: DateTime(year, 7, 1).millisecondsSinceEpoch,
         endDate: DateTime(year, 9, 30, 24).millisecondsSinceEpoch,
         isPredefined: true,
-        shortDesc: "Stuff we do in autumn",
-        desc: "blah blah");
+        desc: "Stuff we do in autumn");
     Task quarter4 = Task(
         title: "Octomber - December",
         startDate: DateTime(year, 10, 1).millisecondsSinceEpoch,
         endDate: DateTime(year, 12, 31, 24).millisecondsSinceEpoch,
         isPredefined: true,
-        shortDesc: "Stuff we do in winter",
-        desc: "blah blah");
+        desc: "Stuff we do in winter");
     _defaultTasks[year] = [yearTask, quarter1, quarter2, quarter3, quarter4];
     return _defaultTasks[year];
   }

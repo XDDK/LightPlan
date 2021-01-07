@@ -39,7 +39,6 @@ class TaskEditor extends StatefulWidget {
   final Function deleteTask;
 
   final titleController = TextEditingController();
-  final shortDescController = TextEditingController();
   final descController = TextEditingController();
 
   TaskEditor({
@@ -75,7 +74,6 @@ class _TaskEditor extends State<TaskEditor> {
 
   void _init() {
     widget.titleController.text = widget?.task?.title;
-    widget.shortDescController.text = widget?.task?.shortDesc;
     widget.descController.text = widget?.task?.desc;
   }
 
@@ -89,14 +87,15 @@ class _TaskEditor extends State<TaskEditor> {
       children: [
         _buildTitle(widget.task),
         SizedBox(height: 10),
-        _buildShortDesc(widget.task),
+        _buildDesc(widget.task),
         Divider(thickness: 1),
         _buildRepetition(widget.task),
         _buildDate(widget.task),
         SizedBox(height: 10),
-        _buildDesc(widget.task),
         SizedBox(height: widget.buildAddSubtask && widget.isEditing && (widget.task?.canHaveChildren ?? true) ? 0 : 10),
         _buildDeleteSubtask(widget.task, widget.isEditing && widget.isSubtask),
+        Divider(thickness: 5),
+        SizedBox(height: 10),
         _buildAddSubtask(widget.task, widget.buildAddSubtask),
       ],
     );
@@ -134,28 +133,27 @@ class _TaskEditor extends State<TaskEditor> {
     );
   }
 
-  Widget _buildShortDesc(Task task) {
+  Widget _buildDesc(Task task) {
     if (widget.isEditing) {
       return Material(
         child: TextField(
-          maxLength: 170,
-          controller: widget.shortDescController,
-          onChanged: (txt) => widget.task.shortDesc = txt.trim(),
+          maxLength: 250,
+          controller: widget.descController,
+          onChanged: (txt) => widget.task.desc = txt.trim(),
           textInputAction: TextInputAction.done,
-          minLines: 2,
-          maxLines: 3,
+          maxLines: 4,
           decoration: InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.all(5),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
             ),
-            hintText: 'Write just a summary description... this will be the preview',
+            hintText: 'Write a description... First 100 chars will be visible as preview.',
           ),
         ),
       );
     }
-    return Text(task?.shortDesc ?? "Add a task short description");
+    return Text(task?.desc ?? "Add a task description");
   }
 
   Widget _buildRepetition(Task task) {
@@ -279,39 +277,6 @@ class _TaskEditor extends State<TaskEditor> {
           style: DefaultTextStyle.of(context).style,
           children: textSpans,
         ),
-      ),
-    );
-  }
-
-  Widget _buildDesc(Task task) {
-    if (widget.isEditing) {
-      return Material(
-        child: TextField(
-          maxLength: 250,
-          controller: widget.descController,
-          onChanged: (txt) => widget.task.desc = txt.trim(),
-          textInputAction: TextInputAction.done,
-          minLines: 3,
-          maxLines: 4,
-          decoration: InputDecoration(
-            isDense: true,
-            contentPadding: EdgeInsets.all(5),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            hintText:
-                'Here you can write more, add details until 250 characters.\nYes, you also need to summarize this.',
-          ),
-        ),
-      );
-    }
-    return SizedBox(
-      width: double.infinity,
-      child: MyContainer(
-        radius: 5,
-        color: Color.fromRGBO(0, 0, 0, 0.05),
-        padding: EdgeInsets.all(10),
-        child: Text(task?.desc ?? "Add a description"),
       ),
     );
   }

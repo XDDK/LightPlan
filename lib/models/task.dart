@@ -46,9 +46,6 @@ class Task {
   int endDate;
 
   @HiveField(4)
-  String shortDesc;
-
-  @HiveField(5)
   String desc;
 
   @HiveField(6)
@@ -75,7 +72,6 @@ class Task {
     int parentId,
     String title,
     int endDate,
-    String shortDesc,
     String desc,
     bool isPredefined,
     bool canHaveChildren,
@@ -87,7 +83,6 @@ class Task {
       parentId: parentId ?? this.parentId,
       title: title ?? this.title,
       endDate: endDate ?? this.endDate,
-      shortDesc: shortDesc ?? this.shortDesc,
       desc: desc ?? this.desc,
       isPredefined: isPredefined ?? this.isPredefined,
       canHaveChildren: canHaveChildren ?? this.canHaveChildren,
@@ -101,7 +96,6 @@ class Task {
     this.parentId,
     @required this.title,
     @required this.endDate,
-    this.shortDesc,
     this.desc,
     @required this.isPredefined,
     this.canHaveChildren = true,
@@ -173,6 +167,6 @@ class Task {
 
   @override
   String toString() {
-    return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,recurrence=$recurrenceIndex,shortDesc=$shortDesc,desc=$desc";
+    return "Task[id=$id,parentId=$parentId,title=$title,startDate=$startDate,endDate=$endDate,recurrence=$recurrenceIndex,desc=$desc";
   }
 }

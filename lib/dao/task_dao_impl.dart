@@ -35,31 +35,36 @@ class TaskDaoImpl extends TaskDao {
 
   Future<void> updateDefaults(int oldVer, int newVer) async {
     if (tasksBox.isEmpty) return;
-    print("updating current predefined tasks");
-    print("old tasks: ${findAllTasks()}\n\n");
-    List<Task> parentTasks = findAllTasks().where((task) => task.parentId == null).toList();
-    // Update recurrence for all tasks null -> none
-    for (var element in parentTasks) {
-      await updateTask(element.id, element.copyWith(recurrence: Recurrence.NONE));
-      List<Task> deepChildren = [];
-      findDeepChildren(element, deepChildren);
-      for (var element in deepChildren) {
+    if (oldVer == 1) {
+      print("updating current predefined tasks");
+      print("old tasks: ${findAllTasks()}\n\n");
+      List<Task> parentTasks = findAllTasks().where((task) => task.parentId == null).toList();
+      // Update recurrence for all tasks null -> none
+      for (var element in parentTasks) {
         await updateTask(element.id, element.copyWith(recurrence: Recurrence.NONE));
+        List<Task> deepChildren = [];
+        findDeepChildren(element, deepChildren);
+        for (var element in deepChildren) {
+          await updateTask(element.id, element.copyWith(recurrence: Recurrence.NONE));
+        }
       }
-    }
-    // Update startDate for existing predefined tasks (root + first children)
-    for (var parentTask in parentTasks) {
-      List<Task> defaultTasks = Utils.getTaskDefaults(parentTask.getEndDateTime().year - 1);
-      List<Task> children = findTaskChildren(parentTask.id);
-      Task q1Task = children[0], q2Task = children[1], q3Task = children[2], q4Task = children[3];
+      // Update startDate for existing predefined tasks (root + first children)
+      for (var parentTask in parentTasks) {
+        List<Task> defaultTasks = Utils.getTaskDefaults(parentTask.getEndDateTime().year - 1);
+        List<Task> children = findTaskChildren(parentTask.id);
+        Task q1Task = children[0], q2Task = children[1], q3Task = children[2], q4Task = children[3];
 
-      await updateTask(parentTask.id, parentTask.copyWith(startDate: defaultTasks[0].startDate));
-      await updateTask(q1Task.id, q1Task.copyWith(startDate: defaultTasks[1].startDate));
-      await updateTask(q2Task.id, q2Task.copyWith(startDate: defaultTasks[2].startDate));
-      await updateTask(q3Task.id, q3Task.copyWith(startDate: defaultTasks[3].startDate));
-      await updateTask(q4Task.id, q4Task.copyWith(startDate: defaultTasks[4].startDate));
+        await updateTask(parentTask.id, parentTask.copyWith(startDate: defaultTasks[0].startDate));
+        await updateTask(q1Task.id, q1Task.copyWith(startDate: defaultTasks[1].startDate));
+        await updateTask(q2Task.id, q2Task.copyWith(startDate: defaultTasks[2].startDate));
+        await updateTask(q3Task.id, q3Task.copyWith(startDate: defaultTasks[3].startDate));
+        await updateTask(q4Task.id, q4Task.copyWith(startDate: defaultTasks[4].startDate));
+      }
+
+      print("updated tasks: ${findAllTasks()}\n\n");
+    } else {
+      print("WARNING> tasks didnt update, but DB did.");
     }
-    print("updated tasks: ${findAllTasks()}\n\n");
   }
 
   Future<TaskDaoImpl> insertDefaults([int year]) async {
@@ -93,7 +98,7 @@ class TaskDaoImpl extends TaskDao {
 
   @override
   Future<void> deleteTasks(List<Task> treeTask) async {
-    for(var element in treeTask) {
+    for (var element in treeTask) {
       await deleteTask(element);
     }
   }

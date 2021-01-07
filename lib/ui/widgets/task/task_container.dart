@@ -69,11 +69,11 @@ class _TaskContainerState extends State<TaskContainer> {
     Duration tillRecurrence = widget.task.tillEndOfRecurrence();
     Duration tillEndDate = widget.task.tillEndDate();
     Duration result = tillRecurrence.compareTo(tillEndDate) < 0 ? tillRecurrence : tillEndDate;
-    if(result.isNegative) {
+    if (result.isNegative) {
       widgetColor = Colors.redAccent;
-    } else if(result.inHours < 24 && result.inHours >= 6) {
+    } else if (result.inHours < 24 && result.inHours >= 6) {
       widgetColor = Colors.red[500];
-    } else if(result.inHours < 6) {
+    } else if (result.inHours < 6) {
       widgetColor = Colors.red[900];
     }
 
@@ -92,9 +92,12 @@ class _TaskContainerState extends State<TaskContainer> {
               Expanded(
                 child: Column(
                   children: [
-                    Text(widget.task.title, /* style: TextStyle(fontSize: 20), */ textAlign: TextAlign.center),
+                    Text(widget.task.title, textAlign: TextAlign.center),
                     Divider(thickness: 1),
-                    Text(widget.task.shortDesc, /* style: TextStyle(fontSize: 18), */ textAlign: TextAlign.center),
+                    Visibility(
+                      visible: widget.task?.desc != null,
+                      child: Text(widget.task?.desc ?? "", textAlign: TextAlign.center),
+                    ),
                   ],
                 ),
               ),
@@ -142,14 +145,16 @@ class _TaskContainerState extends State<TaskContainer> {
                 ),
               ],
             ),
-            // Title and subtitle
+            // Title and desc
             Expanded(
               child: Column(
                 children: [
                   Text(widget.task.title, style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                   Divider(thickness: 1),
-                  Text(widget.task.shortDesc,
-                      style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                  Visibility(
+                    visible: widget.task?.desc != null,
+                    child: Text(widget.task?.desc ?? "", style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                  ),
                 ],
               ),
             ),

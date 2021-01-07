@@ -122,7 +122,7 @@ class _TaskPopupState extends State<TaskPopup> {
                       child: GestureDetector(
                         onTap: () async {
                           var quit = await _showConfirmQuit();
-                          if (quit) {
+                          if (quit ?? false) {
                             editingTasks.clear();
                             editingTasks.add(widget.task.copyWith());
                             setState(() => editMode = !editMode);
@@ -224,8 +224,6 @@ class _TaskPopupState extends State<TaskPopup> {
     bool isInvalid = false;
     for (var task in editingTasks) {
       if (task.title == null || task.title.isEmpty) isInvalid = true;
-      if (task.shortDesc == null || task.shortDesc.isEmpty) isInvalid = true;
-      if (task.endDate == null) isInvalid = true;
     }
     return isInvalid;
   }
@@ -236,7 +234,7 @@ class _TaskPopupState extends State<TaskPopup> {
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text("Title / Short Description / Date missing"),
+            title: Text("A task title missing"),
             content: Text("The app had a purpose. 😳"),
             actions: <Widget>[
               FlatButton(
