@@ -69,7 +69,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
       visible: currPage == page,
       child: MyContainer(
         color: Colors.grey[200],
-        child: Image.asset('images/tutorial/p${currPage + 1}-min.png'),
+        child: Image.asset('assets/images/tutorial/p${currPage + 1}-min.png'),
       ),
     );
   }
