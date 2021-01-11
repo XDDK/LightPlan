@@ -1,0 +1,39 @@
+{
+    "yes" : "Da",
+    "no" : "Nu",
+    "quitPopUpTitle" : "Sunteti sigur ca vreti sa iesiti?",
+
+    "editTitle" : "Adaugati un titlu",
+    "editShortDesc" : "Adaugati o descriere scurta",
+    "editLongDesc" : "Adaugati mai multe detalii",
+    "editEndDate" : "Se va termina pe:",
+    "editEndDateNotSelected" : " nici o data selectata",
+    "editDelete" : "Stergere sarcina",
+    "editCreate" : "CREEARE SARCINA",
+    "editExit" : "Sunteti sigur?",
+    "editExit2" : "Sunteti sigur ca vreti sa iesiti din modul editare?",
+    "editExitDesc1" : "Sarcina ",
+    "editExitDesc2" : " o sa fie stearsa.",
+    "editExit2Desc" : "Veti pierde toate modificarile",
+    "editExitConfirmation" : " sarcina stearsa.",
+
+    "currentThemeTitle" : "Tema Curenta",
+    "themeLight" : "LUMINOS",
+    "themeDark" : "INTUNECAT",
+    "themeBlack" : "NEGRU",
+    "themeSystem" : "SISTEM",
+
+    "aboutTitle" : "Despre",
+    "aboutLine1" : "Acesta este un proiect open-source creat de doi studenti pasionati. Obiectivul nostru este sa oferim planificator simplu, gratis si open source pentru orice tip de activitate. Deoarece este open source, proiectul poate fi schimbat de oricine. Daca sunteti interesat, ",
+    "aboutLink-Github" : "codul sursa poate fi gasit aici",
+    "aboutLine2": "\n\nO versiune de web exista si ",
+    "aboutLink-Web": "poate fi gasit aici",
+
+    "supportUsTitle" : "Sustine-ne",
+    "supportUsClick" : "Evalueaza-ne pe Google Play",
+
+    "clickToView" : "Apasati pentru a vedea",
+    "githubTitle" : "Proiect Github",
+    "tosTitle" : "Termenii Serviciului",
+    "privacyTitle" : "Politica de Confidentialitate"
+}
