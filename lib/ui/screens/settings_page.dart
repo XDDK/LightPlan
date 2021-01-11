@@ -43,49 +43,64 @@ class _SettingsPage extends State<SettingsPage> {
             //mainAxisSize: MainAxisSize.min,
             children: [
               _buildItem(
-                  Icons.nightlight_round,
-                  AppLocalizations.of(context).translate('currentThemeTitle'),
-                  DropdownButton(
-                    value: themeHandler.currentThemeIndex,
-                    onChanged: (int newSelection) async {
-                      await Preferences.getFutureInstance();
-                      setState(() => themeHandler.changeTheme(Preferences.getInstance(), newSelection));
-                    },
-                    items: <int>[0, 1, 2, 3].map((currentSelection) {
-                      return DropdownMenuItem<int>(
-                        value: currentSelection,
-                        child: _buildDropdownWidget(currentSelection),
-                      );
-                    }).toList(),
-                  ),
-                  context),
-              Divider(thickness: 1),
-              _buildItem(
-                Icons.info_outline,
-                AppLocalizations.of(context).translate('aboutTitle'),
-                RichText(
-                  text: TextSpan(
-                    text: AppLocalizations.of(context).translate('aboutLine1'),
-                    style: themeHandler.currentTheme.textTheme.headline4,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: AppLocalizations.of(context).translate('aboutLink-Github'),
-                        style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
-                        recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
-                      ),
-                      TextSpan(
-                        text: AppLocalizations.of(context).translate('aboutLine2'),
-                        style: themeHandler.currentTheme.textTheme.headline4,
-                      ),
-                      TextSpan(
-                        text: AppLocalizations.of(context).translate('aboutLink-Web'),
-                        style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
-                        recognizer: TapGestureRecognizer()..onTap = () => launch("https://lightplanx.com"),
-                      ),
-                    ],
-                  ),
+                Icons.emoji_flags_outlined,
+                AppLocalizations.of(context).translate('languageTitle'),
+                DropdownButton(
+                  value: themeHandler.currentThemeIndex,
+                  items: <int>[0, 1, 2].map((currentSelection) {
+                    return DropdownMenuItem<int>(
+                      value: currentSelection,
+                      child: _buildDropdownWidget(currentSelection, false),
+                    );
+                  }).toList(),
                 ),
                 context,
+              ),
+              Divider(thickness: 1),
+              _buildItem(
+                Icons.nightlight_round,
+                AppLocalizations.of(context).translate('currentThemeTitle'),
+                DropdownButton(
+                  value: themeHandler.currentThemeIndex,
+                  onChanged: (int newSelection) async {
+                    await Preferences.getFutureInstance();
+                    setState(() => themeHandler.changeTheme(Preferences.getInstance(), newSelection));
+                  },
+                  items: <int>[0, 1, 2, 3].map((currentSelection) {
+                    return DropdownMenuItem<int>(
+                      value: currentSelection,
+                      child: _buildDropdownWidget(currentSelection, true),
+                    );
+                  }).toList(),
+                ),
+                context),
+            Divider(thickness: 1),
+            _buildItem(
+              Icons.info_outline,
+              AppLocalizations.of(context).translate('aboutTitle'),
+              RichText(
+                text: TextSpan(
+                  text: AppLocalizations.of(context).translate('aboutLine1'),
+                  style: themeHandler.currentTheme.textTheme.headline4,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: AppLocalizations.of(context).translate('aboutLink-Github'),
+                      style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()..onTap = () => launch("https://github.com/XDDK/LightPlan"),
+                    ),
+                    TextSpan(
+                      text: AppLocalizations.of(context).translate('aboutLine2'),
+                      style: themeHandler.currentTheme.textTheme.headline4,
+                    ),
+                    TextSpan(
+                      text: AppLocalizations.of(context).translate('aboutLink-Web'),
+                      style: themeHandler.currentTheme.textTheme.headline4.copyWith(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()..onTap = () => launch("https://lightplanx.com"),
+                    ),
+                  ],
+                ),
+              ),
+              context,
               ),
               Divider(thickness: 1),
               _buildItem(
@@ -181,23 +196,36 @@ class _SettingsPage extends State<SettingsPage> {
     );
   }
 
-  Widget _buildDropdownWidget(int value) {
+  Widget _buildDropdownWidget(int value, bool isTheme) {
     IconData iconData;
     String text;
 
-    switch (value) {
-      case 1:
-        iconData = Icons.wb_sunny_outlined; text = AppLocalizations.of(context).translate('themeLight');
-        break;
-      case 2:
-        iconData = Icons.nights_stay_outlined; text = AppLocalizations.of(context).translate('themeDark');
-        break;
-      case 3:
-        iconData = Icons.blur_on; text = AppLocalizations.of(context).translate('themeBlack');
-        break;
-      default:
-        iconData = Icons.phone_android_outlined; text = AppLocalizations.of(context).translate('themeSystem');
-        break;
+    if(isTheme) {
+      switch (value) {
+        case 1:
+          iconData = Icons.wb_sunny_outlined; text = AppLocalizations.of(context).translate('themeLight');
+          break;
+        case 2:
+          iconData = Icons.nights_stay_outlined; text = AppLocalizations.of(context).translate('themeDark');
+          break;
+        case 3:
+          iconData = Icons.blur_on; text = AppLocalizations.of(context).translate('themeBlack');
+          break;
+        default:
+          iconData = Icons.phone_android_outlined; text = AppLocalizations.of(context).translate('themeSystem');
+          break;
+      }
+    } else {
+      switch (value) {
+        case 1: 
+          iconData = Icons.android; text = AppLocalizations.of(context).translate('english');
+          break;
+        case 2: iconData = Icons.android; text = AppLocalizations.of(context).translate('romanian');
+          break;
+        default:
+          iconData = Icons.phone_android_outlined; text = AppLocalizations.of(context).translate('themeSystem');
+          break;
+      }
     }
 
     return Row(

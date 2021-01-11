@@ -17,6 +17,10 @@
     "editExit2Desc" : "You will lose all modifications",
     "editExitConfirmation" : " task deleted.",
 
+    "languageTitle" : "Language",
+    "english" : "ENGLISH",
+    "romanian" : "ROMANIAN",
+
     "currentThemeTitle" : "Current Theme",
     "themeLight" : "LIGHT",
     "themeDark" : "DARK",

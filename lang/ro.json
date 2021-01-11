@@ -17,6 +17,10 @@
     "editExit2Desc" : "Veti pierde toate modificarile",
     "editExitConfirmation" : " sarcina stearsa.",
 
+    "languageTitle" : "Limbaj",
+    "english" : "ENGLEZA",
+    "romanian" : "ROMANA",
+
     "currentThemeTitle" : "Tema Curenta",
     "themeLight" : "LUMINOS",
     "themeDark" : "INTUNECAT",
