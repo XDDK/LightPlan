@@ -1,0 +1,14 @@
+We listened to your feedback and got V2.0:
+
+FEATURES:
+• Tutorial: go through a very short tutorial that explains some of the features, to get you started faster
+• Themes: experience the all-new Darkplan!
+• Task recurrence: set any task to repeat keep yourself even more up to date with your goals
+
+UI IMPROVEMENTS: 
+• Tasks change color based on their deadline
+• Better user experience
+
+OTHERS:
+• Optimization and performance improvements
+• Added more bugs to squish

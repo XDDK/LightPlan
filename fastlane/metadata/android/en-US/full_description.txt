@@ -1,0 +1,23 @@
+Light Planner is a FOSS, simple, and intuitive app that will help you with planning events, tasks, or achievements you want to reach!
+
+==============
+How does it work?
+==============
+• Add your tasks in a chosen year quarter
+• Write up a title and a description and pick a deadline for it
+
+	That’s it! Upon entering the task area, you will be shown the time you have left to complete it and (optionally) the subtasks you have created in it.
+
+==============
+Who is it made for?
+==============
+	Anyone! No matter the age or height, you can use the app to plan ahead and keep track of the time you have left to complete it at any time.
+
+==============
+How is it different from other apps?
+==============
+	This app was designed to be simple and intuitive, while still looking slick and unintrusive. We also don’t collect any data from users (everything is stored on your device), which means you don’t have to create/link an account and you won’t have to deal with any pesky ads!
+Additionally, the project is open-source, so if you feel like changing or adding features, you can do it!
+(link to the project repository: https://github.com/XDDK/LightPlan).
+
+I hope you'll find this app useful!
